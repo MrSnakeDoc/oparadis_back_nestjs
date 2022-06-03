@@ -1,3 +1,4 @@
+import { PhotoDto } from './dto/Photo.dto';
 import {
   ForbiddenException,
   HttpException,
@@ -5,7 +6,6 @@ import {
   Injectable,
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { PhotoDto } from './dto';
 
 @Injectable()
 export class PhotoService {
@@ -23,15 +23,15 @@ export class PhotoService {
     }
   }
 
-  async getPhotosById(photoId: string) {
+  async getPhotoById(id: string) {
     try {
-      const photo = await this.prisma.photo.findFirst({
+      const photo: PhotoDto = await this.prisma.photo.findFirst({
         where: {
-          id: photoId,
+          id,
         },
       });
       if (!photo) {
-        throw new HttpException('No houses found', HttpStatus.NOT_FOUND);
+        throw new HttpException('No photo found', HttpStatus.NOT_FOUND);
       }
       return photo;
     } catch (error) {
@@ -39,50 +39,88 @@ export class PhotoService {
     }
   }
 
-  async createPhoto(userId: string, dto: PhotoDto) {
+  async getPhotoByUserId(user_id: string) {
     try {
-      const photo = await this.prisma.photo.create({
-        data: {
-          ...dto,
-          user_id: userId,
+      const photos: PhotoDto[] = await this.prisma.photo.findMany({
+        where: {
+          user_id,
         },
       });
-      return photo;
+      if (!photos) {
+        throw new HttpException('No photo found', HttpStatus.NOT_FOUND);
+      }
+      return photos;
     } catch (error) {
       throw error;
     }
   }
 
-  async updatePhoto(userId: string, photoId: string, dto: PhotoDto) {
+  async createPhoto(userId: string, photo: PhotoDto) {
     try {
-      const photo = await this.prisma.photo.findUnique({
-        where: { id: photoId },
+      const newPhoto = await this.prisma.photo.create({
+        data: {
+          user_id: userId,
+          ...photo,
+        },
       });
 
-      if (!photo || photo.user_id !== userId)
-        throw new ForbiddenException('Access to ressources denied');
+      if (!newPhoto) {
+        throw new HttpException('Photo not created', HttpStatus.BAD_REQUEST);
+      }
 
-      return this.prisma.photo.update({
-        where: { id: photoId },
-        data: { ...dto },
-      });
+      return newPhoto;
     } catch (error) {
       throw error;
     }
   }
 
-  async deletePhoto(userId, photoId) {
+  async updatePhoto(userId: string, id: string, dto: PhotoDto) {
     try {
       const photo = await this.prisma.photo.findUnique({
-        where: { id: photoId },
+        where: { id },
       });
 
       if (!photo || photo.user_id !== userId)
         throw new ForbiddenException('Access to ressources denied');
 
-      await this.prisma.photo.delete({
-        where: { id: photoId },
+      const updatedPhoto = await this.prisma.photo.update({
+        where: {
+          id,
+        },
+        data: {
+          ...dto,
+        },
       });
+
+      if (!updatedPhoto)
+        throw new HttpException('Photo not updated', HttpStatus.BAD_REQUEST);
+
+      return updatedPhoto;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async deletePhoto(userId: string, id: string) {
+    try {
+      const photo = await this.prisma.photo.findUnique({
+        where: { id },
+      });
+
+      if (!photo || photo.user_id !== userId)
+        throw new ForbiddenException('Access to ressources denied');
+
+      const deletedPhoto = await this.prisma.photo.delete({
+        where: {
+          id,
+        },
+      });
+
+      if (!deletedPhoto) {
+        throw new HttpException('Photo not deleted', HttpStatus.BAD_REQUEST);
+      }
+
+      return deletedPhoto;
     } catch (error) {
       throw error;
     }

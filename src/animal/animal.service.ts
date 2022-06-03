@@ -23,11 +23,11 @@ export class AnimalService {
     }
   }
 
-  async getAnimalsById(animalId: string) {
+  async getAnimalsById(id: string) {
     try {
       const animal = await this.prisma.animal.findFirst({
         where: {
-          id: animalId,
+          id,
         },
       });
       if (!animal) {
@@ -53,17 +53,17 @@ export class AnimalService {
     }
   }
 
-  async updateAnimal(userId: string, animalId: string, dto: AnimalDto) {
+  async updateAnimal(userId: string, id: string, dto: AnimalDto) {
     try {
       const animal = await this.prisma.animal.findUnique({
-        where: { id: animalId },
+        where: { id },
       });
 
       if (!animal || animal.user_id !== userId)
         throw new ForbiddenException('Access to ressources denied');
 
       return this.prisma.animal.update({
-        where: { id: animalId },
+        where: { id },
         data: { ...dto },
       });
     } catch (error) {
@@ -71,17 +71,17 @@ export class AnimalService {
     }
   }
 
-  async deleteAnimal(userId, animalId) {
+  async deleteAnimal(userId, id) {
     try {
       const animal = await this.prisma.animal.findUnique({
-        where: { id: animalId },
+        where: { id },
       });
 
       if (!animal || animal.user_id !== userId)
         throw new ForbiddenException('Access to ressources denied');
 
       await this.prisma.animal.delete({
-        where: { id: animalId },
+        where: { id },
       });
     } catch (error) {
       throw error;

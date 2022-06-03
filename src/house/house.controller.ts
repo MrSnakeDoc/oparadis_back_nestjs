@@ -21,7 +21,9 @@ export class HouseController {
   constructor(private HouseService: HouseService) {}
 
   @Get()
-  getHouses() {
+  getHouses(@GetUser('id') userId: string) {
+    console.log(userId);
+
     return this.HouseService.getHouses();
   }
 

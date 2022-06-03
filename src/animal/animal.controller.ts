@@ -15,8 +15,8 @@ import { JwtGuard } from 'src/auth/guard';
 import { GetUser } from 'src/auth/decorator';
 import { AnimalDto } from './dto';
 
-UseGuards(JwtGuard);
-@Controller('animal')
+@UseGuards(JwtGuard)
+@Controller('animals')
 export class AnimalController {
   constructor(private AnimalService: AnimalService) {}
 

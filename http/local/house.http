@@ -1,6 +1,6 @@
 @host = http://localhost:5000
 
-@access_token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbDN4NzJqODMwMDAwNnR1a2tpOWM5cnVzIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNjU0MTg1MDU1LCJleHAiOjE2NTQyNzE0NTV9.oMYpJ-F1YWpmgQO0GaAy09DXaQVsyE_AH4GqvSk0CJE
+@access_token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbDN5eWJsYXIwMDAwdHJ1a2QzbHFnNTVtIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNjU0MjkxMjk1LCJleHAiOjE2NTQzNzc2OTV9.6nQ3ylDMPXN3E9LHCI0O8TwihYsd8Wg_z27lz1z6-WI
 
 ###
 GET {{host}}/houses/full HTTP/1.1

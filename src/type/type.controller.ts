@@ -1,6 +1,8 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, UseGuards } from '@nestjs/common';
+import { JwtGuard } from 'src/auth/guard';
 import { TypeService } from './type.service';
 
+@UseGuards(JwtGuard)
 @Controller('types')
 export class TypeController {
   constructor(private TypeService: TypeService) {}

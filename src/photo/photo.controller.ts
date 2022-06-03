@@ -1,6 +1,6 @@
+import { PhotoDto } from './dto/Photo.dto';
 import {
   Body,
-  ClassSerializerInterceptor,
   Controller,
   Delete,
   Get,
@@ -8,35 +8,36 @@ import {
   Patch,
   Post,
   UseGuards,
-  UseInterceptors,
 } from '@nestjs/common';
-import { GetUser } from 'src/auth/decorator';
 import { JwtGuard } from 'src/auth/guard';
-import { PhotoDto } from './dto';
+import { GetUser } from 'src/auth/decorator';
 import { PhotoService } from './photo.service';
 
-UseGuards(JwtGuard);
-@Controller('photo')
+@UseGuards(JwtGuard)
+@Controller('photos')
 export class PhotoController {
   constructor(private PhotoService: PhotoService) {}
 
   @Get()
-  getPhotos() {
+  getPhotos(@GetUser('id') userId: string) {
     return this.PhotoService.getPhotos();
   }
 
   @Get(':id')
-  getPhotosById(@Param('id') photoId: string) {
-    return this.PhotoService.getPhotosById(photoId);
+  getPhoto(@Param('id') photoId: string) {
+    return this.PhotoService.getPhotoById(photoId);
   }
 
-  @UseInterceptors(ClassSerializerInterceptor)
+  @Get('/user/:userId')
+  getPhotoByUserId(@Param('userId') userId: string) {
+    return this.PhotoService.getPhotoByUserId(userId);
+  }
+
   @Post()
   createPhoto(@GetUser('id') userId: string, @Body() dto: PhotoDto) {
     return this.PhotoService.createPhoto(userId, dto);
   }
 
-  @UseInterceptors(ClassSerializerInterceptor)
   @Patch(':id')
   updatePhoto(
     @GetUser('id') userId: string,
@@ -46,7 +47,6 @@ export class PhotoController {
     return this.PhotoService.updatePhoto(userId, photoId, dto);
   }
 
-  @UseInterceptors(ClassSerializerInterceptor)
   @Delete(':id')
   deletePhoto(@GetUser('id') userId: string, @Param('id') photoId: string) {
     return this.PhotoService.deletePhoto(userId, photoId);

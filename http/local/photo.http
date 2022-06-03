@@ -1,44 +1,42 @@
 @host = http://localhost:5000
 
-@access_token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjoxMDQsImVtYWlsIjoib0BhLmNvbSIsImZpcnN0bmFtZSI6Im8iLCJsYXN0bmFtZSI6Im8iLCJwc2V1ZG8iOiJKYWNxdW91IGxlIGNyb3F1YW50IiwicGhvbmVfbnVtYmVyIjoiMDE4NDU0NjQxNyIsImF2YXRhciI6Ii9zcmMvY3VzdG9tZXJfcGhvdG9zL2N1c3RvbWVyMTI2LmpwZyIsImlzYWRtaW4iOmZhbHNlLCJjcmVhdGVkX2F0IjoiMjAyMi0wMi0wMVQxMzoxNjowNS42NzNaIiwidXBkYXRlZF9hdCI6IjIwMjItMDItMDFUMTM6MTY6MDUuNjczWiJ9LCJpYXQiOjE2NDM3MjEzNjgsImV4cCI6MTY0MzcyMTY2OH0.zVZW7MLy1PLJ-7cWbpH68_jZTWMPxqHKWIdo6R3q0ZE
+@access_token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbDN5eWJsYXIwMDAwdHJ1a2QzbHFnNTVtIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNjU0MjkxMjk1LCJleHAiOjE2NTQzNzc2OTV9.6nQ3ylDMPXN3E9LHCI0O8TwihYsd8Wg_z27lz1z6-WI
+
 
 ###
-GET {{host}}/photos/ HTTP/1.1
+GET {{host}}/photos HTTP/1.1
+content-type: application/json
+Authorization: {{access_token}}
+
+### GetPhotoById
+GET {{host}}/photos/cl3z17u3m0009miuk1n4dihdf HTTP/1.1
+content-type: application/json
+Authorization: {{access_token}}
+
+### GetPhotoByUserId
+GET {{host}}/photos/user/cl3yyblar0000trukd3lqg55m HTTP/1.1
 content-type: application/json
 Authorization: {{access_token}}
 
 ###
-GET {{host}}/photos/109 HTTP/1.1
+POST {{host}}/photos/ HTTP/1.1
 content-type: application/json
 Authorization: {{access_token}}
 
-###
-POST {{host}}/photos HTTP/1.1
-content-type: application/json
-Authorization: {{access_token}}
-
-    {
-        "photo": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAaCAIAAAAi3QukAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAABCSURBVEhLrccxDQAwDMCw8odRdIWxP6c1yY9n9v7oWc961rOe9axnPetZz3rWs571rGc961nPetaznvWsZz3rzd4DxkTAjrVWJ/YAAAAASUVORK5CYII=",
-        "customer_id": 1
-    }
+{
+    "photo": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAaCAIAAAAi3QukAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAABCSURBVEhLrccxDQAwDMCw8odRdIWxP6c1yY9n9v7oWc961rOe9axnPetZz3rWs571rGc961nPetaznvWsZz3rzd4DxkTAjrVWJ/YAAAAASUVORK5CYII="
+}
     
 ###
-PATCH {{host}}/photos/116 HTTP/1.1
+PATCH {{host}}/photos/cl3z17u3m0009miuk1n4dihdf HTTP/1.1
 content-type: application/json
 Authorization: {{access_token}}
 
-    {
-        "photo":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAaCAIAAAAi3QukAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAAtSURBVEhLY+xgEGWgBmCC0hSDUYMIg1GDCINRgwiDUYMIg1GDCINRgwgBBgYAU7QA0Su7uLMAAAAASUVORK5CYII=",
-        "url": "http://res.cloudinary.com/dhwbw94lc/image/upload/v1644242730/v1645210263/lfyfp36fxkpvqxzpyrag.png",
-        "customer_id": 1
-    }
+{
+    "photo":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfqzqzAAAaCAIAAAAi3QukAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAAtSURBVEhLY+xgEGWgBmCC0hSDUYMIg1GDCINRgwiDUYMIg1GDCINRgwgBBgYAU7QA0Su7uLMAAAAASUVORK5CYIfe"
+}
     
 ###
-DELETE {{host}}/photos/116 HTTP/1.1
+DELETE {{host}}/photos/cl3z17u3m0009miuk1n4dihdf HTTP/1.1
 content-type: application/json
 Authorization: {{access_token}}
-
-    {
-        "url": "http://res.cloudinary.com/dhwbw94lc/image/upload/v1644242777/adtml7gp1tnn9aoi8ca0.png",
-        "customer_id": 1
-    }
