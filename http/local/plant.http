@@ -1,0 +1,48 @@
+@host = http://localhost:5000
+
+@access_token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjoxMDQsImVtYWlsIjoib0BhLmNvbSIsImZpcnN0bmFtZSI6Im8iLCJsYXN0bmFtZSI6Im8iLCJwc2V1ZG8iOiJKYWNxdW91IGxlIGNyb3F1YW50IiwicGhvbmVfbnVtYmVyIjoiMDE4NDU0NjQxNyIsImF2YXRhciI6Ii9zcmMvY3VzdG9tZXJfcGhvdG9zL2N1c3RvbWVyMTI2LmpwZyIsImlzYWRtaW4iOmZhbHNlLCJjcmVhdGVkX2F0IjoiMjAyMi0wMi0wMVQxMzoxNjowNS42NzNaIiwidXBkYXRlZF9hdCI6IjIwMjItMDItMDFUMTM6MTY6MDUuNjczWiJ9LCJpYXQiOjE2NDM3MjEzNjgsImV4cCI6MTY0MzcyMTY2OH0.zVZW7MLy1PLJ-7cWbpH68_jZTWMPxqHKWIdo6R3q0ZE
+
+###
+GET {{host}}/plants/ HTTP/1.1
+content-type: application/json
+Authorization: {{access_token}}
+
+###
+GET {{host}}/plants/3 HTTP/1.1
+content-type: application/json
+Authorization: {{access_token}}
+
+###
+POST {{host}}/plants HTTP/1.1
+content-type: application/json
+Authorization: {{access_token}}
+
+    {
+        "type": "Rosier",
+        "notes": "Arroser 1 fois par jour",
+        "photo":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAaCAIAAAAi3QukAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAABCSURBVEhLrccxDQAwDMCw8odRdIWxP6c1yY9n9v7oWc961rOe9axnPetZz3rWs571rGc961nPetaznvWsZz3rzd4DxkTAjrVWJ/YAAAAASUVORK5CYII=",
+        "customer_id": 1
+    }
+    
+###
+PATCH {{host}}/plants/1 HTTP/1.1
+content-type: application/json
+Authorization: {{access_token}}
+
+    {
+        "type": "Menthes",
+        "notes": "Arroser 1 fois tous les deux jours",
+        "photo":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAaCAIAAAAi3QukAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAAtSURBVEhLY+xgEGWgBmCC0hSDUYMIg1GDCINRgwiDUYMIg1GDCINRgwgBBgYAU7QA0Su7uLMAAAAASUVORK5CYII=",
+        "url": "https://res.cloudinary.com/dhwbw94lc/image/upload/v1644238600/ffsqqfrempetvnmtqptt.png",
+        "customer_id": 1
+    }
+    
+###
+DELETE {{host}}/plants/1 HTTP/1.1
+content-type: application/json
+Authorization: {{access_token}}
+
+    {
+        "url": "https://res.cloudinary.com/dhwbw94lc/image/upload/v1644238698/jf95u3otamfxkue75jkz.png",
+        "customer_id": 1
+    }

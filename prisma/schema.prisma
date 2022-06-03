@@ -1,0 +1,139 @@
+// This is your Prisma schema file,
+// learn more about it in the docs https//pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+    id String @id @default(cuid())
+    email String @unique
+    password  String
+    firstname String
+    lastname String
+    pseudo  String?
+    phone_number  String
+    avatar  String?
+    isAdmin Boolean @default(false)
+    refresh_token String?
+    created_at DateTime @db.Timestamptz @default(now())
+    updated_at DateTime @db.Timestamptz @updatedAt
+
+
+
+    house House[]
+    animal Animal[]
+    plant Plant[]
+    photo Photo[]
+    absentee Match[] @relation("absentees")
+    sitter Match[] @relation("sitter")
+}
+
+model Type {
+    id String @id @default(cuid())
+    type String @unique
+
+    house House[]
+}
+
+model Country {
+    id String @id @default(cuid())
+    country String @unique
+
+    house House[]
+}
+
+model House{
+    id String @id @default(cuid())
+    address String
+    zipcode String
+    city String
+    title String?
+    rooms Int?
+    bedrooms Int?
+    surface Int?
+    area Int?
+    floor Int?
+    description String?
+    latitude String
+    longitude String
+    map String @unique
+    internet Boolean @default(false)
+    washing_machine Boolean @default(false)
+    TV Boolean @default(false)
+    hoven Boolean @default(false)
+    microwave Boolean @default(false)
+    dishwasher Boolean @default(false)
+    bathtub Boolean @default(false)
+    shower Boolean @default(false)
+    parking Boolean @default(false)
+    validation Boolean @default(false)
+    created_at DateTime @db.Timestamptz @default(now())
+    updated_at DateTime @db.Timestamptz @updatedAt
+    
+    user_id String @unique
+    user      User?        @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+    country_id String
+    country   Country?     @relation(fields: [country_id], references: [id])
+    
+    type_id String
+    type      Type?   @relation(fields: [type_id], references: [id])
+}
+
+model Animal {
+    id String @id @default(cuid())
+    type String
+    race String?
+    notes String?
+    photo String?
+    description String?
+    validation Boolean @default(false)
+    created_at DateTime @db.Timestamptz @default(now())
+    updated_at DateTime @db.Timestamptz @updatedAt
+
+    user_id String
+    user      User?      @relation(fields: [user_id], references: [id] , onDelete: Cascade)
+}
+
+model Plant {
+    id String @id @default(cuid())
+    type String
+    notes String?
+    photo String?
+    validation Boolean @default(false)
+    created_at DateTime @db.Timestamptz @default(now())
+    updated_at DateTime @db.Timestamptz @updatedAt
+
+    user_id String
+    user      User?      @relation(fields: [user_id], references: [id] , onDelete: Cascade)
+}
+
+model Photo{
+  id String @id @default(cuid())
+  photo String
+  validated Boolean @default(false)
+  created_at DateTime @db.Timestamptz @default(now())
+  updated_at DateTime @db.Timestamptz @updatedAt
+  
+  user_id String
+  user      User?      @relation(fields: [user_id], references: [id], onDelete: Cascade)
+}
+
+model Match {
+  id String @id @default(cuid())
+  start_date DateTime
+  end_date DateTime
+  validated Boolean @default(false)
+
+  user_id String
+  user      User?      @relation("absentees",fields: [user_id], references: [id], onDelete: Cascade)
+
+  sitter_id String
+  Sitter    User?      @relation("sitter",fields: [sitter_id], references: [id], onDelete: Cascade)
+}

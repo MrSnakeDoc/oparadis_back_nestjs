@@ -1,0 +1,47 @@
+@host = http://localhost:5000
+
+@access_token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbDN5ODlkbWswMDAwMjB1a3VianA5dnBnIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNjU0MjQ3NTI1LCJleHAiOjE2NTQzMzM5MjV9.DRC8Nt7bJMFGgfaeRnXKM0zEoVhe2FN07UviFN9HZ8Q
+
+@refresh_token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbDN5ODlkbWswMDAwMjB1a3VianA5dnBnIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNjU0MjQ3NTI1LCJleHAiOjE2NTY4Mzk1MjV9.jwCNNePs3EIs5fds8LZ4MfZ0uYsBhx_8t8YUvshgo5M
+
+###
+POST {{host}}/auth/signup HTTP/1.1
+content-type: application/json
+
+{
+    "email": "a@a.com",
+    "password": "Paradis13$",
+    "firstname": "a",
+    "lastname": "a",
+    "pseudo": "Jacquou le croquant",
+    "phone_number": "0184546417",
+    "avatar": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAaCAIAAAAi3QukAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAABCSURBVEhLrccxDQAwDMCw8odRdIWxP6c1yY9n9v7oWc961rOe9axnPetZz3rWs571rGc961nPetaznvWsZz3rzd4DxkTAjrVWJ/YAAAAASUVORK5CYII="
+}
+
+### Connexion User
+POST {{host}}/auth/signin HTTP/1.1
+content-type: application/json
+
+{
+    "email": "a@a.com",
+    "password": "Paradis13$"
+}
+
+###
+POST {{host}}/signin HTTP/1.1
+content-type: application/json
+
+{
+    "email": "o@o.com",
+	"password": "Paradis13$"
+}
+
+###
+POST {{host}}/auth/refreshToken HTTP/1.1
+content-type: application/json
+Authorization: {{refresh_token}}
+
+###
+GET {{host}}/auth/logout HTTP/1.1
+content-type: application/json
+Authorization: {{refresh_token}}

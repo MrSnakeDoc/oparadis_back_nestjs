@@ -1,0 +1,36 @@
+@host = http://localhost:5000
+
+@access_token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbDN5ODlkbWswMDAwMjB1a3VianA5dnBnIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNjU0MjQ3NTI1LCJleHAiOjE2NTQzMzM5MjV9.DRC8Nt7bJMFGgfaeRnXKM0zEoVhe2FN07UviFN9HZ8Q
+
+###
+GET {{host}}/types/ HTTP/1.1
+content-type: application/json
+Authorization: {{access_token}}
+
+###
+GET {{host}}/types/cl3y87f5g1799bdukjxt2ntmi HTTP/1.1
+content-type: application/json
+Authorization: {{access_token}}
+
+###
+POST {{host}}/types HTTP/1.1
+content-type: application/json
+Authorization: {{access_token}}
+
+    {
+        "type": "Caddie"
+    }
+    
+###
+PATCH {{host}}/types/11 HTTP/1.1
+content-type: application/json
+Authorization: {{access_token}}
+
+    {
+        "type": "Caravane"
+    }
+    
+###
+DELETE {{host}}/types/11 HTTP/1.1
+content-type: application/json
+Authorization: {{access_token}}

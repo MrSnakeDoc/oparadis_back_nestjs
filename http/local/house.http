@@ -1,0 +1,71 @@
+@host = http://localhost:5000
+
+@access_token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbDN4NzJqODMwMDAwNnR1a2tpOWM5cnVzIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNjU0MTg1MDU1LCJleHAiOjE2NTQyNzE0NTV9.oMYpJ-F1YWpmgQO0GaAy09DXaQVsyE_AH4GqvSk0CJE
+
+###
+GET {{host}}/houses/full HTTP/1.1
+content-type: application/json
+Authorization: {{access_token}}
+
+###
+GET {{host}}/houses/full/1 HTTP/1.1
+content-type: application/json
+Authorization: {{access_token}}
+
+###
+GET {{host}}/houses/four HTTP/1.1
+content-type: application/json
+Authorization: {{access_token}}
+
+###
+GET {{host}}/houses HTTP/1.1
+content-type: application/json
+Authorization: {{access_token}}
+
+###
+GET {{host}}/houses/cl3x760je00336tukt4ki949f HTTP/1.1
+content-type: application/json
+Authorization: {{access_token}}
+
+###
+POST {{host}}/houses HTTP/1.1
+content-type: application/json
+Authorization: {{access_token}}
+
+    {
+        "address": "19 rue du boulet",
+        "zipcode": "75010 CEDEX",
+        "city": "Montcuq",
+        "country_id": "cl3x6tdxy0056ajukhs7h69i1",
+        "type_id": "cl3x6tf0j1785ajukx19ly5m4",
+        "title": "Maison bleu",
+        "description": "C'est une maison bleue Adossée à la colline On y vient à pied, on ne frappe pas Ceux qui vivent là, ont jeté la clé",
+        "latitude": "48.099071531610875",
+        "longitude": "-0.748887016329141",
+        "map": "https://maps.google.com/maps?q=48.099071531610875,-0.7488870163291419"
+    }
+
+###
+PATCH {{host}}/houses/cl3x760je00336tukt4ki949f HTTP/1.1
+content-type: application/json
+Authorization: {{access_token}}
+
+    {
+        "rooms": 2,
+        "bedrooms": 4,
+        "surface": 187,
+        "area": 666,
+        "floor": 1,
+        "internet": true,
+        "washing_machine": true,
+        "TV": true,
+        "microwave": true,
+        "dishwasher": true,
+        "shower": true,
+        "parking": true
+    }
+
+###
+DELETE {{host}}/houses/cl3x760je00336tukt4ki949f HTTP/1.1
+content-type: application/json
+Authorization: {{access_token}}

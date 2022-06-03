@@ -1,0 +1,50 @@
+@host = http://localhost:5000
+@access_token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbDN3c2hiYXIwMDAwcm51azY3ZzVjbWQ4IiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNjU0MTcxNjU1LCJleHAiOjE2NTQyNTgwNTV9.vO2R86XVHXemNGH0VAvf0PV27s3KxieHICGSca9Q4MU
+
+# CUSTOMER
+
+###
+GET {{host}}/users HTTP/1.1
+content-type: application/json
+Authorization: {{access_token}}
+
+###
+GET {{host}}/users/me HTTP/1.1
+content-type: application/json
+Authorization: {{access_token}}
+
+
+###
+PATCH {{host}}/users HTTP/1.1
+content-type: application/json
+Authorization: {{access_token}}
+
+{
+    "email": "a@a.com",
+    "firstname": "Misa",
+    "lastname": "JarJar Binks",
+    "pseudo": "Kerstone",
+    "phone_number": "0134538467",
+    "avatar":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAaCAIAAAAi3QukAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAAAtSURBVEhLY+xgEGWgBmCC0hSDUYMIg1GDCINRgwiDUYMIg1GDCINRgwgBBgYAU7QA0Su7uLMAAAAASUVORK5CYII=",
+}
+
+### Update Password
+PATCH {{host}}/users/password HTTP/1.1
+content-type: application/json
+Authorization: {{access_token}}
+
+{
+    "oldPassword": "Paradis12$",
+    "password": "Paradis13$",
+    "verifyPassword": "Paradis13$"
+}
+
+
+###
+DELETE {{host}}/customers/102 HTTP/1.1
+content-type: application/json
+Authorization: {{access_token}}
+
+{
+    "url": "http://res.cloudinary.com/dhwbw94lc/image/upload/v1644242639/dixqwl2rifgc0mhtgdjf.png"
+}
