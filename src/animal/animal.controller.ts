@@ -13,7 +13,7 @@ import {
 } from '@nestjs/common';
 import { JwtGuard } from 'src/auth/guard';
 import { GetUser } from 'src/auth/decorator';
-import { AnimalDto } from './dto';
+import { AnimalDto, UpdateAnimalDto } from './dto';
 
 @UseGuards(JwtGuard)
 @Controller('animals')
@@ -26,8 +26,8 @@ export class AnimalController {
   }
 
   @Get(':id')
-  getAnimalsById(@Param('id') animalId: string) {
-    return this.AnimalService.getAnimalsById(animalId);
+  getAnimalById(@Param('id') animalId: string) {
+    return this.AnimalService.getAnimalById(animalId);
   }
 
   @UseInterceptors(ClassSerializerInterceptor)
@@ -41,7 +41,7 @@ export class AnimalController {
   updateAnimal(
     @GetUser('id') userId: string,
     @Param('id') animalId: string,
-    @Body() dto: AnimalDto,
+    @Body() dto: UpdateAnimalDto,
   ) {
     return this.AnimalService.updateAnimal(userId, animalId, dto);
   }

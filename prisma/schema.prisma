@@ -24,8 +24,6 @@ model User {
     created_at DateTime @db.Timestamptz @default(now())
     updated_at DateTime @db.Timestamptz @updatedAt
 
-
-
     house House[]
     animal Animal[]
     plant Plant[]
@@ -72,7 +70,7 @@ model House{
     bathtub Boolean @default(false)
     shower Boolean @default(false)
     parking Boolean @default(false)
-    validation Boolean @default(false)
+    validated Boolean @default(false)
     created_at DateTime @db.Timestamptz @default(now())
     updated_at DateTime @db.Timestamptz @updatedAt
     
@@ -84,6 +82,8 @@ model House{
     
     type_id String
     type      Type?   @relation(fields: [type_id], references: [id])
+
+    photo Photo[]
 }
 
 model Animal {
@@ -93,7 +93,7 @@ model Animal {
     notes String?
     photo String?
     description String?
-    validation Boolean @default(false)
+    validated Boolean @default(false)
     created_at DateTime @db.Timestamptz @default(now())
     updated_at DateTime @db.Timestamptz @updatedAt
 
@@ -106,7 +106,7 @@ model Plant {
     type String
     notes String?
     photo String?
-    validation Boolean @default(false)
+    validated Boolean @default(false)
     created_at DateTime @db.Timestamptz @default(now())
     updated_at DateTime @db.Timestamptz @updatedAt
 
@@ -123,6 +123,9 @@ model Photo{
   
   user_id String
   user      User?      @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  house_id String
+  house      House?      @relation(fields: [house_id], references: [id], onDelete: Cascade)
 }
 
 model Match {

@@ -6,6 +6,7 @@ import {
   Injectable,
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { UpdatePhotoDto } from './dto';
 
 @Injectable()
 export class PhotoService {
@@ -39,11 +40,11 @@ export class PhotoService {
     }
   }
 
-  async getPhotoByUserId(user_id: string) {
+  async getPhotoByHouseId(house_id: string) {
     try {
       const photos: PhotoDto[] = await this.prisma.photo.findMany({
         where: {
-          user_id,
+          house_id,
         },
       });
       if (!photos) {
@@ -55,11 +56,11 @@ export class PhotoService {
     }
   }
 
-  async createPhoto(userId: string, photo: PhotoDto) {
+  async createPhoto(user_id: string, photo: PhotoDto) {
     try {
       const newPhoto = await this.prisma.photo.create({
         data: {
-          user_id: userId,
+          user_id,
           ...photo,
         },
       });
@@ -74,7 +75,7 @@ export class PhotoService {
     }
   }
 
-  async updatePhoto(userId: string, id: string, dto: PhotoDto) {
+  async updatePhoto(userId: string, id: string, dto: UpdatePhotoDto) {
     try {
       const photo = await this.prisma.photo.findUnique({
         where: { id },

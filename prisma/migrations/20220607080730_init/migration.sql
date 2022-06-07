@@ -57,7 +57,7 @@ CREATE TABLE "House" (
     "bathtub" BOOLEAN NOT NULL DEFAULT false,
     "shower" BOOLEAN NOT NULL DEFAULT false,
     "parking" BOOLEAN NOT NULL DEFAULT false,
-    "validation" BOOLEAN NOT NULL DEFAULT false,
+    "validated" BOOLEAN NOT NULL DEFAULT false,
     "created_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMPTZ NOT NULL,
     "user_id" TEXT NOT NULL,
@@ -75,7 +75,7 @@ CREATE TABLE "Animal" (
     "notes" TEXT,
     "photo" TEXT,
     "description" TEXT,
-    "validation" BOOLEAN NOT NULL DEFAULT false,
+    "validated" BOOLEAN NOT NULL DEFAULT false,
     "created_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMPTZ NOT NULL,
     "user_id" TEXT NOT NULL,
@@ -89,7 +89,7 @@ CREATE TABLE "Plant" (
     "type" TEXT NOT NULL,
     "notes" TEXT,
     "photo" TEXT,
-    "validation" BOOLEAN NOT NULL DEFAULT false,
+    "validated" BOOLEAN NOT NULL DEFAULT false,
     "created_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMPTZ NOT NULL,
     "user_id" TEXT NOT NULL,
@@ -105,6 +105,7 @@ CREATE TABLE "Photo" (
     "created_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMPTZ NOT NULL,
     "user_id" TEXT NOT NULL,
+    "house_id" TEXT NOT NULL,
 
     CONSTRAINT "Photo_pkey" PRIMARY KEY ("id")
 );
@@ -153,6 +154,9 @@ ALTER TABLE "Plant" ADD CONSTRAINT "Plant_user_id_fkey" FOREIGN KEY ("user_id") 
 
 -- AddForeignKey
 ALTER TABLE "Photo" ADD CONSTRAINT "Photo_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Photo" ADD CONSTRAINT "Photo_house_id_fkey" FOREIGN KEY ("house_id") REFERENCES "House"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Match" ADD CONSTRAINT "Match_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;

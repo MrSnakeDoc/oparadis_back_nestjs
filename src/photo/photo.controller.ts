@@ -12,6 +12,7 @@ import {
 import { JwtGuard } from 'src/auth/guard';
 import { GetUser } from 'src/auth/decorator';
 import { PhotoService } from './photo.service';
+import { UpdatePhotoDto } from './dto';
 
 @UseGuards(JwtGuard)
 @Controller('photos')
@@ -28,9 +29,9 @@ export class PhotoController {
     return this.PhotoService.getPhotoById(photoId);
   }
 
-  @Get('/user/:userId')
-  getPhotoByUserId(@Param('userId') userId: string) {
-    return this.PhotoService.getPhotoByUserId(userId);
+  @Get('/house/:houseId')
+  getPhotoByHouseId(@Param('userId') userId: string) {
+    return this.PhotoService.getPhotoByHouseId(userId);
   }
 
   @Post()
@@ -42,7 +43,7 @@ export class PhotoController {
   updatePhoto(
     @GetUser('id') userId: string,
     @Param('id') photoId: string,
-    @Body() dto: PhotoDto,
+    @Body() dto: UpdatePhotoDto,
   ) {
     return this.PhotoService.updatePhoto(userId, photoId, dto);
   }

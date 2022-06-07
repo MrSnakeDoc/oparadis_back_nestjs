@@ -1,6 +1,6 @@
 @host = http://localhost:5000
 
-@access_token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbDN5eWJsYXIwMDAwdHJ1a2QzbHFnNTVtIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNjU0MjkxMjk1LCJleHAiOjE2NTQzNzc2OTV9.6nQ3ylDMPXN3E9LHCI0O8TwihYsd8Wg_z27lz1z6-WI
+@access_token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbDQzdnZtZXMwMDAwb3p1a252dmt1MHR6IiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNjU0NTg5NTI1LCJleHAiOjE2NTQ2NzU5MjV9.8HFx9RssO-VpjhjHG0rw_kBe2Pz6ixjWcUcT9fCyG8A
 
 ###
 GET {{host}}/houses/full HTTP/1.1
@@ -36,8 +36,8 @@ Authorization: {{access_token}}
         "address": "19 rue du boulet",
         "zipcode": "75010 CEDEX",
         "city": "Montcuq",
-        "country_id": "cl3x6tdxy0056ajukhs7h69i1",
-        "type_id": "cl3x6tf0j1785ajukx19ly5m4",
+        "country_id": "cl43vq3tl0056rfukgnuulrg9",
+        "type_id": "cl43vq5791785rfuk21wotqas",
         "title": "Maison bleu",
         "description": "C'est une maison bleue Adossée à la colline On y vient à pied, on ne frappe pas Ceux qui vivent là, ont jeté la clé",
         "latitude": "48.099071531610875",
@@ -46,7 +46,7 @@ Authorization: {{access_token}}
     }
 
 ###
-PATCH {{host}}/houses/cl3x760je00336tukt4ki949f HTTP/1.1
+PATCH {{host}}/houses/cl43vym780028ozuk3nptv82a HTTP/1.1
 content-type: application/json
 Authorization: {{access_token}}
 

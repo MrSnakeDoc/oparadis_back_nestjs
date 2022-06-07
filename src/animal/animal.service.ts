@@ -5,7 +5,7 @@ import {
   HttpException,
   HttpStatus,
 } from '@nestjs/common';
-import { AnimalDto } from './dto';
+import { AnimalDto, UpdateAnimalDto } from './dto';
 
 @Injectable()
 export class AnimalService {
@@ -23,7 +23,7 @@ export class AnimalService {
     }
   }
 
-  async getAnimalsById(id: string) {
+  async getAnimalById(id: string) {
     try {
       const animal = await this.prisma.animal.findFirst({
         where: {
@@ -53,7 +53,7 @@ export class AnimalService {
     }
   }
 
-  async updateAnimal(userId: string, id: string, dto: AnimalDto) {
+  async updateAnimal(userId: string, id: string, dto: UpdateAnimalDto) {
     try {
       const animal = await this.prisma.animal.findUnique({
         where: { id },
