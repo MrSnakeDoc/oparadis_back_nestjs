@@ -20,7 +20,7 @@ export class PhotoController {
   constructor(private PhotoService: PhotoService) {}
 
   @Get()
-  getPhotos(@GetUser('id') userId: string) {
+  getPhotos() {
     return this.PhotoService.getPhotos();
   }
 
@@ -29,9 +29,9 @@ export class PhotoController {
     return this.PhotoService.getPhotoById(photoId);
   }
 
-  @Get('/house/:houseId')
-  getPhotoByHouseId(@Param('userId') userId: string) {
-    return this.PhotoService.getPhotoByHouseId(userId);
+  @Get('/house/:house_id')
+  getPhotoByHouseId(@Param('house_id') house_id: string) {
+    return this.PhotoService.getPhotoByHouseId(house_id);
   }
 
   @Post()

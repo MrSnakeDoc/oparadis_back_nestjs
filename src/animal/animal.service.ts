@@ -39,6 +39,22 @@ export class AnimalService {
     }
   }
 
+  async getAnimalByUserId(user_id: string) {
+    try {
+      const animals: AnimalDto[] = await this.prisma.animal.findMany({
+        where: {
+          user_id,
+        },
+      });
+      if (!animals) {
+        throw new HttpException('No photo found', HttpStatus.NOT_FOUND);
+      }
+      return animals;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async createAnimal(userId: string, dto: AnimalDto) {
     try {
       const animal = await this.prisma.animal.create({

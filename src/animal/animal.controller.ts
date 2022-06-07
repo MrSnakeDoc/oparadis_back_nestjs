@@ -30,6 +30,11 @@ export class AnimalController {
     return this.AnimalService.getAnimalById(animalId);
   }
 
+  @Get('/users/:user_id')
+  getAnimalByUserId(@Param('user_id') user_id: string) {
+    return this.AnimalService.getAnimalByUserId(user_id);
+  }
+
   @UseInterceptors(ClassSerializerInterceptor)
   @Post()
   createAnimal(@GetUser('id') userId: string, @Body() dto: AnimalDto) {

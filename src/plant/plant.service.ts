@@ -39,6 +39,22 @@ export class PlantService {
     }
   }
 
+  async getPlantByUserId(user_id: string) {
+    try {
+      const plants: PlantDto[] = await this.prisma.plant.findMany({
+        where: {
+          user_id,
+        },
+      });
+      if (!plants) {
+        throw new HttpException('No photo found', HttpStatus.NOT_FOUND);
+      }
+      return plants;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async createPlant(userId: string, dto: PlantDto) {
     try {
       return await this.prisma.plant.create({

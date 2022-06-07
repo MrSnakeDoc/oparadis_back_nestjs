@@ -30,6 +30,11 @@ export class PlantController {
     return this.PlantService.getPlantById(PlantId);
   }
 
+  @Get('/users/:user_id')
+  getAnimalByUserId(@Param('user_id') user_id: string) {
+    return this.PlantService.getPlantByUserId(user_id);
+  }
+
   @UseInterceptors(ClassSerializerInterceptor)
   @Post()
   createPlant(@GetUser('id') userId: string, @Body() dto: PlantDto) {
