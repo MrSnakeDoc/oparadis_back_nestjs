@@ -1,3 +1,6 @@
+import { AnimalType } from 'src/animal/types/Animal.type.dto';
+import { PlantType } from 'src/plant/types';
+import { PhotoDto } from './../../photo/dto/Photo.dto';
 export class HouseType {
   address: string;
   city: string;
@@ -24,4 +27,7 @@ export class HouseType {
   shower?: boolean;
   parking?: boolean;
   user_id: string;
+  photo?: PhotoDto[];
+  animals?: AnimalType[];
+  plants?: PlantType[];
 }

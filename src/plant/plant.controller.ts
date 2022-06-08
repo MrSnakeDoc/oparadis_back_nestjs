@@ -16,7 +16,7 @@ import { PlantDto, UpdatePlantDto } from './dto';
 import { PlantService } from './plant.service';
 
 @UseGuards(JwtGuard)
-@Controller('plant')
+@Controller('plants')
 export class PlantController {
   constructor(private PlantService: PlantService) {}
 
@@ -30,7 +30,7 @@ export class PlantController {
     return this.PlantService.getPlantById(PlantId);
   }
 
-  @Get('/users/:user_id')
+  @Get('/user/:user_id')
   getAnimalByUserId(@Param('user_id') user_id: string) {
     return this.PlantService.getPlantByUserId(user_id);
   }

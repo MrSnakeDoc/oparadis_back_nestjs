@@ -30,6 +30,8 @@ model User {
     photo Photo[]
     absentee Match[] @relation("absentees")
     sitter Match[] @relation("sitter")
+
+  @@map("users")
 }
 
 model Type {
@@ -37,6 +39,8 @@ model Type {
     type String @unique
 
     house House[]
+
+  @@map("Types")
 }
 
 model Country {
@@ -44,6 +48,8 @@ model Country {
     country String @unique
 
     house House[]
+
+  @@map("countries")
 }
 
 model House{
@@ -84,6 +90,8 @@ model House{
     type      Type?   @relation(fields: [type_id], references: [id])
 
     photo Photo[]
+
+  @@map("houses")
 }
 
 model Animal {
@@ -99,6 +107,8 @@ model Animal {
 
     user_id String
     user      User?      @relation(fields: [user_id], references: [id] , onDelete: Cascade)
+
+  @@map("animals")
 }
 
 model Plant {
@@ -112,6 +122,8 @@ model Plant {
 
     user_id String
     user      User?      @relation(fields: [user_id], references: [id] , onDelete: Cascade)
+
+  @@map("plants")
 }
 
 model Photo{
@@ -126,6 +138,8 @@ model Photo{
 
   house_id String
   house      House?      @relation(fields: [house_id], references: [id], onDelete: Cascade)
+
+  @@map("photos")
 }
 
 model Match {
@@ -139,4 +153,6 @@ model Match {
 
   sitter_id String
   Sitter    User?      @relation("sitter",fields: [sitter_id], references: [id], onDelete: Cascade)
+
+  @@map("matches")
 }

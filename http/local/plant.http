@@ -1,6 +1,6 @@
 @host = http://localhost:5000
 
-@access_token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjoxMDQsImVtYWlsIjoib0BhLmNvbSIsImZpcnN0bmFtZSI6Im8iLCJsYXN0bmFtZSI6Im8iLCJwc2V1ZG8iOiJKYWNxdW91IGxlIGNyb3F1YW50IiwicGhvbmVfbnVtYmVyIjoiMDE4NDU0NjQxNyIsImF2YXRhciI6Ii9zcmMvY3VzdG9tZXJfcGhvdG9zL2N1c3RvbWVyMTI2LmpwZyIsImlzYWRtaW4iOmZhbHNlLCJjcmVhdGVkX2F0IjoiMjAyMi0wMi0wMVQxMzoxNjowNS42NzNaIiwidXBkYXRlZF9hdCI6IjIwMjItMDItMDFUMTM6MTY6MDUuNjczWiJ9LCJpYXQiOjE2NDM3MjEzNjgsImV4cCI6MTY0MzcyMTY2OH0.zVZW7MLy1PLJ-7cWbpH68_jZTWMPxqHKWIdo6R3q0ZE
+@access_token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbDQzejFzbXgwMDAwdGV1a2VxbHIya3liIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNjU0NTk0ODQ3LCJleHAiOjE2NTQ2ODEyNDd9.V3e_BP-r0WpdDOtkQjuPzsfej7et1cfN73sX8ipcG2o
 
 ###
 GET {{host}}/plants/ HTTP/1.1
@@ -9,6 +9,11 @@ Authorization: {{access_token}}
 
 ###
 GET {{host}}/plants/3 HTTP/1.1
+content-type: application/json
+Authorization: {{access_token}}
+
+### GetPlantsByUserId
+GET {{host}}/plants/user/cl43z0emo18341hukjsn044ph HTTP/1.1
 content-type: application/json
 Authorization: {{access_token}}
 

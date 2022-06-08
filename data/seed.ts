@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client';
 import * as argon from 'argon2';
 import { SignInDto } from '../src/auth/dto/';
 import { CreateHouseDto } from '../src/house/dto/';
-import { Countries, Types, Users, Houses } from '.';
+import { Countries, Types, Users, Houses, Photos, Animals, Plants } from '.';
 
 const prisma = new PrismaClient();
 
@@ -54,6 +54,42 @@ async function main() {
           user_id,
           country_id,
           type_id,
+        },
+      });
+    }
+
+    const housesId = await (
+      await prisma.house.findMany()
+    ).map((house) => house.id);
+    const house_id = housesId[0];
+
+    for (const photo of Photos) {
+      const user_id = usersId[0];
+      await prisma.photo.create({
+        data: {
+          user_id,
+          house_id,
+          ...photo,
+        },
+      });
+    }
+
+    for (const animal of Animals) {
+      const user_id = usersId[0];
+      await prisma.animal.create({
+        data: {
+          user_id,
+          ...animal,
+        },
+      });
+    }
+
+    for (const plant of Plants) {
+      const user_id = usersId[0];
+      await prisma.plant.create({
+        data: {
+          user_id,
+          ...plant,
         },
       });
     }

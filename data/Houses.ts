@@ -1,5 +1,3 @@
-import { CreateHouseDto } from 'src/house/dto';
-
 export const Houses = [
   {
     address: '29 Rue de Chaumusson',

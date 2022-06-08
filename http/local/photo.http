@@ -1,6 +1,6 @@
 @host = http://localhost:5000
 
-@access_token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbDQzdnZtZXMwMDAwb3p1a252dmt1MHR6IiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNjU0NTg5NTI1LCJleHAiOjE2NTQ2NzU5MjV9.8HFx9RssO-VpjhjHG0rw_kBe2Pz6ixjWcUcT9fCyG8A
+@access_token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbDQzejFzbXgwMDAwdGV1a2VxbHIya3liIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNjU0NTk0ODQ3LCJleHAiOjE2NTQ2ODEyNDd9.V3e_BP-r0WpdDOtkQjuPzsfej7et1cfN73sX8ipcG2o
 
 
 ###
@@ -14,7 +14,7 @@ content-type: application/json
 Authorization: {{access_token}}
 
 ### GetPhotoByHouseId
-GET {{host}}/photos/house/cl43vym780028ozuk3nptv82a HTTP/1.1
+GET {{host}}/photos/house/cl43z0ep818691hukjdasb297 HTTP/1.1
 content-type: application/json
 Authorization: {{access_token}}
 

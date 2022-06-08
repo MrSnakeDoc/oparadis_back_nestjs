@@ -21,10 +21,18 @@ export class HouseController {
   constructor(private HouseService: HouseService) {}
 
   @Get()
-  getHouses(@GetUser('id') userId: string) {
-    console.log(userId);
-
+  getHouses() {
     return this.HouseService.getHouses();
+  }
+
+  @Get('/full')
+  getHousesFull() {
+    return this.HouseService.getHousesFull();
+  }
+
+  @Get('/full/:id')
+  getHousesFullById(@Param('id') id: string) {
+    return this.HouseService.getHouseFullById(id);
   }
 
   @Get('four')

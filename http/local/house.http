@@ -1,6 +1,12 @@
 @host = http://localhost:5000
 
-@access_token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbDQzdnZtZXMwMDAwb3p1a252dmt1MHR6IiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNjU0NTg5NTI1LCJleHAiOjE2NTQ2NzU5MjV9.8HFx9RssO-VpjhjHG0rw_kBe2Pz6ixjWcUcT9fCyG8A
+@access_token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbDQ0M2dpZ3owMDAweW51azRsOHY1bGdmIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNjU0Njc3NDgxLCJleHAiOjE2NTQ3NjM4ODF9.vVnMqaqTOZBA8cYjA_l-dPxAi__NP2Gvki_E4Gws2r0
+
+
+###
+GET {{host}}/houses HTTP/1.1
+content-type: application/json
+Authorization: {{access_token}}
 
 ###
 GET {{host}}/houses/full HTTP/1.1
@@ -8,7 +14,7 @@ content-type: application/json
 Authorization: {{access_token}}
 
 ###
-GET {{host}}/houses/full/1 HTTP/1.1
+GET {{host}}/houses/full/cl443b4jn1869t8uk3417sc6u HTTP/1.1
 content-type: application/json
 Authorization: {{access_token}}
 
@@ -17,10 +23,6 @@ GET {{host}}/houses/four HTTP/1.1
 content-type: application/json
 Authorization: {{access_token}}
 
-###
-GET {{host}}/houses HTTP/1.1
-content-type: application/json
-Authorization: {{access_token}}
 
 ###
 GET {{host}}/houses/cl3x760je00336tukt4ki949f HTTP/1.1
@@ -32,18 +34,18 @@ POST {{host}}/houses HTTP/1.1
 content-type: application/json
 Authorization: {{access_token}}
 
-    {
-        "address": "19 rue du boulet",
-        "zipcode": "75010 CEDEX",
-        "city": "Montcuq",
-        "country_id": "cl43vq3tl0056rfukgnuulrg9",
-        "type_id": "cl43vq5791785rfuk21wotqas",
-        "title": "Maison bleu",
-        "description": "C'est une maison bleue Adossée à la colline On y vient à pied, on ne frappe pas Ceux qui vivent là, ont jeté la clé",
-        "latitude": "48.099071531610875",
-        "longitude": "-0.748887016329141",
-        "map": "https://maps.google.com/maps?q=48.099071531610875,-0.7488870163291419"
-    }
+{
+    "address": "18 rue du boulet",
+    "zipcode": "75010 CEDEX",
+    "city": "Montcul",
+    "country_id": "cl443b35l0056t8ukxfpfxie2",
+    "type_id": "cl443b4fv1785t8uk5pe3gdgc",
+    "title": "Maison verte",
+    "description": "C'est une maison verte",
+    "latitude": "48",
+    "longitude": "0.7",
+    "map": "https://maps.google.com/maps?q=48,0.7"
+}
 
 ###
 PATCH {{host}}/houses/cl43vym780028ozuk3nptv82a HTTP/1.1

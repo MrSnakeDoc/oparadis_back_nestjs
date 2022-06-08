@@ -1,5 +1,5 @@
 -- CreateTable
-CREATE TABLE "User" (
+CREATE TABLE "users" (
     "id" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
@@ -13,27 +13,27 @@ CREATE TABLE "User" (
     "created_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMPTZ NOT NULL,
 
-    CONSTRAINT "User_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "users_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "Type" (
+CREATE TABLE "Types" (
     "id" TEXT NOT NULL,
     "type" TEXT NOT NULL,
 
-    CONSTRAINT "Type_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Types_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "Country" (
+CREATE TABLE "countries" (
     "id" TEXT NOT NULL,
     "country" TEXT NOT NULL,
 
-    CONSTRAINT "Country_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "countries_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "House" (
+CREATE TABLE "houses" (
     "id" TEXT NOT NULL,
     "address" TEXT NOT NULL,
     "zipcode" TEXT NOT NULL,
@@ -64,11 +64,11 @@ CREATE TABLE "House" (
     "country_id" TEXT NOT NULL,
     "type_id" TEXT NOT NULL,
 
-    CONSTRAINT "House_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "houses_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "Animal" (
+CREATE TABLE "animals" (
     "id" TEXT NOT NULL,
     "type" TEXT NOT NULL,
     "race" TEXT,
@@ -80,11 +80,11 @@ CREATE TABLE "Animal" (
     "updated_at" TIMESTAMPTZ NOT NULL,
     "user_id" TEXT NOT NULL,
 
-    CONSTRAINT "Animal_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "animals_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "Plant" (
+CREATE TABLE "plants" (
     "id" TEXT NOT NULL,
     "type" TEXT NOT NULL,
     "notes" TEXT,
@@ -94,11 +94,11 @@ CREATE TABLE "Plant" (
     "updated_at" TIMESTAMPTZ NOT NULL,
     "user_id" TEXT NOT NULL,
 
-    CONSTRAINT "Plant_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "plants_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "Photo" (
+CREATE TABLE "photos" (
     "id" TEXT NOT NULL,
     "photo" TEXT NOT NULL,
     "validated" BOOLEAN NOT NULL DEFAULT false,
@@ -107,11 +107,11 @@ CREATE TABLE "Photo" (
     "user_id" TEXT NOT NULL,
     "house_id" TEXT NOT NULL,
 
-    CONSTRAINT "Photo_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "photos_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "Match" (
+CREATE TABLE "matches" (
     "id" TEXT NOT NULL,
     "start_date" TIMESTAMP(3) NOT NULL,
     "end_date" TIMESTAMP(3) NOT NULL,
@@ -119,47 +119,47 @@ CREATE TABLE "Match" (
     "user_id" TEXT NOT NULL,
     "sitter_id" TEXT NOT NULL,
 
-    CONSTRAINT "Match_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "matches_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Type_type_key" ON "Type"("type");
+CREATE UNIQUE INDEX "Types_type_key" ON "Types"("type");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Country_country_key" ON "Country"("country");
+CREATE UNIQUE INDEX "countries_country_key" ON "countries"("country");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "House_map_key" ON "House"("map");
+CREATE UNIQUE INDEX "houses_map_key" ON "houses"("map");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "House_user_id_key" ON "House"("user_id");
+CREATE UNIQUE INDEX "houses_user_id_key" ON "houses"("user_id");
 
 -- AddForeignKey
-ALTER TABLE "House" ADD CONSTRAINT "House_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "houses" ADD CONSTRAINT "houses_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "House" ADD CONSTRAINT "House_type_id_fkey" FOREIGN KEY ("type_id") REFERENCES "Type"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "houses" ADD CONSTRAINT "houses_type_id_fkey" FOREIGN KEY ("type_id") REFERENCES "Types"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "House" ADD CONSTRAINT "House_country_id_fkey" FOREIGN KEY ("country_id") REFERENCES "Country"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "houses" ADD CONSTRAINT "houses_country_id_fkey" FOREIGN KEY ("country_id") REFERENCES "countries"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Animal" ADD CONSTRAINT "Animal_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "animals" ADD CONSTRAINT "animals_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Plant" ADD CONSTRAINT "Plant_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "plants" ADD CONSTRAINT "plants_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Photo" ADD CONSTRAINT "Photo_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "photos" ADD CONSTRAINT "photos_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Photo" ADD CONSTRAINT "Photo_house_id_fkey" FOREIGN KEY ("house_id") REFERENCES "House"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "photos" ADD CONSTRAINT "photos_house_id_fkey" FOREIGN KEY ("house_id") REFERENCES "houses"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Match" ADD CONSTRAINT "Match_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "matches" ADD CONSTRAINT "matches_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Match" ADD CONSTRAINT "Match_sitter_id_fkey" FOREIGN KEY ("sitter_id") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "matches" ADD CONSTRAINT "matches_sitter_id_fkey" FOREIGN KEY ("sitter_id") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
