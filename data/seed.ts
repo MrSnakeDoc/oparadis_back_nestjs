@@ -1,13 +1,23 @@
 import { PrismaClient } from '@prisma/client';
 import * as argon from 'argon2';
+import { Countries, Types, Users, Houses, Photos, Animals, Plants } from '.';
 import { SignInDto } from '../src/auth/dto/';
 import { CreateHouseDto } from '../src/house/dto/';
-import { Countries, Types, Users, Houses, Photos, Animals, Plants } from '.';
+import { CountryType } from '../src/country/types';
+import { Type } from '../src/type/types';
+import { PhotoDto } from '../src/photo/dto';
+import { AnimalDto } from '../src/animal/dto';
+import { PlantDto } from '../src/plant/dto';
 
 const prisma = new PrismaClient();
 
-Users: SignInDto;
-Houses: CreateHouseDto;
+Users: [SignInDto];
+Houses: [CreateHouseDto];
+Countries: [CountryType];
+Types: [Type];
+Photos: [PhotoDto];
+Animals: [AnimalDto];
+Plants: [PlantDto];
 
 async function main() {
   try {

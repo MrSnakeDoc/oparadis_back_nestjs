@@ -129,6 +129,7 @@ model Plant {
 model Photo{
   id String @id @default(cuid())
   photo String
+  main_photo Boolean? @default(false)
   validated Boolean @default(false)
   created_at DateTime @db.Timestamptz @default(now())
   updated_at DateTime @db.Timestamptz @updatedAt

@@ -101,6 +101,7 @@ CREATE TABLE "plants" (
 CREATE TABLE "photos" (
     "id" TEXT NOT NULL,
     "photo" TEXT NOT NULL,
+    "main_photo" BOOLEAN DEFAULT false,
     "validated" BOOLEAN NOT NULL DEFAULT false,
     "created_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMPTZ NOT NULL,

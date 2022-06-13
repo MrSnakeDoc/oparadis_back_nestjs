@@ -2,6 +2,7 @@ export const Photos = [
   {
     photo:
       'https://res.cloudinary.com/oparadis/image/upload/c_scale,w_800/v1643013758/houses/house23_yffx6l.jpg',
+    main_photo: true,
   },
   {
     photo:
