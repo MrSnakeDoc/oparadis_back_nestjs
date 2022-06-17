@@ -1,1 +1,1 @@
-export * from './Plant.type';
+export * from './Plant.types';

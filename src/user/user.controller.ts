@@ -1,4 +1,4 @@
-import { UpdateUserDto, UpdateUserPasswordDto } from './dto/';
+import { UpdateUserDto, UpdateUserPasswordDto, UserDto } from './dto/';
 import { UserService } from './user.service';
 import { JwtGuard } from '../auth/guard/';
 import {
@@ -8,21 +8,42 @@ import {
   Delete,
   Get,
   Patch,
+  Req,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { GetUser } from '../auth/decorator/';
 import { User } from '@prisma/client';
+import { Request } from 'express';
+import { RedisCacheService } from 'src/redis-cache/redis-cache.service';
+import { UserType } from './types';
 
 @UseGuards(JwtGuard)
 @Controller('users')
 export class UserController {
-  constructor(private userService: UserService) {}
+  private readonly prefix: string = 'users:';
+
+  constructor(
+    private userService: UserService,
+    private cache: RedisCacheService,
+  ) {}
 
   @UseInterceptors(ClassSerializerInterceptor)
   @Get('me')
-  getMe(@GetUser() user: User) {
-    return new UpdateUserDto(user);
+  async getMe(@GetUser() user: User, @Req() req: Request) {
+    const cachedUser: UserType = await this.cache.get(
+      `${this.prefix}${req.url}${user.id}`,
+    );
+
+    if (cachedUser) return cachedUser;
+
+    const cacheUser: UserType = Object.assign({}, user);
+    delete cacheUser.password;
+    delete cacheUser.refresh_token;
+
+    await this.cache.set(`${this.prefix}${req.url}${user.id}`, cacheUser);
+
+    return new UserDto(user);
   }
 
   @UseInterceptors(ClassSerializerInterceptor)

@@ -3,7 +3,7 @@ import { IsString, IsOptional } from 'class-validator';
 export class UpdateAnimalDto {
   @IsOptional()
   @IsString()
-  type: string;
+  type?: string;
 
   @IsOptional()
   @IsString()

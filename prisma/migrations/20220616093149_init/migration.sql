@@ -71,6 +71,7 @@ CREATE TABLE "houses" (
 CREATE TABLE "animals" (
     "id" TEXT NOT NULL,
     "type" TEXT NOT NULL,
+    "diseases" TEXT,
     "race" TEXT,
     "notes" TEXT,
     "photo" TEXT,

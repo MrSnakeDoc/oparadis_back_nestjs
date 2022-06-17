@@ -1,4 +1,4 @@
-import { HouseType } from './types/house.type';
+import { HouseType } from './types/house.types';
 import {
   ForbiddenException,
   HttpException,
@@ -7,19 +7,31 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateHouseDto, UpdateHouseDto } from './dto';
-import { AnimalType } from 'src/animal/types/Animal.type.dto';
+import { AnimalType } from 'src/animal/types/';
 import { PlantType } from 'src/plant/types';
+import { RedisCacheService } from 'src/redis-cache/redis-cache.service';
 
 @Injectable()
 export class HouseService {
-  constructor(private prisma: PrismaService) {}
+  private readonly prefix: string = 'houses:';
+  constructor(
+    private prisma: PrismaService,
+    private cache: RedisCacheService,
+  ) {}
 
-  async getHouses() {
+  async getHouses(url: string): Promise<HouseType[]> {
     try {
-      const houses: HouseType[] = await this.prisma.house.findMany({});
+      const cachedHouses = await this.cache.get(`${this.prefix}${url}`);
+
+      if (cachedHouses) return cachedHouses;
+
+      const houses: HouseType[] = await this.prisma.house.findMany();
+
       if (!houses) {
         throw new HttpException('No houses found', HttpStatus.NOT_FOUND);
       }
+
+      await this.cache.set(`${this.prefix}${url}`, houses, 10);
 
       return houses;
     } catch (error) {
@@ -27,8 +39,12 @@ export class HouseService {
     }
   }
 
-  async getHousesFull() {
+  async getHousesFull(url: string): Promise<HouseType[]> {
     try {
+      const cachedHouses = await this.cache.get(`${this.prefix}${url}`);
+
+      if (cachedHouses) return cachedHouses;
+
       const houses: HouseType[] = await this.prisma.house.findMany({
         include: {
           photo: true,
@@ -49,14 +65,20 @@ export class HouseService {
         };
       });
 
+      await this.cache.set(`${this.prefix}${url}`, fullHouses);
+
       return fullHouses;
     } catch (error) {
       throw error;
     }
   }
 
-  async getHouseFullById(id: string) {
+  async getHouseFullById(id: string, url: string): Promise<HouseType> {
     try {
+      const cachedHouse = await this.cache.get(`${this.prefix}${url}`);
+
+      if (cachedHouse) return cachedHouse;
+
       const house: HouseType = await this.prisma.house.findFirst({
         where: { id },
         include: {
@@ -80,14 +102,20 @@ export class HouseService {
         plants: plants,
       };
 
+      await this.cache.set(`${this.prefix}${url}`, fullHouse);
+
       return fullHouse;
     } catch (error) {
       throw error;
     }
   }
 
-  async getFour() {
+  async getFour(url: string): Promise<HouseType[]> {
     try {
+      const cachedHouses = await this.cache.get(`${this.prefix}${url}`);
+
+      if (cachedHouses) return cachedHouses;
+
       const houses: HouseType[] = await this.prisma.house.findMany({
         include: {
           photo: true,
@@ -115,18 +143,26 @@ export class HouseService {
 
       const four = housesFull.slice(0, 4);
 
+      await this.cache.set(`${this.prefix}getFour`, four);
+
       return four;
     } catch (error) {
       throw error;
     }
   }
 
-  async getHouseById(houseId: string) {
+  async getHouseById(id: string, url: string): Promise<HouseType> {
     try {
-      const house = this.prisma.house.findFirst({ where: { id: houseId } });
+      const cachedHouse = await this.cache.get(`${this.prefix}${url}`);
+
+      if (cachedHouse) return cachedHouse;
+
+      const house = this.prisma.house.findFirst({ where: { id } });
       if (!house) {
         throw new HttpException('House  not found', HttpStatus.NOT_FOUND);
       }
+
+      await this.cache.set(`${this.prefix}gethouse`, house);
 
       return house;
     } catch (error) {
@@ -134,19 +170,21 @@ export class HouseService {
     }
   }
 
-  async createHouse(userId: string, dto: CreateHouseDto) {
+  async createHouse(userId: string, dto: CreateHouseDto): Promise<HouseType> {
     try {
       const house = await this.prisma.house.create({
         data: { ...dto, user_id: userId },
       });
 
+      await this.cache.del(`${this.prefix}`);
+
       return house;
     } catch (error) {
       throw error;
     }
   }
 
-  async updateHouse(userId, houseId, dto: UpdateHouseDto) {
+  async updateHouse(userId, houseId, dto: UpdateHouseDto): Promise<HouseType> {
     try {
       const house: HouseType = await this.prisma.house.findUnique({
         where: { id: houseId },
@@ -155,6 +193,8 @@ export class HouseService {
       if (!house || house.user_id !== userId) {
         throw new ForbiddenException('Access to ressources denied');
       }
+
+      await this.cache.del(`${this.prefix}`);
 
       return this.prisma.house.update({
         where: { id: houseId },
@@ -175,7 +215,9 @@ export class HouseService {
         throw new ForbiddenException('Access to ressources denied');
       }
 
-      this.prisma.house.delete({
+      await this.cache.del(`${this.prefix}`);
+
+      await this.prisma.house.delete({
         where: { id: houseId },
       });
 

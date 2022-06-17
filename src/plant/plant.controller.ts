@@ -7,9 +7,11 @@ import {
   Param,
   Patch,
   Post,
+  Req,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
+import { Request } from 'express';
 import { GetUser } from 'src/auth/decorator';
 import { JwtGuard } from 'src/auth/guard';
 import { PlantDto, UpdatePlantDto } from './dto';
@@ -21,18 +23,18 @@ export class PlantController {
   constructor(private PlantService: PlantService) {}
 
   @Get()
-  getPlants() {
-    return this.PlantService.getPlants();
+  getPlants(@Req() req: Request) {
+    return this.PlantService.getPlants(req.url);
   }
 
   @Get(':id')
-  getPlantById(@Param('id') PlantId: string) {
-    return this.PlantService.getPlantById(PlantId);
+  getPlantById(@Param('id') PlantId: string, @Req() req: Request) {
+    return this.PlantService.getPlantById(PlantId, req.url);
   }
 
   @Get('/user/:user_id')
-  getAnimalByUserId(@Param('user_id') user_id: string) {
-    return this.PlantService.getPlantByUserId(user_id);
+  getAnimalByUserId(@Param('user_id') user_id: string, @Req() req: Request) {
+    return this.PlantService.getPlantByUserId(user_id, req.url);
   }
 
   @UseInterceptors(ClassSerializerInterceptor)

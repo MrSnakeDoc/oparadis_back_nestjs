@@ -10,6 +10,7 @@ import { PlantModule } from './plant/plant.module';
 import { TypeModule } from './type/type.module';
 import { MatchModule } from './match/match.module';
 import { CountryModule } from './country/country.module';
+import { RedisCacheModule } from './redis-cache/redis-cache.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { CountryModule } from './country/country.module';
     TypeModule,
     MatchModule,
     CountryModule,
+    RedisCacheModule,
   ],
 })
 export class AppModule {}

@@ -1,5 +1,5 @@
 @host = http://localhost:5000
-@access_token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbDQzejFzbXgwMDAwdGV1a2VxbHIya3liIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNjU0NTk0ODQ3LCJleHAiOjE2NTQ2ODEyNDd9.V3e_BP-r0WpdDOtkQjuPzsfej7et1cfN73sX8ipcG2o
+@access_token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbDRndXNvNHMwMDAwY2p1azRpeHoyenoxIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNjU1MzczNzY0LCJleHAiOjE2NTU0NjAxNjR9.jwu-8G8fnfyed58DJ9W3wM-Bye0qRPiHNcz46Pb29kM
 
 ###
 GET {{host}}/animals/ HTTP/1.1
@@ -7,12 +7,12 @@ content-type: application/json
 Authorization: {{access_token}}
 
 ###
-GET {{host}}/animals/cl43z0es419481huk0b8y73fz HTTP/1.1
+GET {{host}}/animals/1 HTTP/1.1
 content-type: application/json
 Authorization: {{access_token}}
 
 ### GetAnimalsByUserId
-GET {{host}}/animals/user/cl43z0emo18341hukjsn044ph HTTP/1.1
+GET {{host}}/animals/user/cl4guso4s0000cjuk4ixz2zz1 HTTP/1.1
 content-type: application/json
 Authorization: {{access_token}}
 
@@ -31,7 +31,7 @@ Authorization: {{access_token}}
     }
     
 ###
-PATCH {{host}}/animals/101 HTTP/1.1
+PATCH {{host}}/animals/cl4h3rutt0015mzuk9sfa1888 HTTP/1.1
 content-type: application/json
 Authorization: {{access_token}}
 

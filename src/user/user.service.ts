@@ -6,13 +6,19 @@ import {
 } from '@nestjs/common';
 import * as argon from 'argon2';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { ShowUserDto, UpdateUserDto, UpdateUserPasswordDto } from './dto';
+import { RedisCacheService } from 'src/redis-cache/redis-cache.service';
+import { UserDto, UpdateUserDto, UpdateUserPasswordDto } from './dto';
 
 @Injectable()
 export class UserService {
-  constructor(private prisma: PrismaService) {}
+  private readonly prefix: string = 'users:';
 
-  async updateUser(userId: string, dto: UpdateUserDto) {
+  constructor(
+    private prisma: PrismaService,
+    private cache: RedisCacheService,
+  ) {}
+
+  async updateUser(userId: string, dto: UpdateUserDto): Promise<UserDto> {
     try {
       const user = await this.prisma.user.update({
         where: { id: userId },
@@ -20,13 +26,19 @@ export class UserService {
           ...dto,
         },
       });
-      return new ShowUserDto(user);
+
+      await this.cache.del(this.prefix);
+
+      return new UserDto(user);
     } catch (error) {
       throw error;
     }
   }
 
-  async updateUserPassword(userId: string, dto: UpdateUserPasswordDto) {
+  async updateUserPassword(
+    userId: string,
+    dto: UpdateUserPasswordDto,
+  ): Promise<UpdateUserPasswordDto> {
     try {
       const user = await this.prisma.user.findFirst({
         where: { id: userId },
@@ -54,7 +66,7 @@ export class UserService {
         data: { password: hash },
       });
 
-      return new ShowUserDto(updatedUser);
+      return new UserDto(updatedUser);
     } catch (error) {
       throw error;
     }
@@ -74,7 +86,9 @@ export class UserService {
         where: { id: userId },
       });
 
-      return user;
+      await this.cache.del(this.prefix);
+
+      return HttpStatus.OK;
     } catch (error) {
       throw error;
     }

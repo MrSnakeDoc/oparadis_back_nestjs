@@ -1,5 +1,5 @@
 export class PlantType {
-  type: string;
+  type?: string;
 
   notes?: string;
 

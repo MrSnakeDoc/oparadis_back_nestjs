@@ -8,12 +8,14 @@ import {
   Param,
   Patch,
   Post,
+  Req,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { JwtGuard } from 'src/auth/guard';
 import { GetUser } from 'src/auth/decorator';
 import { AnimalDto, UpdateAnimalDto } from './dto';
+import { Request } from 'express';
 
 @UseGuards(JwtGuard)
 @Controller('animals')
@@ -21,18 +23,18 @@ export class AnimalController {
   constructor(private AnimalService: AnimalService) {}
 
   @Get()
-  getAnimals() {
-    return this.AnimalService.getAnimals();
+  getAnimals(@Req() req: Request) {
+    return this.AnimalService.getAnimals(req.url);
   }
 
   @Get(':id')
-  getAnimalById(@Param('id') animalId: string) {
-    return this.AnimalService.getAnimalById(animalId);
+  getAnimalById(@Param('id') animalId: string, @Req() req: Request) {
+    return this.AnimalService.getAnimalById(animalId, req.url);
   }
 
   @Get('/user/:user_id')
-  getAnimalByUserId(@Param('user_id') user_id: string) {
-    return this.AnimalService.getAnimalByUserId(user_id);
+  getAnimalByUserId(@Param('user_id') user_id: string, @Req() req: Request) {
+    return this.AnimalService.getAnimalByUserId(user_id, req.url);
   }
 
   @UseInterceptors(ClassSerializerInterceptor)

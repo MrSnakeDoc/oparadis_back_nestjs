@@ -1,44 +1,46 @@
 import { Exclude } from 'class-transformer';
 import { IsBoolean, IsEmail, IsOptional, IsString } from 'class-validator';
 
-export class ShowUserDto {
-  @IsOptional()
+export class UserDto {
   @IsEmail()
+  @IsOptional()
   email?: string;
 
   @Exclude()
-  @IsOptional()
-  private password?: string;
-
-  @IsOptional()
   @IsString()
+  @IsOptional()
+  password?: string;
+
+  @IsString()
+  @IsOptional()
   firstname?: string;
 
-  @IsOptional()
   @IsString()
+  @IsOptional()
   lastname?: string;
 
-  @IsOptional()
   @IsString()
+  @IsOptional()
   pseudo?: string;
 
-  @IsOptional()
   @IsString()
+  @IsOptional()
   phone_number?: string;
 
-  @IsOptional()
   @IsString()
+  @IsOptional()
   avatar?: string;
 
-  @IsOptional()
   @IsBoolean()
-  private isAdmin?: boolean;
+  @IsOptional()
+  isAdmin?: boolean;
 
   @Exclude()
+  @IsString()
   @IsOptional()
-  private refresh_token?: string;
+  refresh_token?: string;
 
-  constructor(partial: Partial<ShowUserDto>) {
+  constructor(partial: Partial<UserDto>) {
     Object.assign(this, partial);
   }
 }

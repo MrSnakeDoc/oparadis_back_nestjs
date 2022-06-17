@@ -97,6 +97,7 @@ model House{
 model Animal {
     id String @id @default(cuid())
     type String
+    diseases String?
     race String?
     notes String?
     photo String?

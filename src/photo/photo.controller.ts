@@ -7,12 +7,14 @@ import {
   Param,
   Patch,
   Post,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 import { JwtGuard } from 'src/auth/guard';
 import { GetUser } from 'src/auth/decorator';
 import { PhotoService } from './photo.service';
 import { UpdatePhotoDto } from './dto';
+import { Request } from 'express';
 
 @UseGuards(JwtGuard)
 @Controller('photos')
@@ -20,18 +22,18 @@ export class PhotoController {
   constructor(private PhotoService: PhotoService) {}
 
   @Get()
-  getPhotos() {
-    return this.PhotoService.getPhotos();
+  getPhotos(@Req() req: Request) {
+    return this.PhotoService.getPhotos(req.url);
   }
 
   @Get(':id')
-  getPhoto(@Param('id') photoId: string) {
-    return this.PhotoService.getPhotoById(photoId);
+  getPhoto(@Param('id') photoId: string, @Req() req: Request) {
+    return this.PhotoService.getPhotoById(photoId, req.url);
   }
 
   @Get('/house/:house_id')
-  getPhotoByHouseId(@Param('house_id') house_id: string) {
-    return this.PhotoService.getPhotoByHouseId(house_id);
+  getPhotoByHouseId(@Param('house_id') house_id: string, @Req() req: Request) {
+    return this.PhotoService.getPhotoByHouseId(house_id, req.url);
   }
 
   @Post()

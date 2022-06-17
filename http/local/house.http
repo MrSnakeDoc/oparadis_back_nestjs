@@ -1,6 +1,6 @@
 @host = http://localhost:5000
 
-@access_token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbDQ0M2dpZ3owMDAweW51azRsOHY1bGdmIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNjU0Njc3NDgxLCJleHAiOjE2NTQ3NjM4ODF9.vVnMqaqTOZBA8cYjA_l-dPxAi__NP2Gvki_E4Gws2r0
+@access_token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbDRndXNvNHMwMDAwY2p1azRpeHoyenoxIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNjU1MzczNzY0LCJleHAiOjE2NTU0NjAxNjR9.jwu-8G8fnfyed58DJ9W3wM-Bye0qRPiHNcz46Pb29kM
 
 
 ###
@@ -14,7 +14,7 @@ content-type: application/json
 Authorization: {{access_token}}
 
 ###
-GET {{host}}/houses/full/cl443b4jn1869t8uk3417sc6u HTTP/1.1
+GET {{host}}/houses/full/cl4gve8s50004woukkeaxhjor HTTP/1.1
 content-type: application/json
 Authorization: {{access_token}}
 
@@ -25,7 +25,7 @@ Authorization: {{access_token}}
 
 
 ###
-GET {{host}}/houses/cl3x760je00336tukt4ki949f HTTP/1.1
+GET {{host}}/houses/cl4gve8s50004woukkeaxhjor HTTP/1.1
 content-type: application/json
 Authorization: {{access_token}}
 
@@ -38,8 +38,8 @@ Authorization: {{access_token}}
     "address": "18 rue du boulet",
     "zipcode": "75010 CEDEX",
     "city": "Montcul",
-    "country_id": "cl443b35l0056t8ukxfpfxie2",
-    "type_id": "cl443b4fv1785t8uk5pe3gdgc",
+    "country_id": "cl4gtp6oz0056hfuk2of91x7i",
+    "type_id": "cl4gtp7z51778hfukn5qstp4r",
     "title": "Maison verte",
     "description": "C'est une maison verte",
     "latitude": "48",
@@ -48,15 +48,15 @@ Authorization: {{access_token}}
 }
 
 ###
-PATCH {{host}}/houses/cl43vym780028ozuk3nptv82a HTTP/1.1
+PATCH {{host}}/houses/cl4gve8s50004woukkeaxhjor HTTP/1.1
 content-type: application/json
 Authorization: {{access_token}}
 
     {
         "rooms": 2,
         "bedrooms": 4,
-        "surface": 187,
-        "area": 666,
+        "surface": 190,
+        "area": 400,
         "floor": 1,
         "internet": true,
         "washing_machine": true,
@@ -68,6 +68,6 @@ Authorization: {{access_token}}
     }
 
 ###
-DELETE {{host}}/houses/cl3x760je00336tukt4ki949f HTTP/1.1
+DELETE {{host}}/houses/cl4guy49j0035cjuk8z4wyqnb HTTP/1.1
 content-type: application/json
 Authorization: {{access_token}}

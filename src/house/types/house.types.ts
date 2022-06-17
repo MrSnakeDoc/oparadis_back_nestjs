@@ -1,6 +1,6 @@
-import { AnimalType } from 'src/animal/types/Animal.type.dto';
+import { AnimalType } from 'src/animal/types/';
 import { PlantType } from 'src/plant/types';
-import { PhotoDto } from './../../photo/dto/Photo.dto';
+import { PhotoDto } from '../../photo/dto/Photo.dto';
 export class HouseType {
   address: string;
   city: string;

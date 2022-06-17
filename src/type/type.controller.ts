@@ -1,4 +1,5 @@
-import { Controller, Get, Param, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, Req, UseGuards } from '@nestjs/common';
+import { Request } from 'express';
 import { JwtGuard } from 'src/auth/guard';
 import { TypeService } from './type.service';
 
@@ -8,12 +9,12 @@ export class TypeController {
   constructor(private TypeService: TypeService) {}
 
   @Get()
-  getTypes() {
-    return this.TypeService.getTypes();
+  getTypes(@Req() req: Request) {
+    return this.TypeService.getTypes(req.url);
   }
 
   @Get(':id')
-  getCountriesById(@Param('id') typeId: string) {
-    return this.TypeService.getTypesById(typeId);
+  getCountriesById(@Param('id') typeId: string, @Req() req: Request) {
+    return this.TypeService.getTypesById(typeId, req.url);
   }
 }

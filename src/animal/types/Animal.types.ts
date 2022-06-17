@@ -1,6 +1,8 @@
 export class AnimalType {
   type: string;
 
+  diseases?: string;
+
   race?: string;
 
   notes?: string;

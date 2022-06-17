@@ -7,6 +7,10 @@ export class AnimalDto {
 
   @IsOptional()
   @IsString()
+  diseases?: string;
+
+  @IsOptional()
+  @IsString()
   race?: string;
 
   @IsOptional()
