@@ -11,5 +11,5 @@ export class UpdateUserPasswordDto {
 
   @IsString()
   @IsNotEmpty()
-  verifyPassword?: string;
+  confirmationPassword?: string;
 }

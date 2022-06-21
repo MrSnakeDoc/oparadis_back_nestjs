@@ -11,6 +11,7 @@ import { TypeModule } from './type/type.module';
 import { MatchModule } from './match/match.module';
 import { CountryModule } from './country/country.module';
 import { RedisCacheModule } from './redis-cache/redis-cache.module';
+import { AbsenceModule } from './absence/absence.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { RedisCacheModule } from './redis-cache/redis-cache.module';
     MatchModule,
     CountryModule,
     RedisCacheModule,
+    AbsenceModule,
   ],
 })
 export class AppModule {}

@@ -113,13 +113,21 @@ CREATE TABLE "photos" (
 );
 
 -- CreateTable
-CREATE TABLE "matches" (
+CREATE TABLE "absences" (
     "id" TEXT NOT NULL,
     "start_date" TIMESTAMP(3) NOT NULL,
     "end_date" TIMESTAMP(3) NOT NULL,
-    "validated" BOOLEAN NOT NULL DEFAULT false,
     "user_id" TEXT NOT NULL,
+
+    CONSTRAINT "absences_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "matches" (
+    "id" TEXT NOT NULL,
+    "validated" BOOLEAN NOT NULL DEFAULT false,
     "sitter_id" TEXT NOT NULL,
+    "absenceId" TEXT NOT NULL,
 
     CONSTRAINT "matches_pkey" PRIMARY KEY ("id")
 );
@@ -161,7 +169,7 @@ ALTER TABLE "photos" ADD CONSTRAINT "photos_user_id_fkey" FOREIGN KEY ("user_id"
 ALTER TABLE "photos" ADD CONSTRAINT "photos_house_id_fkey" FOREIGN KEY ("house_id") REFERENCES "houses"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "matches" ADD CONSTRAINT "matches_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "absences" ADD CONSTRAINT "absences_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "matches" ADD CONSTRAINT "matches_sitter_id_fkey" FOREIGN KEY ("sitter_id") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "matches" ADD CONSTRAINT "matches_absenceId_fkey" FOREIGN KEY ("absenceId") REFERENCES "absences"("id") ON DELETE CASCADE ON UPDATE CASCADE;

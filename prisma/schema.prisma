@@ -28,8 +28,7 @@ model User {
     animal Animal[]
     plant Plant[]
     photo Photo[]
-    absentee Match[] @relation("absentees")
-    sitter Match[] @relation("sitter")
+    absence Absence[]
 
   @@map("users")
 }
@@ -144,17 +143,28 @@ model Photo{
   @@map("photos")
 }
 
-model Match {
+model Absence {
   id String @id @default(cuid())
   start_date DateTime
   end_date DateTime
-  validated Boolean @default(false)
 
   user_id String
-  user      User?      @relation("absentees",fields: [user_id], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  match Match[]
+
+  @@map("absences")
+}
+
+model Match {
+  id String @id @default(cuid())
+
+  validated Boolean @default(false)
 
   sitter_id String
-  Sitter    User?      @relation("sitter",fields: [sitter_id], references: [id], onDelete: Cascade)
+
+  absenceId String
+  absence Absence @relation(fields: [absenceId], references: [id], onDelete: Cascade)
 
   @@map("matches")
 }

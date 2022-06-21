@@ -38,7 +38,7 @@ export class UserService {
   async updateUserPassword(
     userId: string,
     dto: UpdateUserPasswordDto,
-  ): Promise<UpdateUserPasswordDto> {
+  ): Promise<UserDto> {
     try {
       const user = await this.prisma.user.findFirst({
         where: { id: userId },
@@ -53,7 +53,7 @@ export class UserService {
         throw new ForbiddenException('Invalid credentials');
       }
 
-      const pwMatches = dto.password === dto.verifyPassword;
+      const pwMatches = dto.password === dto.confirmationPassword;
 
       if (!pwMatches) {
         throw new ForbiddenException('Passwords do not match');
