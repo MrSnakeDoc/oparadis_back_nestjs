@@ -8,6 +8,7 @@ import {
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UpdatePhotoDto } from './dto';
 import { RedisCacheService } from 'src/redis-cache/redis-cache.service';
+import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 
 @Injectable()
 export class PhotoService {
@@ -16,6 +17,7 @@ export class PhotoService {
   constructor(
     private prisma: PrismaService,
     private cache: RedisCacheService,
+    private cloudinary: CloudinaryService,
   ) {}
 
   async getPhotos(url: string): Promise<PhotoDto[]> {
@@ -90,8 +92,15 @@ export class PhotoService {
     }
   }
 
-  async createPhoto(user_id: string, photo: PhotoDto): Promise<PhotoDto> {
+  async createPhoto(user_id: string, dto: PhotoDto): Promise<PhotoDto> {
     try {
+      const photo: PhotoDto = {
+        ...dto,
+        photo: await this.cloudinary.upload(dto.photo),
+      };
+
+      if (!photo) throw new Error('Could not decode base64');
+
       const newPhoto = await this.prisma.photo.create({
         data: {
           user_id,
@@ -117,19 +126,31 @@ export class PhotoService {
     dto: UpdatePhotoDto,
   ): Promise<PhotoDto> {
     try {
-      const photo = await this.prisma.photo.findUnique({
+      const storedPhoto = await this.prisma.photo.findUnique({
         where: { id },
       });
 
-      if (!photo || photo.user_id !== userId)
+      if (!storedPhoto || storedPhoto.user_id !== userId)
         throw new ForbiddenException('Access to ressources denied');
+
+      this.cloudinary.delete(storedPhoto.photo);
+
+      const photo: string = await this.cloudinary.upload(dto.photo);
+
+      if (!photo) throw new Error('Could not decode base64');
+
+      const data: PhotoDto = {
+        ...dto,
+        house_id: storedPhoto.house_id,
+        photo,
+      };
 
       const updatedPhoto = await this.prisma.photo.update({
         where: {
           id,
         },
         data: {
-          ...dto,
+          ...data,
         },
       });
 
@@ -158,7 +179,7 @@ export class PhotoService {
           id,
         },
       });
-
+      await this.cloudinary.delete(photo.photo);
       await this.cache.del(this.prefix);
 
       return HttpStatus.OK;

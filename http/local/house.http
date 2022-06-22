@@ -1,6 +1,6 @@
 @host = http://localhost:5000
 
-@access_token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbDRndXNvNHMwMDAwY2p1azRpeHoyenoxIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNjU1MzczNzY0LCJleHAiOjE2NTU0NjAxNjR9.jwu-8G8fnfyed58DJ9W3wM-Bye0qRPiHNcz46Pb29kM
+@access_token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbDRvY3NoemwwMDAzaXh1a2tlMmY4dzllIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNjU1ODI3MjUxLCJleHAiOjE2NTU5MTM2NTF9.2e6w28OSSR1Gz2NNhdeb4VtRBLC1hSzEldzhFgPI2no
 
 
 ###
@@ -38,8 +38,8 @@ Authorization: {{access_token}}
     "address": "18 rue du boulet",
     "zipcode": "75010 CEDEX",
     "city": "Montcul",
-    "country_id": "cl4gtp6oz0056hfuk2of91x7i",
-    "type_id": "cl4gtp7z51778hfukn5qstp4r",
+    "country_id": "cl4ij59bc0056coukhewjedi9",
+    "type_id": "cl4ij5akg1778couklh8ftuu4",
     "title": "Maison verte",
     "description": "C'est une maison verte",
     "latitude": "48",

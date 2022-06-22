@@ -12,6 +12,7 @@ import { MatchModule } from './match/match.module';
 import { CountryModule } from './country/country.module';
 import { RedisCacheModule } from './redis-cache/redis-cache.module';
 import { AbsenceModule } from './absence/absence.module';
+import { CloudinaryModule } from './cloudinary/cloudinary.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { AbsenceModule } from './absence/absence.module';
     CountryModule,
     RedisCacheModule,
     AbsenceModule,
+    CloudinaryModule,
   ],
 })
 export class AppModule {}
