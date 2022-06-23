@@ -7,7 +7,7 @@ CREATE TABLE "users" (
     "lastname" TEXT NOT NULL,
     "pseudo" TEXT,
     "phone_number" TEXT NOT NULL,
-    "avatar" TEXT,
+    "avatar" TEXT DEFAULT E'https://res.cloudinary.com/oparadis/image/upload/v1655907032/avatars/fpc9avx8ypafd2yxuo2b.png',
     "isAdmin" BOOLEAN NOT NULL DEFAULT false,
     "refresh_token" TEXT,
     "created_at" TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,

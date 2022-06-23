@@ -13,6 +13,8 @@ import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 @Injectable()
 export class PhotoService {
   private readonly prefix: string = 'photos:';
+  private readonly folder: string = 'houses';
+  private readonly urlPrefix: string = 'houses/';
 
   constructor(
     private prisma: PrismaService,
@@ -96,10 +98,14 @@ export class PhotoService {
     try {
       const photo: PhotoDto = {
         ...dto,
-        photo: await this.cloudinary.upload(dto.photo),
+        photo: await this.cloudinary.upload(dto.photo, this.folder),
       };
 
-      if (!photo) throw new Error('Could not decode base64');
+      if (!photo.photo)
+        throw new HttpException(
+          'Could not decode base64',
+          HttpStatus.EXPECTATION_FAILED,
+        );
 
       const newPhoto = await this.prisma.photo.create({
         data: {
@@ -133,15 +139,26 @@ export class PhotoService {
       if (!storedPhoto || storedPhoto.user_id !== userId)
         throw new ForbiddenException('Access to ressources denied');
 
-      this.cloudinary.delete(storedPhoto.photo);
+      const cloudDelete = await this.cloudinary.delete(
+        storedPhoto.photo,
+        this.urlPrefix,
+      );
 
-      const photo: string = await this.cloudinary.upload(dto.photo);
+      if (cloudDelete.result !== 'ok')
+        throw new HttpException(
+          'error delete cloudinary img !',
+          HttpStatus.EXPECTATION_FAILED,
+        );
+
+      const photo: string = await this.cloudinary.upload(
+        dto.photo,
+        this.folder,
+      );
 
       if (!photo) throw new Error('Could not decode base64');
 
-      const data: PhotoDto = {
+      const data: UpdatePhotoDto = {
         ...dto,
-        house_id: storedPhoto.house_id,
         photo,
       };
 
@@ -174,12 +191,23 @@ export class PhotoService {
       if (!photo || photo.user_id !== userId)
         throw new ForbiddenException('Access to ressources denied');
 
+      const cloudDelete = await this.cloudinary.delete(
+        photo.photo,
+        this.urlPrefix,
+      );
+
+      if (cloudDelete.result !== 'ok')
+        throw new HttpException(
+          'error delete cloudinary img !',
+          HttpStatus.EXPECTATION_FAILED,
+        );
+
       await this.prisma.photo.delete({
         where: {
           id,
         },
       });
-      await this.cloudinary.delete(photo.photo);
+
       await this.cache.del(this.prefix);
 
       return HttpStatus.OK;

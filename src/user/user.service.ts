@@ -1,3 +1,4 @@
+import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import {
   ForbiddenException,
   HttpException,
@@ -12,18 +13,63 @@ import { UserDto, UpdateUserDto, UpdateUserPasswordDto } from './dto';
 @Injectable()
 export class UserService {
   private readonly prefix: string = 'users:';
+  private readonly folder: string = 'avatars';
+  private readonly urlPrefix: string = 'avatars/';
+  private readonly defaultAvatar: string =
+    'https://res.cloudinary.com/oparadis/image/upload/v1655907032/avatars/fpc9avx8ypafd2yxuo2b.png';
 
   constructor(
     private prisma: PrismaService,
     private cache: RedisCacheService,
+    private cloudinary: CloudinaryService,
   ) {}
 
   async updateUser(userId: string, dto: UpdateUserDto): Promise<UserDto> {
     try {
+      const storedUser = await this.prisma.user.findFirst({
+        where: { id: userId },
+      });
+
+      if (!storedUser)
+        throw new ForbiddenException('Access to ressources denied');
+
+      const data: UpdateUserDto = { ...dto };
+      delete data.avatar_delete;
+
+      if (dto.avatar_delete && storedUser.avatar !== this.defaultAvatar) {
+        const cloudDelete = await this.cloudinary.delete(
+          storedUser.avatar,
+          this.urlPrefix,
+        );
+
+        if (cloudDelete.result !== 'ok')
+          throw new HttpException(
+            'error delete cloudinary img !',
+            HttpStatus.EXPECTATION_FAILED,
+          );
+        data.avatar = this.defaultAvatar;
+      }
+
+      if (dto.avatar) {
+        if (storedUser.avatar !== this.defaultAvatar) {
+          const cloudDelete = await this.cloudinary.delete(
+            storedUser.avatar,
+            this.urlPrefix,
+          );
+
+          if (cloudDelete.result !== 'ok')
+            throw new HttpException(
+              'error delete cloudinary img !',
+              HttpStatus.EXPECTATION_FAILED,
+            );
+        }
+        data.avatar = await this.cloudinary.upload(dto.avatar, this.folder);
+      }
+
       const user = await this.prisma.user.update({
         where: { id: userId },
         data: {
-          ...dto,
+          ...data,
         },
       });
 
@@ -74,12 +120,25 @@ export class UserService {
 
   async deleteUser(userId: string) {
     try {
-      const user = await this.prisma.user.findFirst({
+      const storedUser = await this.prisma.user.findFirst({
         where: { id: userId },
       });
 
-      if (!user) {
+      if (!storedUser) {
         throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+      }
+
+      if (storedUser.avatar !== this.defaultAvatar) {
+        const cloudDelete = await this.cloudinary.delete(
+          storedUser.avatar,
+          this.urlPrefix,
+        );
+
+        if (cloudDelete.result !== 'ok')
+          throw new HttpException(
+            'error delete cloudinary img !',
+            HttpStatus.EXPECTATION_FAILED,
+          );
       }
 
       await this.prisma.user.delete({

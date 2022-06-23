@@ -31,7 +31,7 @@ export class HouseService {
         throw new HttpException('No houses found', HttpStatus.NOT_FOUND);
       }
 
-      await this.cache.set(`${this.prefix}${url}`, houses, 10);
+      await this.cache.set(`${this.prefix}${url}`, houses);
 
       return houses;
     } catch (error) {
@@ -159,7 +159,7 @@ export class HouseService {
 
       const house = this.prisma.house.findFirst({ where: { id } });
       if (!house) {
-        throw new HttpException('House  not found', HttpStatus.NOT_FOUND);
+        throw new HttpException('House not found', HttpStatus.NOT_FOUND);
       }
 
       await this.cache.set(`${this.prefix}gethouse`, house);

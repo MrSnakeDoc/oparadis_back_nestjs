@@ -33,7 +33,7 @@ export class HouseController {
   }
 
   @Get('/full/:id')
-  getHousesFullById(@Param('id') id: string, @Req() req: Request) {
+  getHouseFullById(@Param('id') id: string, @Req() req: Request) {
     return this.HouseService.getHouseFullById(id, req.url);
   }
 

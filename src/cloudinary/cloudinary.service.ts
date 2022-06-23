@@ -50,9 +50,12 @@ export class CloudinaryService {
       .join();
   }
 
-  async delete(url) {
-    const key = url.split('/')[url.split('/').length - 1].split('.')[0];
-    await cloudinary.uploader.destroy(key);
-    return;
+  async delete(url, prefix?) {
+    try {
+      const key = url.split('/')[url.split('/').length - 1].split('.')[0];
+      return await cloudinary.uploader.destroy(`${prefix}${key}`);
+    } catch (error) {
+      console.log(error);
+    }
   }
 }

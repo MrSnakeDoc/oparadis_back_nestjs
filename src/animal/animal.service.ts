@@ -8,13 +8,17 @@ import {
 import { AnimalDto, UpdateAnimalDto } from './dto';
 import { AnimalType } from './types/';
 import { RedisCacheService } from 'src/redis-cache/redis-cache.service';
+import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 
 @Injectable()
 export class AnimalService {
   private readonly prefix: string = 'animals:';
+  private readonly folder: string = 'animals';
+  private readonly urlPrefix: string = 'animals/';
   constructor(
     private prisma: PrismaService,
     private cache: RedisCacheService,
+    private cloudinary: CloudinaryService,
   ) {}
 
   async getAnimals(url: string): Promise<AnimalType[]> {
@@ -91,16 +95,27 @@ export class AnimalService {
 
   async createAnimal(userId: string, dto: AnimalDto): Promise<AnimalType> {
     try {
-      const animal: AnimalType = await this.prisma.animal.create({
+      const animal: AnimalType = {
+        ...dto,
+        photo: await this.cloudinary.upload(dto.photo, this.folder),
+        user_id: userId,
+      };
+
+      if (!animal.photo)
+        throw new HttpException(
+          'Could not decode base64',
+          HttpStatus.EXPECTATION_FAILED,
+        );
+
+      const storedAnimal: AnimalType = await this.prisma.animal.create({
         data: {
-          ...dto,
-          user_id: userId,
+          ...animal,
         },
       });
 
       await this.cache.del(this.prefix);
 
-      return animal;
+      return storedAnimal;
     } catch (error) {
       throw error;
     }
@@ -112,18 +127,39 @@ export class AnimalService {
     dto: UpdateAnimalDto,
   ): Promise<AnimalType> {
     try {
-      const animal: AnimalType = await this.prisma.animal.findUnique({
+      const storedAnimal: AnimalType = await this.prisma.animal.findUnique({
         where: { id },
       });
 
-      if (!animal || animal.user_id !== userId)
+      if (!storedAnimal || storedAnimal.user_id !== userId)
         throw new ForbiddenException('Access to ressources denied');
+
+      const cloudDelete = await this.cloudinary.delete(
+        storedAnimal.photo,
+        this.urlPrefix,
+      );
+
+      if (cloudDelete.result !== 'ok')
+        throw new HttpException(
+          'error delete cloudinary img !',
+          HttpStatus.EXPECTATION_FAILED,
+        );
+
+      const photo: string = await this.cloudinary.upload(
+        dto.photo,
+        this.folder,
+      );
+
+      const data: UpdateAnimalDto = {
+        ...dto,
+        photo,
+      };
 
       await this.cache.del(this.prefix);
 
       return this.prisma.animal.update({
         where: { id },
-        data: { ...dto },
+        data: { ...data },
       });
     } catch (error) {
       throw error;
@@ -138,6 +174,17 @@ export class AnimalService {
 
       if (!animal || animal.user_id !== userId)
         throw new ForbiddenException('Access to ressources denied');
+
+      const cloudDelete = await this.cloudinary.delete(
+        animal.photo,
+        this.urlPrefix,
+      );
+
+      if (cloudDelete.result !== 'ok')
+        throw new HttpException(
+          'error delete cloudinary img !',
+          HttpStatus.EXPECTATION_FAILED,
+        );
 
       await this.cache.del(this.prefix);
 

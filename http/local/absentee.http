@@ -1,19 +1,19 @@
 @host = http://localhost:5000
 
-@access_token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImlkIjoxMDQsImVtYWlsIjoib0BhLmNvbSIsImZpcnN0bmFtZSI6Im8iLCJsYXN0bmFtZSI6Im8iLCJwc2V1ZG8iOiJKYWNxdW91IGxlIGNyb3F1YW50IiwicGhvbmVfbnVtYmVyIjoiMDE4NDU0NjQxNyIsImF2YXRhciI6Ii9zcmMvY3VzdG9tZXJfcGhvdG9zL2N1c3RvbWVyMTI2LmpwZyIsImlzYWRtaW4iOmZhbHNlLCJjcmVhdGVkX2F0IjoiMjAyMi0wMi0wMVQxMzoxNjowNS42NzNaIiwidXBkYXRlZF9hdCI6IjIwMjItMDItMDFUMTM6MTY6MDUuNjczWiJ9LCJpYXQiOjE2NDM3MjEzNjgsImV4cCI6MTY0MzcyMTY2OH0.zVZW7MLy1PLJ-7cWbpH68_jZTWMPxqHKWIdo6R3q0ZE
+@access_token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbDRwcDkycnkwMDAwemZ1a3VrZHBzajc4IiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNjU1OTA4NjQ2LCJleHAiOjE2NTU5OTUwNDZ9.OxN428a5jPx99hMHO04n19BYPuvOeTPYGcUtZQp3Xzg
 
 ###
-GET {{host}}/absentees HTTP/1.1
+GET {{host}}/absences HTTP/1.1
 content-type: application/json
 Authorization: {{access_token}}
 
 ###
-GET {{host}}/absentees/1 HTTP/1.1
+GET {{host}}/absences/1 HTTP/1.1
 content-type: application/json
 Authorization: {{access_token}}
 
 ###
-POST {{host}}/absentees HTTP/1.1
+POST {{host}}/absences HTTP/1.1
 content-type: application/json
 Authorization: {{access_token}}
 
@@ -24,7 +24,7 @@ Authorization: {{access_token}}
     }
 
 ###
-PATCH {{host}}/absentees/1 HTTP/1.1
+PATCH {{host}}/absences/1 HTTP/1.1
 content-type: application/json
 Authorization: {{access_token}}
 
@@ -36,7 +36,7 @@ Authorization: {{access_token}}
     }
     
 ###
-DELETE {{host}}/absentees/1 HTTP/1.1
+DELETE {{host}}/absences/1 HTTP/1.1
 content-type: application/json
 Authorization: {{access_token}}
 

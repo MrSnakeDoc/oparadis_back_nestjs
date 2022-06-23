@@ -39,6 +39,10 @@ export class UpdateUserDto {
   @IsOptional()
   private refresh_token?: string;
 
+  @IsBoolean()
+  @IsOptional()
+  avatar_delete?: boolean;
+
   constructor(partial: Partial<UpdateUserDto>) {
     Object.assign(this, partial);
   }
