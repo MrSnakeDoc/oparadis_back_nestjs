@@ -22,22 +22,31 @@ export class PhotoController {
   constructor(private PhotoService: PhotoService) {}
 
   @Get()
-  getPhotos(@Req() req: Request) {
+  getPhotos(@Req() req: Request): Promise<PhotoDto[]> {
     return this.PhotoService.getPhotos(req.url);
   }
 
   @Get(':id')
-  getPhoto(@Param('id') photoId: string, @Req() req: Request) {
+  getPhoto(
+    @Param('id') photoId: string,
+    @Req() req: Request,
+  ): Promise<PhotoDto> {
     return this.PhotoService.getPhotoById(photoId, req.url);
   }
 
   @Get('/house/:house_id')
-  getPhotoByHouseId(@Param('house_id') house_id: string, @Req() req: Request) {
+  getPhotoByHouseId(
+    @Param('house_id') house_id: string,
+    @Req() req: Request,
+  ): Promise<PhotoDto[]> {
     return this.PhotoService.getPhotoByHouseId(house_id, req.url);
   }
 
   @Post()
-  createPhoto(@GetUser('id') userId: string, @Body() dto: PhotoDto) {
+  createPhoto(
+    @GetUser('id') userId: string,
+    @Body() dto: PhotoDto,
+  ): Promise<PhotoDto> {
     return this.PhotoService.createPhoto(userId, dto);
   }
 
@@ -46,7 +55,7 @@ export class PhotoController {
     @GetUser('id') userId: string,
     @Param('id') photoId: string,
     @Body() dto: UpdatePhotoDto,
-  ) {
+  ): Promise<PhotoDto> {
     return this.PhotoService.updatePhoto(userId, photoId, dto);
   }
 

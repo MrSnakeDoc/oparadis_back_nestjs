@@ -1,8 +1,8 @@
 @host = http://localhost:5000
 
-@access_token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbDRwcDkycnkwMDAwemZ1a3VrZHBzajc4IiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNjU1OTA4NjQ2LCJleHAiOjE2NTU5OTUwNDZ9.OxN428a5jPx99hMHO04n19BYPuvOeTPYGcUtZQp3Xzg
+@access_token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbDR3azFzenkxODYyOWx1a3Z3bzVkemw1IiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNjU2MzIzMjkwLCJleHAiOjE2NTY0MDk2OTB9.poty39wCen3edq4UmNZqtZMF28QhckFSr6lSqDfXsPk
 
-@refresh_token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbDRwcDkycnkwMDAwemZ1a3VrZHBzajc4IiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNjU1OTA4NjQ2LCJleHAiOjE2NTg1MDA2NDZ9.gQ0l15RKo04_MzPxD2YfAVS0Hr05nh8cWct_T4FTNu
+@refresh_token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbDR3azFzenkxODYyOWx1a3Z3bzVkemw1IiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNjU2MzIzMjkwLCJleHAiOjE2NTg5MTUyOTB9.ZhX8fOUaxI6-aYk0rinRpmWFu76BzNmD1R0ypHPHqoo
 
 ###
 POST {{host}}/auth/signup HTTP/1.1
@@ -14,7 +14,7 @@ content-type: application/json
     "firstname": "a",
     "lastname": "a",
     "pseudo": "Jacquou le croquant",
-    "phone_number": "0184546417",
+    "phone_number": "0184546417"
 }
 
 ### Connexion User

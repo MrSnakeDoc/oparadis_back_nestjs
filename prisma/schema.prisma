@@ -159,12 +159,12 @@ model Absence {
 model Match {
   id String @id @default(cuid())
 
-  validated Boolean @default(false)
+  validated Boolean? @default(false)
 
-  sitter_id String
+  user_id String
 
-  absenceId String
-  absence Absence @relation(fields: [absenceId], references: [id], onDelete: Cascade)
+  absence_id String
+  absence Absence @relation(fields: [absence_id], references: [id], onDelete: Cascade)
 
   @@map("matches")
 }

@@ -5,3 +5,4 @@ export * from './Houses';
 export * from './Photos';
 export * from './Animals';
 export * from './Plants';
+export * from './Absences';

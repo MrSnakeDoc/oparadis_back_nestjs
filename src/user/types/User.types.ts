@@ -1,6 +1,3 @@
-import { Exclude } from 'class-transformer';
-import { IsBoolean, IsEmail, IsOptional, IsString } from 'class-validator';
-
 export class UserType {
   email?: string;
 

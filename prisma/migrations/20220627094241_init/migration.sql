@@ -125,9 +125,9 @@ CREATE TABLE "absences" (
 -- CreateTable
 CREATE TABLE "matches" (
     "id" TEXT NOT NULL,
-    "validated" BOOLEAN NOT NULL DEFAULT false,
-    "sitter_id" TEXT NOT NULL,
-    "absenceId" TEXT NOT NULL,
+    "validated" BOOLEAN DEFAULT false,
+    "user_id" TEXT NOT NULL,
+    "absence_id" TEXT NOT NULL,
 
     CONSTRAINT "matches_pkey" PRIMARY KEY ("id")
 );
@@ -172,4 +172,4 @@ ALTER TABLE "photos" ADD CONSTRAINT "photos_house_id_fkey" FOREIGN KEY ("house_i
 ALTER TABLE "absences" ADD CONSTRAINT "absences_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "matches" ADD CONSTRAINT "matches_absenceId_fkey" FOREIGN KEY ("absenceId") REFERENCES "absences"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "matches" ADD CONSTRAINT "matches_absence_id_fkey" FOREIGN KEY ("absence_id") REFERENCES "absences"("id") ON DELETE CASCADE ON UPDATE CASCADE;

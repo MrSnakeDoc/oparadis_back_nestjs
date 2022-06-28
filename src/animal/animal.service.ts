@@ -67,7 +67,10 @@ export class AnimalService {
     }
   }
 
-  async getAnimalByUserId(user_id: string, url: string): Promise<AnimalType[]> {
+  async getAnimalsByUserId(
+    user_id: string,
+    url: string,
+  ): Promise<AnimalType[]> {
     try {
       const cachedAnimal: AnimalType[] = await this.cache.get(
         `${this.prefix}${url}`,

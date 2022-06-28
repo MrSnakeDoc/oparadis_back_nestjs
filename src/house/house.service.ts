@@ -143,7 +143,7 @@ export class HouseService {
 
       const four = housesFull.slice(0, 4);
 
-      await this.cache.set(`${this.prefix}getFour`, four);
+      await this.cache.set(`${this.prefix}${url}`, four);
 
       return four;
     } catch (error) {
@@ -153,16 +153,23 @@ export class HouseService {
 
   async getHouseById(id: string, url: string): Promise<HouseType> {
     try {
-      const cachedHouse = await this.cache.get(`${this.prefix}${url}`);
+      const cachedHouse: HouseType = await this.cache.get(
+        `${this.prefix}${url}`,
+      );
 
       if (cachedHouse) return cachedHouse;
 
-      const house = this.prisma.house.findFirst({ where: { id } });
+      const house: HouseType = await this.prisma.house.findUnique({
+        where: {
+          id,
+        },
+      });
+
       if (!house) {
         throw new HttpException('House not found', HttpStatus.NOT_FOUND);
       }
 
-      await this.cache.set(`${this.prefix}gethouse`, house);
+      await this.cache.set(`${this.prefix}${url}`, house);
 
       return house;
     } catch (error) {
@@ -170,9 +177,12 @@ export class HouseService {
     }
   }
 
-  async createHouse(userId: string, dto: CreateHouseDto): Promise<HouseType> {
+  async createHouse(
+    userId: string,
+    dto: CreateHouseDto,
+  ): Promise<CreateHouseDto> {
     try {
-      const house = await this.prisma.house.create({
+      const house: CreateHouseDto = await this.prisma.house.create({
         data: { ...dto, user_id: userId },
       });
 

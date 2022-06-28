@@ -7,7 +7,6 @@ export class UserDto {
   email?: string;
 
   @Exclude()
-  @IsString()
   @IsOptional()
   password?: string;
 
@@ -36,7 +35,6 @@ export class UserDto {
   isAdmin?: boolean;
 
   @Exclude()
-  @IsString()
   @IsOptional()
   refresh_token?: string;
 

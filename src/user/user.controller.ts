@@ -7,6 +7,7 @@ import {
   Controller,
   Delete,
   Get,
+  Param,
   Patch,
   Req,
   UseGuards,
@@ -28,9 +29,19 @@ export class UserController {
     private cache: RedisCacheService,
   ) {}
 
+  @Get()
+  getUsers(@Req() req: Request): Promise<UserDto[]> {
+    return this.userService.getUsers(req.url);
+  }
+
+  @Get(':id')
+  getUserById(@Param('id') id: string, @Req() req: Request): Promise<UserDto> {
+    return this.userService.getUserById(id, req.url);
+  }
+
   @UseInterceptors(ClassSerializerInterceptor)
   @Get('me')
-  async getMe(@GetUser() user: User, @Req() req: Request) {
+  async getMe(@GetUser() user: User, @Req() req: Request): Promise<UserType> {
     const cachedUser: UserType = await this.cache.get(
       `${this.prefix}${req.url}${user.id}`,
     );
@@ -48,7 +59,10 @@ export class UserController {
 
   @UseInterceptors(ClassSerializerInterceptor)
   @Patch()
-  editUser(@GetUser('id') userId: string, @Body() dto: UpdateUserDto) {
+  editUser(
+    @GetUser('id') userId: string,
+    @Body() dto: UpdateUserDto,
+  ): Promise<UserType> {
     return this.userService.updateUser(userId, dto);
   }
 

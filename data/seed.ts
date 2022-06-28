@@ -1,6 +1,15 @@
 import { PrismaClient } from '@prisma/client';
 import * as argon from 'argon2';
-import { Countries, Types, Users, Houses, Photos, Animals, Plants } from '.';
+import {
+  Countries,
+  Types,
+  Users,
+  Houses,
+  Photos,
+  Animals,
+  Plants,
+  Absences,
+} from '.';
 import { SignInDto } from '../src/auth/dto/';
 import { CreateHouseDto } from '../src/house/dto/';
 import { CountryType } from '../src/country/types';
@@ -8,6 +17,7 @@ import { Type } from '../src/type/types';
 import { PhotoDto } from '../src/photo/dto';
 import { AnimalDto } from '../src/animal/dto';
 import { PlantDto } from '../src/plant/dto';
+import { AbsenceDto } from '../src/absence/dto';
 
 const prisma = new PrismaClient();
 
@@ -18,6 +28,7 @@ Types: [Type];
 Photos: [PhotoDto];
 Animals: [AnimalDto];
 Plants: [PlantDto];
+Absences: [AbsenceDto];
 
 async function main() {
   try {
@@ -100,6 +111,16 @@ async function main() {
         data: {
           user_id,
           ...plant,
+        },
+      });
+    }
+
+    for (const [index, absence] of Absences.entries()) {
+      const user_id: string = usersId[index];
+      await prisma.absence.create({
+        data: {
+          ...absence,
+          user_id,
         },
       });
     }

@@ -1,0 +1,36 @@
+@host = http://localhost:5000
+
+@access_token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbDR3azFzenkxODYyOWx1a3Z3bzVkemw1IiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNjU2MzIzMjkwLCJleHAiOjE2NTY0MDk2OTB9.poty39wCen3edq4UmNZqtZMF28QhckFSr6lSqDfXsPk
+
+###
+GET {{host}}/matches HTTP/1.1
+content-type: application/json
+Authorization: {{access_token}}
+
+###
+GET {{host}}/matches/cl4wk6ykh00254huk6z6rkgml HTTP/1.1
+content-type: application/json
+Authorization: {{access_token}}
+
+###
+POST {{host}}/matches HTTP/1.1
+content-type: application/json
+Authorization: {{access_token}}
+
+{
+    "absence_id": "cl4wk1t3s19909lukqfjd6vif"
+}
+
+###
+PATCH {{host}}/matches/cl4wk6ykh00254huk6z6rkgml HTTP/1.1
+content-type: application/json
+Authorization: {{access_token}}
+
+
+{
+}
+    
+###
+DELETE {{host}}/matches/1 HTTP/1.1
+content-type: application/json
+Authorization: {{access_token}}

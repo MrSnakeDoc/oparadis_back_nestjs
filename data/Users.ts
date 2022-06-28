@@ -36,4 +36,15 @@ export const Users = [
     avatar:
       'https://res.cloudinary.com/oparadis/image/upload/w_200,h_200,c_fill,g_face,r_max/v1644248195/avatars/kk6p2qwkl4ug0q6wsiew.jpg',
   },
+
+  {
+    email: 'a@a.com',
+    password: 'Paradis13$',
+    firstname: 'a',
+    lastname: 'a',
+    pseudo: 'Jacquou le croquant',
+    phone_number: '0184546417',
+    refresh_token:
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbDR3aHN0ZzcwMDAwcjB1a25qOG1sN3liIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNjU2MzE5Mzk4LCJleHAiOjE2NTg5MTEzOTh9.ezJ2cgAvDFY2IfPv7SmLOw3Pd6UOc42DLlrVbQfqqrM',
+  },
 ];

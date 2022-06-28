@@ -1,19 +1,13 @@
-import {
-  IsBoolean,
-  IsDate,
-  IsNotEmpty,
-  IsOptional,
-  IsString,
-} from 'class-validator';
+import { IsBoolean, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class MatchDto {
   @IsOptional()
   @IsBoolean()
   validated?: boolean;
 
-  @IsOptional()
+  @IsNotEmpty()
   @IsString()
-  sitter_id?: string;
+  absence_id: string;
 
   constructor(partial: Partial<MatchDto>) {
     Object.assign(this, partial);

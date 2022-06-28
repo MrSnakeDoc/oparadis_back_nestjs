@@ -16,6 +16,7 @@ import { GetUser } from 'src/auth/decorator';
 import { JwtGuard } from 'src/auth/guard';
 import { PlantDto, UpdatePlantDto } from './dto';
 import { PlantService } from './plant.service';
+import { PlantType } from './types';
 
 @UseGuards(JwtGuard)
 @Controller('plants')
@@ -23,23 +24,32 @@ export class PlantController {
   constructor(private PlantService: PlantService) {}
 
   @Get()
-  getPlants(@Req() req: Request) {
+  getPlants(@Req() req: Request): Promise<PlantType[]> {
     return this.PlantService.getPlants(req.url);
   }
 
   @Get(':id')
-  getPlantById(@Param('id') PlantId: string, @Req() req: Request) {
+  getPlantById(
+    @Param('id') PlantId: string,
+    @Req() req: Request,
+  ): Promise<PlantType> {
     return this.PlantService.getPlantById(PlantId, req.url);
   }
 
   @Get('/user/:user_id')
-  getAnimalByUserId(@Param('user_id') user_id: string, @Req() req: Request) {
+  getAnimalByUserId(
+    @Param('user_id') user_id: string,
+    @Req() req: Request,
+  ): Promise<PlantType[]> {
     return this.PlantService.getPlantByUserId(user_id, req.url);
   }
 
   @UseInterceptors(ClassSerializerInterceptor)
   @Post()
-  createPlant(@GetUser('id') userId: string, @Body() dto: PlantDto) {
+  createPlant(
+    @GetUser('id') userId: string,
+    @Body() dto: PlantDto,
+  ): Promise<PlantType> {
     return this.PlantService.createPlant(userId, dto);
   }
 
@@ -49,7 +59,7 @@ export class PlantController {
     @GetUser('id') userId: string,
     @Param('id') PlantId: string,
     @Body() dto: UpdatePlantDto,
-  ) {
+  ): Promise<PlantType> {
     return this.PlantService.updatePlant(userId, PlantId, dto);
   }
 

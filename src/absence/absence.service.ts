@@ -1,21 +1,31 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { AbsenceDto } from './dto/Absence.dto';
+import {
+  ForbiddenException,
+  HttpException,
+  HttpStatus,
+  Injectable,
+} from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { RedisCacheService } from 'src/redis-cache/redis-cache.service';
+import { AbsenceType } from './types';
+import { UpdateAbsenceDto } from './dto';
 
 @Injectable()
 export class AbsenceService {
-  private readonly prefix: string = 'absence:';
+  private readonly prefix: string = 'absences:';
   constructor(
     private readonly prisma: PrismaService,
     private readonly cache: RedisCacheService,
   ) {}
-  async getAbsences(url) {
+  async getAbsences(url): Promise<AbsenceType[]> {
     try {
-      const cachedAbsences = await this.cache.get(`${this.prefix}${url}`);
+      const cachedAbsences: AbsenceType[] = await this.cache.get(
+        `${this.prefix}${url}`,
+      );
 
       if (cachedAbsences) return cachedAbsences;
 
-      const absences: any = await this.prisma.absence.findMany();
+      const absences: AbsenceType[] = await this.prisma.absence.findMany();
 
       if (!absences) {
         throw new HttpException('No absences found', HttpStatus.NOT_FOUND);
@@ -40,7 +50,7 @@ export class AbsenceService {
         throw new HttpException('Absence not found', HttpStatus.NOT_FOUND);
       }
 
-      await this.cache.set(`${this.prefix}gethouse`, absence);
+      await this.cache.set(`${this.prefix}${url}`, absence);
 
       return absence;
     } catch (error) {
@@ -48,11 +58,104 @@ export class AbsenceService {
     }
   }
 
-  async getAbsenceByUserId(userId, url) {}
+  async getAbsencesByUserId(user_id, url): Promise<AbsenceType[]> {
+    try {
+      const cachedAbsences: AbsenceType[] = await this.cache.get(
+        `${this.prefix}${url}`,
+      );
 
-  async createAbsence(url) {}
+      if (cachedAbsences) return cachedAbsences;
 
-  async updateAbsence(url) {}
+      const absences: AbsenceType[] = await this.prisma.absence.findMany({
+        where: {
+          user_id,
+        },
+      });
 
-  async deleteAbsence(url) {}
+      if (!absences) {
+        throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
+      }
+
+      await this.cache.set(`${this.prefix}${url}`, absences);
+
+      return absences;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async createAbsence(user_id: string, dto: AbsenceDto): Promise<AbsenceType> {
+    try {
+      const absence: AbsenceType = await this.prisma.absence.create({
+        data: {
+          ...dto,
+          user_id,
+        },
+      });
+
+      if (!absence) {
+        throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
+      }
+
+      await this.cache.del(this.prefix);
+
+      return absence;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async updateAbsence(
+    user_id: string,
+    id: string,
+    dto: UpdateAbsenceDto,
+  ): Promise<AbsenceType> {
+    try {
+      const storedAbsence: AbsenceType = await this.prisma.absence.findUnique({
+        where: {
+          id,
+        },
+      });
+
+      if (!storedAbsence || storedAbsence.user_id === user_id) {
+        throw new ForbiddenException('Access to ressources denied');
+      }
+
+      const absence: AbsenceType = await this.prisma.absence.update({
+        where: { id },
+        data: {
+          ...dto,
+          user_id,
+        },
+      });
+
+      if (!absence) {
+        throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
+      }
+
+      await this.cache.del(this.prefix);
+
+      return absence;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async deleteAbsence(user_id, id) {
+    const storedAbsence: AbsenceType = await this.prisma.absence.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    if (!storedAbsence || storedAbsence.user_id === user_id) {
+      throw new ForbiddenException('Access to ressources denied');
+    }
+
+    await this.cache.del(this.prefix);
+
+    await this.prisma.absence.delete({ where: { id } });
+
+    return HttpStatus.OK;
+  }
 }

@@ -13,6 +13,7 @@ import { CountryModule } from './country/country.module';
 import { RedisCacheModule } from './redis-cache/redis-cache.module';
 import { AbsenceModule } from './absence/absence.module';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
+import { NotificationsModule } from './notifications/notifications.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { CloudinaryModule } from './cloudinary/cloudinary.module';
     RedisCacheModule,
     AbsenceModule,
     CloudinaryModule,
+    NotificationsModule,
   ],
 })
 export class AppModule {}

@@ -14,7 +14,7 @@ import {
 import { Request } from 'express';
 import { GetUser } from 'src/auth/decorator';
 import { JwtGuard } from 'src/auth/guard';
-import { MatchDto } from './dto/';
+import { MatchDto, MatchFullDto } from './dto/';
 import { MatchService } from './match.service';
 
 @UseGuards(JwtGuard)
@@ -27,16 +27,20 @@ export class MatchController {
   //   return this.MatchService.getMatches(req.url);
   // }
 
-  // @Get(':id')
-  // getMatchById(@Param('id') id: string, @Req() req: Request): MatchDto {
-  //   return this.MatchService.getMatchById(id, req.url);
-  // }
+  @Get(':id')
+  getMatchById(
+    @GetUser('id') userId: string,
+    @Param('id') id: string,
+    @Req() req: Request,
+  ): Promise<MatchFullDto> {
+    return this.MatchService.getMatchById(userId, id, req.url);
+  }
 
   // @Get(':userId')
   // getMatchByUserId(
   //   @Param('userId') userId: string,
   //   @Req() req: Request,
-  // ): MatchDto[] {
+  // ): Promise<MatchDto[]> {
   //   return this.MatchService.getMatchByUserId(userId, req.url);
   // }
 
@@ -48,11 +52,14 @@ export class MatchController {
   //   return this.MatchService.getMatchBySitterId(sitterId, req.url);
   // }
 
-  // @UseInterceptors(ClassSerializerInterceptor)
-  // @Post()
-  // saveMatch(@GetUser('id') userId: string, @Body() dto: MatchDto): MatchDto {
-  //   return this.MatchService.saveMatch(userId, dto);
-  // }
+  @UseInterceptors(ClassSerializerInterceptor)
+  @Post()
+  saveMatch(
+    @GetUser('id') userId: string,
+    @Body() dto: MatchDto,
+  ): Promise<MatchDto> {
+    return this.MatchService.saveMatch(userId, dto);
+  }
 
   // @UseInterceptors(ClassSerializerInterceptor)
   // @Patch(':id')

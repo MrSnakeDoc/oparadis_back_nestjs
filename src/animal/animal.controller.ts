@@ -1,3 +1,4 @@
+import { AnimalType } from 'src/animal/types/';
 import { AnimalService } from './animal.service';
 import {
   Body,
@@ -23,23 +24,32 @@ export class AnimalController {
   constructor(private AnimalService: AnimalService) {}
 
   @Get()
-  getAnimals(@Req() req: Request) {
+  getAnimals(@Req() req: Request): Promise<AnimalType[]> {
     return this.AnimalService.getAnimals(req.url);
   }
 
   @Get(':id')
-  getAnimalById(@Param('id') animalId: string, @Req() req: Request) {
+  getAnimalById(
+    @Param('id') animalId: string,
+    @Req() req: Request,
+  ): Promise<AnimalType> {
     return this.AnimalService.getAnimalById(animalId, req.url);
   }
 
   @Get('/user/:user_id')
-  getAnimalByUserId(@Param('user_id') user_id: string, @Req() req: Request) {
-    return this.AnimalService.getAnimalByUserId(user_id, req.url);
+  getAnimalsByUserId(
+    @Param('user_id') user_id: string,
+    @Req() req: Request,
+  ): Promise<AnimalDto[]> {
+    return this.AnimalService.getAnimalsByUserId(user_id, req.url);
   }
 
   @UseInterceptors(ClassSerializerInterceptor)
   @Post()
-  createAnimal(@GetUser('id') userId: string, @Body() dto: AnimalDto) {
+  createAnimal(
+    @GetUser('id') userId: string,
+    @Body() dto: AnimalDto,
+  ): Promise<AnimalType> {
     return this.AnimalService.createAnimal(userId, dto);
   }
 
@@ -49,7 +59,7 @@ export class AnimalController {
     @GetUser('id') userId: string,
     @Param('id') animalId: string,
     @Body() dto: UpdateAnimalDto,
-  ) {
+  ): Promise<AnimalType> {
     return this.AnimalService.updateAnimal(userId, animalId, dto);
   }
 

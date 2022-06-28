@@ -9,6 +9,7 @@ import * as argon from 'argon2';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { RedisCacheService } from 'src/redis-cache/redis-cache.service';
 import { UserDto, UpdateUserDto, UpdateUserPasswordDto } from './dto';
+import { UserType } from './types';
 
 @Injectable()
 export class UserService {
@@ -23,6 +24,53 @@ export class UserService {
     private cache: RedisCacheService,
     private cloudinary: CloudinaryService,
   ) {}
+
+  async getUsers(url: string): Promise<UserDto[]> {
+    try {
+      const users = await this.cache.get(`${this.prefix}${url}`);
+
+      if (users) {
+        return users;
+      }
+
+      const storedUsers: UserType[] = await this.prisma.user.findMany();
+
+      const usersDto: UserDto[] = storedUsers.map((user) => {
+        delete user.password;
+        delete user.refresh_token;
+        return user;
+      });
+
+      await this.cache.set(this.prefix, usersDto);
+
+      return usersDto;
+    } catch (error) {
+      throw error;
+    }
+  }
+  async getUserById(id, url): Promise<UserType> {
+    try {
+      const users: UserType = await this.cache.get(`${this.prefix}${url}`);
+
+      if (users) {
+        return users;
+      }
+
+      const storedUsers: UserType = await this.prisma.user.findUnique({
+        where: { id },
+      });
+
+      const userDto: UserDto = Object.assign({}, storedUsers);
+      delete userDto.password;
+      delete userDto.refresh_token;
+
+      await this.cache.set(this.prefix, userDto);
+
+      return userDto;
+    } catch (error) {
+      throw error;
+    }
+  }
 
   async updateUser(userId: string, dto: UpdateUserDto): Promise<UserDto> {
     try {
