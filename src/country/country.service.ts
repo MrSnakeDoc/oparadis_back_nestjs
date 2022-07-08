@@ -1,4 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { RedisCacheService } from 'src/redis-cache/redis-cache.service';
 import { CountryType } from './types/';
@@ -6,9 +7,11 @@ import { CountryType } from './types/';
 @Injectable()
 export class CountryService {
   private readonly prefix: string = 'countries:';
+
   constructor(
     private prisma: PrismaService,
     private cache: RedisCacheService,
+    private readonly configService: ConfigService,
   ) {}
 
   async getCountries(url: string): Promise<CountryType[]> {
@@ -24,7 +27,11 @@ export class CountryService {
         throw new HttpException('No countries found', HttpStatus.NOT_FOUND);
       }
 
-      await this.cache.set(`${this.prefix}${url}`, countries);
+      await this.cache.set(
+        `${this.prefix}${url}`,
+        countries,
+        this.configService.get('CACHE_TTL'),
+      );
 
       return countries;
     } catch (error) {
@@ -49,7 +56,11 @@ export class CountryService {
         throw new HttpException('No countries found', HttpStatus.NOT_FOUND);
       }
 
-      await this.cache.set(`${this.prefix}${url}`, country);
+      await this.cache.set(
+        `${this.prefix}${url}`,
+        country,
+        this.configService.get('CACHE_TTL'),
+      );
 
       return country;
     } catch (error) {

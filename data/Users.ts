@@ -6,6 +6,7 @@ export const Users = [
     lastname: 'La Best Helper',
     pseudo: 'Sophie Best Helper',
     phone_number: '4242424242',
+    verified: true,
     avatar:
       'https://res.cloudinary.com/oparadis/image/upload/w_200,h_200,c_fill,g_face,r_max/v1644248193/avatars/hr4swd0vruhw6ghkulsa.jpg',
   },
@@ -15,6 +16,7 @@ export const Users = [
     firstname: 'Éleuthère',
     lastname: 'Roy',
     phone_number: '0518889651',
+    verified: true,
     avatar:
       'https://res.cloudinary.com/oparadis/image/upload/w_200,h_200,c_fill,g_face,r_max/v1644248197/avatars/veckoiirdahezzqyqy7f.jpg',
   },
@@ -24,6 +26,7 @@ export const Users = [
     firstname: 'Tonnin',
     lastname: 'Dupont',
     phone_number: '5068214891',
+    verified: true,
     avatar:
       'https://res.cloudinary.com/oparadis/image/upload/w_200,h_200,c_fill,g_face,r_max/v1644248194/avatars/ce2yjg2s1wh8m71sghqn.jpg',
   },
@@ -33,6 +36,7 @@ export const Users = [
     firstname: 'Joëlle',
     lastname: 'Blanchard',
     phone_number: '7152849743',
+    verified: true,
     avatar:
       'https://res.cloudinary.com/oparadis/image/upload/w_200,h_200,c_fill,g_face,r_max/v1644248195/avatars/kk6p2qwkl4ug0q6wsiew.jpg',
   },
@@ -44,6 +48,7 @@ export const Users = [
     lastname: 'a',
     pseudo: 'Jacquou le croquant',
     phone_number: '0184546417',
+    verified: true,
     refresh_token:
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbDR3aHN0ZzcwMDAwcjB1a25qOG1sN3liIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNjU2MzE5Mzk4LCJleHAiOjE2NTg5MTEzOTh9.ezJ2cgAvDFY2IfPv7SmLOw3Pd6UOc42DLlrVbQfqqrM',
   },

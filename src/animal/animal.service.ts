@@ -9,6 +9,7 @@ import { AnimalDto, UpdateAnimalDto } from './dto';
 import { AnimalType } from './types/';
 import { RedisCacheService } from 'src/redis-cache/redis-cache.service';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AnimalService {
@@ -19,6 +20,7 @@ export class AnimalService {
     private prisma: PrismaService,
     private cache: RedisCacheService,
     private cloudinary: CloudinaryService,
+    private configService: ConfigService,
   ) {}
 
   async getAnimals(url: string): Promise<AnimalType[]> {
@@ -34,7 +36,11 @@ export class AnimalService {
         throw new HttpException('No houses found', HttpStatus.NOT_FOUND);
       }
 
-      await this.cache.set(`${this.prefix}${url}`, animals);
+      await this.cache.set(
+        `${this.prefix}${url}`,
+        animals,
+        this.configService.get('CACHE_TTL'),
+      );
 
       return animals;
     } catch (error) {
@@ -59,7 +65,11 @@ export class AnimalService {
         throw new HttpException('No houses found', HttpStatus.NOT_FOUND);
       }
 
-      await this.cache.set(`${this.prefix}${url}`, animal);
+      await this.cache.set(
+        `${this.prefix}${url}`,
+        animal,
+        this.configService.get('CACHE_TTL'),
+      );
 
       return animal;
     } catch (error) {
@@ -88,7 +98,11 @@ export class AnimalService {
         throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
       }
 
-      await this.cache.set(`${this.prefix}${url}`, animals);
+      await this.cache.set(
+        `${this.prefix}${url}`,
+        animals,
+        this.configService.get('CACHE_TTL'),
+      );
 
       return animals;
     } catch (error) {

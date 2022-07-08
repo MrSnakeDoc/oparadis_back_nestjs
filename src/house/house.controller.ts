@@ -37,11 +37,6 @@ export class HouseController {
     return this.HouseService.getHouseFullById(id, req.url);
   }
 
-  @Get('four')
-  getFour(@Req() req: Request) {
-    return this.HouseService.getFour(req.url);
-  }
-
   @Get(':id')
   getHouseById(@Param('id') houseId: string, @Req() req: Request) {
     return this.HouseService.getHouseById(houseId, req.url);

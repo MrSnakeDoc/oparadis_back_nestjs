@@ -1,3 +1,4 @@
+import { ConfigService } from '@nestjs/config';
 import { HouseType } from './types/house.types';
 import {
   ForbiddenException,
@@ -17,6 +18,7 @@ export class HouseService {
   constructor(
     private prisma: PrismaService,
     private cache: RedisCacheService,
+    private readonly configService: ConfigService,
   ) {}
 
   async getHouses(url: string): Promise<HouseType[]> {
@@ -31,7 +33,11 @@ export class HouseService {
         throw new HttpException('No houses found', HttpStatus.NOT_FOUND);
       }
 
-      await this.cache.set(`${this.prefix}${url}`, houses);
+      await this.cache.set(
+        `${this.prefix}${url}`,
+        houses,
+        this.configService.get('CACHE_TTL'),
+      );
 
       return houses;
     } catch (error) {
@@ -65,7 +71,11 @@ export class HouseService {
         };
       });
 
-      await this.cache.set(`${this.prefix}${url}`, fullHouses);
+      await this.cache.set(
+        `${this.prefix}${url}`,
+        fullHouses,
+        this.configService.get('CACHE_TTL'),
+      );
 
       return fullHouses;
     } catch (error) {
@@ -102,50 +112,13 @@ export class HouseService {
         plants: plants,
       };
 
-      await this.cache.set(`${this.prefix}${url}`, fullHouse);
+      await this.cache.set(
+        `${this.prefix}${url}`,
+        fullHouse,
+        this.configService.get('CACHE_TTL'),
+      );
 
       return fullHouse;
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  async getFour(url: string): Promise<HouseType[]> {
-    try {
-      const cachedHouses = await this.cache.get(`${this.prefix}${url}`);
-
-      if (cachedHouses) return cachedHouses;
-
-      const houses: HouseType[] = await this.prisma.house.findMany({
-        include: {
-          photo: true,
-        },
-        orderBy: [
-          {
-            created_at: 'desc',
-          },
-        ],
-      });
-      if (!houses) {
-        throw new HttpException('No houses found', HttpStatus.NOT_FOUND);
-      }
-
-      const animals: AnimalType[] = await this.prisma.animal.findMany();
-      const plants: PlantType[] = await this.prisma.plant.findMany();
-
-      const housesFull = houses.map((house) => {
-        return {
-          ...house,
-          animals: animals.filter((animal) => animal.user_id === house.user_id),
-          plants: plants.filter((plant) => plant.user_id === house.user_id),
-        };
-      });
-
-      const four = housesFull.slice(0, 4);
-
-      await this.cache.set(`${this.prefix}${url}`, four);
-
-      return four;
     } catch (error) {
       throw error;
     }
@@ -169,7 +142,11 @@ export class HouseService {
         throw new HttpException('House not found', HttpStatus.NOT_FOUND);
       }
 
-      await this.cache.set(`${this.prefix}${url}`, house);
+      await this.cache.set(
+        `${this.prefix}${url}`,
+        house,
+        this.configService.get('CACHE_TTL'),
+      );
 
       return house;
     } catch (error) {

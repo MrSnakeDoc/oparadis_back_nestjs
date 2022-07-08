@@ -14,6 +14,8 @@ import { RedisCacheModule } from './redis-cache/redis-cache.module';
 import { AbsenceModule } from './absence/absence.module';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { NotificationsModule } from './notifications/notifications.module';
+import { MailModule } from './mail/mail.module';
+import { HomeModule } from './home/home.module';
 
 @Module({
   imports: [
@@ -32,6 +34,8 @@ import { NotificationsModule } from './notifications/notifications.module';
     AbsenceModule,
     CloudinaryModule,
     NotificationsModule,
+    MailModule,
+    HomeModule,
   ],
 })
 export class AppModule {}

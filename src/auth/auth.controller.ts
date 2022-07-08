@@ -7,6 +7,7 @@ import {
   HttpCode,
   HttpStatus,
   Post,
+  Query,
 } from '@nestjs/common';
 import { AuthDto, SignInDto } from './dto';
 
@@ -24,6 +25,12 @@ export class AuthController {
   @Post('signin')
   signin(@Body() dto: SignInDto) {
     return this.authService.signin(dto);
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @Get('confirm')
+  async confirm(@Query('token') token: string) {
+    return this.authService.confirm(token);
   }
 
   @HttpCode(HttpStatus.OK)

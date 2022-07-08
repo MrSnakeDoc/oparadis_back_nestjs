@@ -11,13 +11,18 @@ import * as argon from 'argon2';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import { AuthDto, SignInDto } from './dto';
 import { JwtService } from '@nestjs/jwt';
+import { RedisCacheService } from 'src/redis-cache/redis-cache.service';
+import { MailService } from 'src/mail/mail.service';
 
 @Injectable()
 export class AuthService {
+  private readonly prefix: string = 'usersVerif:';
   constructor(
     private prisma: PrismaService,
     private jwt: JwtService,
     private config: ConfigService,
+    private cache: RedisCacheService,
+    private mail: MailService,
   ) {}
 
   async signup(dto: AuthDto) {
@@ -27,20 +32,69 @@ export class AuthService {
       delete dto.password;
 
       !dto.pseudo ? (dto.pseudo = dto.firstname) : null;
+
       //save the user to the database
-      const data = { ...dto, password: hash };
+
       const user = await this.prisma.user.create({
-        data: data,
+        data: { ...dto, password: hash },
       });
-      //return the user
-      delete user.password;
-      return user;
+
+      const validationToken = await this.signToken(
+        'JWT_SECRET',
+        this.config.get('JWT_EXPIRATION'),
+        user.id,
+        user.email,
+      );
+
+      await this.cache.set(
+        `${this.prefix}${user.id}`,
+        validationToken,
+        this.config.get('EMAIL_VALIDATION_EXPIRATION'),
+      );
+
+      //send the email with the validation token
+      await this.mail.sendUserConfirmation(user, validationToken);
+
+      return HttpStatus.CREATED;
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
         if (error.code === 'P2002') {
           throw new ForbiddenException('Credentials already in use');
         }
       }
+      throw error;
+    }
+  }
+
+  async confirm(token: string) {
+    try {
+      const user = await this.checkEmail(token);
+
+      if (!user) {
+        throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+      }
+
+      if (user.verified)
+        throw new HttpException(
+          'User already verified',
+          HttpStatus.BAD_REQUEST,
+        );
+
+      const validateToken = await this.cache.get(`${this.prefix}${user.id}`);
+
+      if (validateToken !== token) {
+        throw new ForbiddenException('Invalid token');
+      }
+
+      await this.cache.del(`${this.prefix}${user.id}`);
+
+      await this.prisma.user.update({
+        where: { id: user.id },
+        data: { verified: true },
+      });
+
+      return HttpStatus.OK;
+    } catch (error) {
       throw error;
     }
   }
@@ -61,6 +115,7 @@ export class AuthService {
       if (!pwMatches) {
         throw new ForbiddenException('Invalid credentials');
       }
+
       const refresh_token = await this.signToken(
         'REFRESH_JWT_SECRET',
         this.config.get('REFRESH_JWT_EXPIRATION'),
@@ -69,10 +124,12 @@ export class AuthService {
       );
 
       const cryptedRefreshToken: string = await argon.hash(refresh_token);
+
       await this.prisma.user.update({
         where: { id: user.id },
         data: { refresh_token: cryptedRefreshToken },
       });
+
       //send back the user
       return {
         accessToken: await this.signToken(
@@ -171,6 +228,35 @@ export class AuthService {
       if (!isRefreshTokenMatching) {
         throw new UnauthorizedException('Invalid token');
       }
+      return user;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async checkEmail(token: string) {
+    try {
+      const decoded = this.jwt.decode(token);
+
+      if (!decoded) {
+        throw new ForbiddenException('Invalid refresh token');
+      }
+
+      const user = await this.prisma.user.findFirst({
+        where: { id: decoded.sub },
+      });
+
+      if (!user) {
+        throw new HttpException(
+          'User with this id does not exist',
+          HttpStatus.NOT_FOUND,
+        );
+      }
+
+      if (user.id !== decoded.sub) {
+        throw new ForbiddenException('Invalid token');
+      }
+
       return user;
     } catch (error) {
       throw error;

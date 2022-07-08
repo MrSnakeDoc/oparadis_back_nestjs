@@ -9,6 +9,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { RedisCacheService } from 'src/redis-cache/redis-cache.service';
 import { AbsenceType } from './types';
 import { UpdateAbsenceDto } from './dto';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AbsenceService {
@@ -16,6 +17,7 @@ export class AbsenceService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly cache: RedisCacheService,
+    private readonly configService: ConfigService,
   ) {}
   async getAbsences(url): Promise<AbsenceType[]> {
     try {
@@ -31,7 +33,11 @@ export class AbsenceService {
         throw new HttpException('No absences found', HttpStatus.NOT_FOUND);
       }
 
-      await this.cache.set(`${this.prefix}${url}`, absences);
+      await this.cache.set(
+        `${this.prefix}${url}`,
+        absences,
+        this.configService.get('CACHE_TTL'),
+      );
 
       return absences;
     } catch (error) {
@@ -50,7 +56,11 @@ export class AbsenceService {
         throw new HttpException('Absence not found', HttpStatus.NOT_FOUND);
       }
 
-      await this.cache.set(`${this.prefix}${url}`, absence);
+      await this.cache.set(
+        `${this.prefix}${url}`,
+        absence,
+        this.configService.get('CACHE_TTL'),
+      );
 
       return absence;
     } catch (error) {
@@ -76,7 +86,11 @@ export class AbsenceService {
         throw new HttpException('Bad Request', HttpStatus.BAD_REQUEST);
       }
 
-      await this.cache.set(`${this.prefix}${url}`, absences);
+      await this.cache.set(
+        `${this.prefix}${url}`,
+        absences,
+        this.configService.get('CACHE_TTL'),
+      );
 
       return absences;
     } catch (error) {

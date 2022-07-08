@@ -1,3 +1,4 @@
+import { ConfigService } from '@nestjs/config';
 import {
   ForbiddenException,
   HttpException,
@@ -20,6 +21,7 @@ export class PlantService {
     private prisma: PrismaService,
     private cache: RedisCacheService,
     private cloudinary: CloudinaryService,
+    private readonly configService: ConfigService,
   ) {}
 
   async getPlants(url: string): Promise<PlantType[]> {
@@ -35,7 +37,11 @@ export class PlantService {
         throw new HttpException('No houses found', HttpStatus.NOT_FOUND);
       }
 
-      await this.cache.set(`${this.prefix}${url}`, plants);
+      await this.cache.set(
+        `${this.prefix}${url}`,
+        plants,
+        this.configService.get('CACHE_TTL'),
+      );
 
       return plants;
     } catch (error) {
@@ -60,7 +66,11 @@ export class PlantService {
         throw new HttpException('No houses found', HttpStatus.NOT_FOUND);
       }
 
-      await this.cache.set(`${this.prefix}${url}`, plant);
+      await this.cache.set(
+        `${this.prefix}${url}`,
+        plant,
+        this.configService.get('CACHE_TTL'),
+      );
 
       return plant;
     } catch (error) {
@@ -85,7 +95,11 @@ export class PlantService {
         throw new HttpException('No photo found', HttpStatus.NOT_FOUND);
       }
 
-      await this.cache.set(`${this.prefix}${url}`, plants);
+      await this.cache.set(
+        `${this.prefix}${url}`,
+        plants,
+        this.configService.get('CACHE_TTL'),
+      );
 
       return plants;
     } catch (error) {

@@ -1,4 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { RedisCacheService } from 'src/redis-cache/redis-cache.service';
 import { Type } from './types';
@@ -10,6 +11,7 @@ export class TypeService {
   constructor(
     private prisma: PrismaService,
     private cache: RedisCacheService,
+    private readonly configService: ConfigService,
   ) {}
 
   async getTypes(url: string): Promise<Type[]> {
@@ -23,7 +25,11 @@ export class TypeService {
         throw new HttpException('No types found', HttpStatus.NOT_FOUND);
       }
 
-      await this.cache.set(`${this.prefix}${url}`, types);
+      await this.cache.set(
+        `${this.prefix}${url}`,
+        types,
+        this.configService.get('CACHE_TTL'),
+      );
 
       return types;
     } catch (error) {
@@ -46,7 +52,11 @@ export class TypeService {
         throw new HttpException('No countries found', HttpStatus.NOT_FOUND);
       }
 
-      await this.cache.set(`${this.prefix}${url}`, type);
+      await this.cache.set(
+        `${this.prefix}${url}`,
+        type,
+        this.configService.get('CACHE_TTL'),
+      );
 
       return type;
     } catch (error) {

@@ -1,3 +1,4 @@
+import { ConfigService } from '@nestjs/config';
 import { PhotoDto } from './dto/Photo.dto';
 import {
   ForbiddenException,
@@ -20,6 +21,7 @@ export class PhotoService {
     private prisma: PrismaService,
     private cache: RedisCacheService,
     private cloudinary: CloudinaryService,
+    private readonly configService: ConfigService,
   ) {}
 
   async getPhotos(url: string): Promise<PhotoDto[]> {
@@ -35,7 +37,11 @@ export class PhotoService {
         throw new HttpException('No houses found', HttpStatus.NOT_FOUND);
       }
 
-      await this.cache.set(`${this.prefix}${url}`, photos);
+      await this.cache.set(
+        `${this.prefix}${url}`,
+        photos,
+        this.configService.get('CACHE_TTL'),
+      );
 
       return photos;
     } catch (error) {
@@ -60,7 +66,11 @@ export class PhotoService {
         throw new HttpException('No photo found', HttpStatus.NOT_FOUND);
       }
 
-      await this.cache.set(`${this.prefix}${url}`, photo);
+      await this.cache.set(
+        `${this.prefix}${url}`,
+        photo,
+        this.configService.get('CACHE_TTL'),
+      );
 
       return photo;
     } catch (error) {
@@ -86,7 +96,11 @@ export class PhotoService {
         throw new HttpException('No photo found', HttpStatus.NOT_FOUND);
       }
 
-      await this.cache.set(`${this.prefix}${url}`, photos);
+      await this.cache.set(
+        `${this.prefix}${url}`,
+        photos,
+        this.configService.get('CACHE_TTL'),
+      );
 
       return photos;
     } catch (error) {

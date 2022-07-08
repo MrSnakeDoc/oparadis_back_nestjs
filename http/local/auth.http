@@ -2,20 +2,26 @@
 
 @access_token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbDR3azFzenkxODYyOWx1a3Z3bzVkemw1IiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNjU2MzIzMjkwLCJleHAiOjE2NTY0MDk2OTB9.poty39wCen3edq4UmNZqtZMF28QhckFSr6lSqDfXsPk
 
-@refresh_token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbDR3azFzenkxODYyOWx1a3Z3bzVkemw1IiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNjU2MzIzMjkwLCJleHAiOjE2NTg5MTUyOTB9.ZhX8fOUaxI6-aYk0rinRpmWFu76BzNmD1R0ypHPHqoo
+@refresh_token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbDVjYTNuM2wxODYybWZ1a3lkZDR5M3VzIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNjU3Mjc5NjM1LCJleHAiOjE2NTk4NzE2MzV9.0dIRiTxCrLkLko0MUBr8vVaqwbqfz1728gNKMVVX2CA
+
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbDVjZ3ppaDQwMDAxNnJ1a2RzcXU4dWVnIiwiZW1haWwiOiJ3YXphbXk3NzdAZ21haWwuY29tIiwiaWF0IjoxNjU3Mjg1NDgyLCJleHAiOjE2NTczNzE4ODJ9.wh7Bur1R_EJSVLMutn4U-3oXEPo-o9liHvqAcl-ONrg
 
 ###
 POST {{host}}/auth/signup HTTP/1.1
 content-type: application/json
 
 {
-    "email": "a@a.com",
+    "email": "o@o.com",
     "password": "Paradis13$",
-    "firstname": "a",
-    "lastname": "a",
-    "pseudo": "Jacquou le croquant",
-    "phone_number": "0184546417"
+    "firstname": "o",
+    "lastname": "o",
+    "pseudo": "JoJo",
+    "phone_number": "0184546443"
 }
+
+### Confirm Email
+GET {{host}}/auth/confirm?token={{token}} HTTP/1.1
+Content-Type: application/json
 
 ### Connexion User
 POST {{host}}/auth/signin HTTP/1.1
