@@ -1,0 +1,11 @@
+@host = http://localhost:5000
+
+
+
+###
+GET {{host}}/   HTTP/1.1
+Content-Type: application/json
+
+###
+GET {{host}}/houses HTTP/1.1
+content-type: application/json

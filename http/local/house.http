@@ -3,10 +3,6 @@
 @access_token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbDRvY3NoemwwMDAzaXh1a2tlMmY4dzllIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNjU1ODI3MjUxLCJleHAiOjE2NTU5MTM2NTF9.2e6w28OSSR1Gz2NNhdeb4VtRBLC1hSzEldzhFgPI2no
 
 
-###
-GET {{host}}/houses HTTP/1.1
-content-type: application/json
-Authorization: {{access_token}}
 
 ###
 GET {{host}}/houses/full HTTP/1.1
