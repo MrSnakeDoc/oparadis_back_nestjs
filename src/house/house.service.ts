@@ -21,30 +21,6 @@ export class HouseService {
     private readonly configService: ConfigService,
   ) {}
 
-  async getHouses(url: string): Promise<HouseType[]> {
-    try {
-      const cachedHouses = await this.cache.get(`${this.prefix}${url}`);
-
-      if (cachedHouses) return cachedHouses;
-
-      const houses: HouseType[] = await this.prisma.house.findMany();
-
-      if (!houses) {
-        throw new HttpException('No houses found', HttpStatus.NOT_FOUND);
-      }
-
-      await this.cache.set(
-        `${this.prefix}${url}`,
-        houses,
-        this.configService.get('CACHE_TTL'),
-      );
-
-      return houses;
-    } catch (error) {
-      throw error;
-    }
-  }
-
   async getHousesFull(url: string): Promise<HouseType[]> {
     try {
       const cachedHouses = await this.cache.get(`${this.prefix}${url}`);

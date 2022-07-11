@@ -22,11 +22,6 @@ import { Request } from 'express';
 export class HouseController {
   constructor(private HouseService: HouseService) {}
 
-  @Get()
-  getHouses(@Req() req: Request) {
-    return this.HouseService.getHouses(req.url);
-  }
-
   @Get('/full')
   getHousesFull(@Req() req: Request) {
     return this.HouseService.getHousesFull(req.url);

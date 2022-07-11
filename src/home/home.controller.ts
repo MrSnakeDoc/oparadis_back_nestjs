@@ -11,4 +11,9 @@ export class HomeController {
   getFour(@Req() req: Request): Promise<HouseType[]> {
     return this.homeService.getFour(req.url);
   }
+
+  @Get('/houses')
+  getHouses(@Req() req: Request): Promise<HouseType[]> {
+    return this.homeService.getHouses(req.url);
+  }
 }
