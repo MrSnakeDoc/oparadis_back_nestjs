@@ -11,11 +11,11 @@ POST {{host}}/auth/signup HTTP/1.1
 content-type: application/json
 
 {
-    "email": "o@o.com",
+    "email": "titogomez4455@gmail.com",
     "password": "Paradis13$",
-    "firstname": "o",
-    "lastname": "o",
-    "pseudo": "JoJo",
+    "firstname": "tito",
+    "lastname": "gomez",
+    "pseudo": "Mirajane",
     "phone_number": "0184546443"
 }
 
