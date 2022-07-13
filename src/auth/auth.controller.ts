@@ -34,6 +34,12 @@ export class AuthController {
   }
 
   @HttpCode(HttpStatus.OK)
+  @Get('newmail')
+  async newMail(@Query('token') token: string) {
+    return this.authService.newMail(token);
+  }
+
+  @HttpCode(HttpStatus.OK)
   @Post('refreshToken')
   refreshToken(@Headers('authorization') authorization: string) {
     return this.authService.createAccessTokenFromRefreshToken(

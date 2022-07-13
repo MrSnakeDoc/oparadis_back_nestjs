@@ -17,7 +17,33 @@ export class MatchService {
     private readonly cache: RedisCacheService,
   ) {}
 
-  // async getMatches(url: string): Promise<MatchDto[]> {}
+  async getMatches(url: string): Promise<MatchDto[]> {
+    try {
+      const cachedMatches: MatchDto[] = await this.cache.get(
+        `${this.prefix}${url}`,
+      );
+
+      if (cachedMatches) {
+        return cachedMatches;
+      }
+
+      const matches: MatchDto[] = await this.prisma.match.findMany({
+        include: {
+          absence: true,
+        },
+      });
+
+      if (!matches) {
+        throw new HttpException('Matches not found', HttpStatus.NOT_FOUND);
+      }
+
+      await this.cache.set(`${this.prefix}${url}`, matches);
+
+      return matches;
+    } catch (error) {
+      throw error;
+    }
+  }
   async getMatchById(
     userId: string,
     id: string,
@@ -70,11 +96,63 @@ export class MatchService {
       throw error;
     }
   }
-  // async getMatchByUserId(userId: string, url: string): Promise<MatchDto[]> {}
-  // async getMatchBySitterId(
-  //   sitter_id: string,
-  //   url: string,
-  // ): Promise<MatchDto[]> {}
+  async getMatchByUserId(user_id: string, url: string): Promise<MatchDto[]> {
+    try {
+      const cachedMatches: MatchDto[] = await this.cache.get(
+        `${this.prefix}${url}`,
+      );
+
+      if (cachedMatches) {
+        return cachedMatches;
+      }
+
+      const matches: MatchDto[] = await this.prisma.match.findMany({
+        where: {
+          user_id,
+        },
+      });
+
+      if (!matches) {
+        throw new HttpException('Matches not found', HttpStatus.NOT_FOUND);
+      }
+
+      await this.cache.set(`${this.prefix}${url}`, matches);
+
+      return matches;
+    } catch (error) {
+      throw error;
+    }
+  }
+  async getMatchByAbsenceId(
+    absence_id: string,
+    url: string,
+  ): Promise<MatchDto[]> {
+    try {
+      const cachedMatches: MatchDto[] = await this.cache.get(
+        `${this.prefix}${url}`,
+      );
+
+      if (cachedMatches) {
+        return cachedMatches;
+      }
+
+      const matches: MatchDto[] = await this.prisma.match.findMany({
+        where: {
+          absence_id,
+        },
+      });
+
+      if (!matches) {
+        throw new HttpException('Matches not found', HttpStatus.NOT_FOUND);
+      }
+
+      await this.cache.set(`${this.prefix}${url}`, matches);
+
+      return matches;
+    } catch (error) {
+      throw error;
+    }
+  }
 
   async saveMatch(user_id: string, dto: MatchDto): Promise<MatchDto> {
     try {
@@ -96,6 +174,71 @@ export class MatchService {
     }
   }
 
-  // async updateMatch(): Promise<MatchDto> {}
-  // async deleteMatch() {}
+  async updateMatch(user_id, id, dto): Promise<MatchDto> {
+    try {
+      const match: MatchFullDto = await this.prisma.match.findUnique({
+        where: {
+          id,
+        },
+      });
+
+      if (!match) {
+        throw new HttpException('Match not found', HttpStatus.NOT_FOUND);
+      }
+
+      if (match.user_id !== user_id) {
+        throw new ForbiddenException(
+          HttpStatus.FORBIDDEN,
+          'Access to ressources denied',
+        );
+      }
+
+      const updatedMatch: MatchDto = await this.prisma.match.update({
+        where: {
+          id,
+        },
+        data: {
+          ...dto,
+        },
+      });
+
+      await this.cache.del(this.prefix);
+
+      return updatedMatch;
+    } catch (error) {
+      throw error;
+    }
+  }
+  async deleteMatch(user_id: string, id: string) {
+    try {
+      const match: MatchFullDto = await this.prisma.match.findUnique({
+        where: {
+          id,
+        },
+      });
+
+      if (!match) {
+        throw new HttpException('Match not found', HttpStatus.NOT_FOUND);
+      }
+
+      if (match.user_id !== user_id) {
+        throw new ForbiddenException(
+          HttpStatus.FORBIDDEN,
+          'Access to ressources denied',
+        );
+      }
+
+      await this.prisma.match.delete({
+        where: {
+          id,
+        },
+      });
+
+      await this.cache.del(this.prefix);
+
+      return HttpStatus.OK;
+    } catch (error) {
+      throw error;
+    }
+  }
 }

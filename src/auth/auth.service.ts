@@ -13,6 +13,7 @@ import { AuthDto, SignInDto } from './dto';
 import { JwtService } from '@nestjs/jwt';
 import { RedisCacheService } from 'src/redis-cache/redis-cache.service';
 import { MailService } from 'src/mail/mail.service';
+import { User } from '@prisma/client';
 
 @Injectable()
 export class AuthService {
@@ -46,14 +47,7 @@ export class AuthService {
         user.email,
       );
 
-      await this.cache.set(
-        `${this.prefix}${user.id}`,
-        validationToken,
-        this.config.get('EMAIL_VALIDATION_EXPIRATION'),
-      );
-
-      //send the email with the validation token
-      await this.mail.sendUserConfirmation(user, validationToken);
+      this.redisEmail(user, validationToken);
 
       return HttpStatus.CREATED;
     } catch (error) {
@@ -68,7 +62,7 @@ export class AuthService {
 
   async confirm(token: string) {
     try {
-      const user = await this.checkEmail(token);
+      const user: User = await this.checkEmail(token);
 
       if (!user) {
         throw new HttpException('User not found', HttpStatus.NOT_FOUND);
@@ -97,6 +91,46 @@ export class AuthService {
     } catch (error) {
       throw error;
     }
+  }
+
+  async newMail(token: string) {
+    try {
+      const user: User = await this.checkEmail(token);
+
+      if (!user) {
+        throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+      }
+
+      if (user.verified)
+        throw new HttpException(
+          'User already verified',
+          HttpStatus.BAD_REQUEST,
+        );
+
+      const validationToken = await this.signToken(
+        'JWT_SECRET',
+        this.config.get('JWT_EXPIRATION'),
+        user.id,
+        user.email,
+      );
+
+      this.redisEmail(user, validationToken);
+
+      return HttpStatus.CREATED;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async redisEmail(user: User, validationToken: string) {
+    await this.cache.set(
+      `${this.prefix}${user.id}`,
+      validationToken,
+      this.config.get('EMAIL_VALIDATION_EXPIRATION'),
+    );
+
+    //send the email with the validation token
+    await this.mail.sendUserConfirmation(user, validationToken);
   }
 
   async signin(dto: SignInDto) {
