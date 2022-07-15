@@ -15,6 +15,7 @@ import { Request } from 'express';
 import { GetUser } from 'src/auth/decorator';
 import { JwtGuard } from 'src/auth/guard';
 import { MatchDto, MatchFullDto } from './dto/';
+import { ValidateMatchDto } from './dto/validateMatch.dto';
 import { MatchService } from './match.service';
 
 @UseGuards(JwtGuard)
@@ -69,6 +70,16 @@ export class MatchController {
     @Body() dto: MatchDto,
   ): Promise<MatchDto> {
     return this.MatchService.updateMatch(userId, id, dto);
+  }
+
+  @UseInterceptors(ClassSerializerInterceptor)
+  @Patch('validate/:id')
+  validateMatch(
+    @GetUser('id') userId: string,
+    @Param('id') id: string,
+    @Body() dto: ValidateMatchDto,
+  ): Promise<MatchFullDto> {
+    return this.MatchService.validateMatch(userId, id, dto);
   }
 
   @UseInterceptors(ClassSerializerInterceptor)

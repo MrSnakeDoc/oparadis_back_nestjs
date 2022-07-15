@@ -1,3 +1,5 @@
+import { ValidateMatchDto } from './dto/validateMatch.dto';
+import { AbsenceType } from './../absence/types/';
 import {
   Injectable,
   HttpException,
@@ -174,7 +176,11 @@ export class MatchService {
     }
   }
 
-  async updateMatch(user_id, id, dto): Promise<MatchDto> {
+  async updateMatch(
+    user_id: string,
+    id: string,
+    dto: MatchDto,
+  ): Promise<MatchDto> {
     try {
       const match: MatchFullDto = await this.prisma.match.findUnique({
         where: {
@@ -209,6 +215,53 @@ export class MatchService {
       throw error;
     }
   }
+
+  async validateMatch(
+    user_id: string,
+    id: string,
+    dto: ValidateMatchDto,
+  ): Promise<MatchFullDto> {
+    try {
+      const match: MatchFullDto = await this.prisma.match.findUnique({
+        where: {
+          id,
+        },
+      });
+
+      if (!match) {
+        throw new HttpException('Match not found', HttpStatus.NOT_FOUND);
+      }
+
+      const absence: AbsenceType = await this.prisma.absence.findUnique({
+        where: {
+          id: match.absence_id,
+        },
+      });
+
+      if (absence.user_id !== user_id) {
+        throw new ForbiddenException(
+          HttpStatus.FORBIDDEN,
+          'Access to ressources denied',
+        );
+      }
+
+      const updatedMatch: MatchFullDto = await this.prisma.match.update({
+        where: {
+          id,
+        },
+        data: {
+          ...dto,
+        },
+      });
+
+      await this.cache.del(this.prefix);
+
+      return updatedMatch;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async deleteMatch(user_id: string, id: string) {
     try {
       const match: MatchFullDto = await this.prisma.match.findUnique({
