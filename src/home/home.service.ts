@@ -24,6 +24,8 @@ export class HomeService {
       const houses: HouseType[] = await this.prisma.house.findMany({
         include: {
           photo: true,
+          type: true,
+          country: true,
         },
         orderBy: [
           {
@@ -66,7 +68,18 @@ export class HomeService {
 
       if (cachedHouses) return cachedHouses;
 
-      const houses: HouseType[] = await this.prisma.house.findMany();
+      const houses: HouseType[] = await this.prisma.house.findMany({
+        include: {
+          photo: true,
+          type: true,
+          country: true,
+        },
+        orderBy: [
+          {
+            created_at: 'desc',
+          },
+        ],
+      });
 
       if (!houses) {
         throw new HttpException('No houses found', HttpStatus.NOT_FOUND);
