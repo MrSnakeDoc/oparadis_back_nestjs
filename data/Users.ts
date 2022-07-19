@@ -40,7 +40,66 @@ export const Users = [
     avatar:
       'https://res.cloudinary.com/oparadis/image/upload/w_200,h_200,c_fill,g_face,r_max/v1644248195/avatars/kk6p2qwkl4ug0q6wsiew.jpg',
   },
-
+  {
+    email: 'Jerad_Brekke@yahoo.com',
+    password: 'WDXPD84436XNUWZT1',
+    firstname: 'Ameline',
+    lastname: 'Collet',
+    phone_number: '6110053734',
+    verified: true,
+    avatar:
+      'https://res.cloudinary.com/oparadis/image/upload/w_200,h_200,c_fill,g_face,r_max/v1644248193/avatars/t6iqd8l1mjpzryghuxma.jpg',
+  },
+  {
+    email: 'Karley_Carter22@hotmail.com',
+    password: '3FDLW47L2YCCTL2MV',
+    firstname: 'Colin',
+    lastname: 'Laine',
+    phone_number: '0773336854',
+    avatar:
+      'https://res.cloudinary.com/oparadis/image/upload/w_200,h_200,c_fill,g_face,r_max/v1644248194/avatars/u4e5r7yuxxfleccyffpx.jpg',
+    verified: true,
+  },
+  {
+    email: 'Janie_Ebert@gmail.com',
+    password: '3GNAABEB8AB7M7H0X',
+    firstname: 'Auriane',
+    lastname: 'Perrot',
+    phone_number: '4633178461',
+    avatar:
+      'https://res.cloudinary.com/oparadis/image/upload/w_200,h_200,c_fill,g_face,r_max/v1644248195/avatars/jusfgpuz6rufrtv5vg5d.jpg',
+    verified: true,
+  },
+  {
+    email: 'Madyson84@yahoo.com',
+    password: '1C3KC46KX8LK7AMF7',
+    firstname: 'Camille',
+    lastname: 'Legrand',
+    phone_number: '8264866786',
+    avatar:
+      'https://res.cloudinary.com/oparadis/image/upload/w_200,h_200,c_fill,g_face,r_max/v1644248194/avatars/ce2yjg2s1wh8m71sghqn.jpg',
+    verified: true,
+  },
+  {
+    email: 'Tania.Klein@gmail.com',
+    password: 'YV4942BL4BJJ22F4D',
+    firstname: 'Agneflète',
+    lastname: 'Blanchard',
+    phone_number: '4179105816',
+    avatar:
+      'https://res.cloudinary.com/oparadis/image/upload/w_200,h_200,c_fill,g_face,r_max/v1644248195/avatars/wwikctam0lhohg6znict.jpg',
+    verified: true,
+  },
+  {
+    email: 'Arnoldo_Carter@gmail.com',
+    password: 'KNDKGCA45AZT6AV49',
+    firstname: 'Valentin',
+    lastname: 'Menard',
+    phone_number: '8520404564',
+    avatar:
+      'https://res.cloudinary.com/oparadis/image/upload/w_200,h_200,c_fill,g_face,r_max/v1644248193/avatars/hr4swd0vruhw6ghkulsa.jpg',
+    verified: true,
+  },
   {
     email: 'a@a.com',
     password: 'Paradis13$',
