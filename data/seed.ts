@@ -82,7 +82,7 @@ async function main() {
     const housesId = await (
       await prisma.house.findMany()
     ).map((house) => house.id);
-    const house_id = housesId[9];
+    const house_id = housesId[housesId.length - 1];
 
     for (const photo of Photos) {
       const user_id = usersId[0];
