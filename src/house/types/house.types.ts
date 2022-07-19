@@ -1,5 +1,6 @@
 import { AnimalType } from 'src/animal/types/';
 import { PlantType } from 'src/plant/types';
+import { Type } from 'src/type/types';
 import { PhotoDto } from '../../photo/dto/Photo.dto';
 export class HouseType {
   address: string;
@@ -30,4 +31,5 @@ export class HouseType {
   photo?: PhotoDto[];
   animals?: AnimalType[];
   plants?: PlantType[];
+  created_at?: Date | string;
 }

@@ -1,3 +1,5 @@
+import * as dayjs from 'dayjs';
+dayjs().format();
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { AnimalType } from 'src/animal/types';
@@ -33,9 +35,14 @@ export class HomeService {
           },
         ],
       });
+
       if (!houses) {
         throw new HttpException('No houses found', HttpStatus.NOT_FOUND);
       }
+
+      houses.forEach((house) => {
+        house.created_at = dayjs(house.created_at).format('DD MMM YYYY');
+      });
 
       const animals: AnimalType[] = await this.prisma.animal.findMany();
       const plants: PlantType[] = await this.prisma.plant.findMany();
