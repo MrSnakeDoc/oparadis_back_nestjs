@@ -1,14 +1,15 @@
 export const Users = [
   {
-    email: 'tony@truand.io',
+    email: 'adrien.d@gmail.com',
     password: 'toto',
-    firstname: 'Sophie',
-    lastname: 'La Best Helper',
-    pseudo: 'Sophie Best Helper',
+    firstname: 'Adrien',
+    lastname: 'D',
+    pseudo: 'The Best Helper',
     phone_number: '4242424242',
     verified: true,
     avatar:
       'https://res.cloudinary.com/oparadis/image/upload/w_200,h_200,c_fill,g_face,r_max/v1644248193/avatars/hr4swd0vruhw6ghkulsa.jpg',
+    description: 'I am the best helper',
   },
   {
     email: 'Devon17@yahoo.com',
@@ -19,6 +20,7 @@ export const Users = [
     verified: true,
     avatar:
       'https://res.cloudinary.com/oparadis/image/upload/w_200,h_200,c_fill,g_face,r_max/v1644248197/avatars/veckoiirdahezzqyqy7f.jpg',
+    description: 'I am a developer, I love to code',
   },
   {
     email: 'Alysa68@yahoo.com',
@@ -29,6 +31,7 @@ export const Users = [
     verified: true,
     avatar:
       'https://res.cloudinary.com/oparadis/image/upload/w_200,h_200,c_fill,g_face,r_max/v1644248194/avatars/ce2yjg2s1wh8m71sghqn.jpg',
+    description: 'I love to create API Governance',
   },
   {
     email: 'Oswaldo17@hotmail.com',
@@ -39,6 +42,7 @@ export const Users = [
     verified: true,
     avatar:
       'https://res.cloudinary.com/oparadis/image/upload/w_200,h_200,c_fill,g_face,r_max/v1644248195/avatars/kk6p2qwkl4ug0q6wsiew.jpg',
+    description: "Who's gonna hire me as a backend developer?",
   },
   {
     email: 'Jerad_Brekke@yahoo.com',
@@ -49,6 +53,8 @@ export const Users = [
     verified: true,
     avatar:
       'https://res.cloudinary.com/oparadis/image/upload/w_200,h_200,c_fill,g_face,r_max/v1644248193/avatars/t6iqd8l1mjpzryghuxma.jpg',
+    description:
+      'I love Node.js and I love to code API with Express.js, Nest.js, GraphQL, etc.',
   },
   {
     email: 'Karley_Carter22@hotmail.com',
@@ -59,6 +65,7 @@ export const Users = [
     avatar:
       'https://res.cloudinary.com/oparadis/image/upload/w_200,h_200,c_fill,g_face,r_max/v1644248194/avatars/u4e5r7yuxxfleccyffpx.jpg',
     verified: true,
+    description: 'I am a backend developer that loves SQL and NoSQL databases',
   },
   {
     email: 'Janie_Ebert@gmail.com',
@@ -69,6 +76,8 @@ export const Users = [
     avatar:
       'https://res.cloudinary.com/oparadis/image/upload/w_200,h_200,c_fill,g_face,r_max/v1644248195/avatars/jusfgpuz6rufrtv5vg5d.jpg',
     verified: true,
+    description:
+      'I am a fan of Docker, Kubernetes, Terraform, Jenkins, SonarQube, etc.',
   },
   {
     email: 'Madyson84@yahoo.com',
@@ -79,6 +88,7 @@ export const Users = [
     avatar:
       'https://res.cloudinary.com/oparadis/image/upload/w_200,h_200,c_fill,g_face,r_max/v1644248194/avatars/ce2yjg2s1wh8m71sghqn.jpg',
     verified: true,
+    description: 'SQL database has no secret left to hide from me.',
   },
   {
     email: 'Tania.Klein@gmail.com',
@@ -89,6 +99,8 @@ export const Users = [
     avatar:
       'https://res.cloudinary.com/oparadis/image/upload/w_200,h_200,c_fill,g_face,r_max/v1644248195/avatars/wwikctam0lhohg6znict.jpg',
     verified: true,
+    description:
+      'API security is lacking according to multiple articles, I want to learn how to secure more my APIs',
   },
   {
     email: 'Arnoldo_Carter@gmail.com',
@@ -99,6 +111,8 @@ export const Users = [
     avatar:
       'https://res.cloudinary.com/oparadis/image/upload/w_200,h_200,c_fill,g_face,r_max/v1644248193/avatars/hr4swd0vruhw6ghkulsa.jpg',
     verified: true,
+    description:
+      'DevOps is also a passion of mine, and I would be to make it my full time job someday',
   },
   {
     email: 'a@a.com',
@@ -108,7 +122,7 @@ export const Users = [
     pseudo: 'Jacquou le croquant',
     phone_number: '0184546417',
     verified: true,
-    refresh_token:
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbDR3aHN0ZzcwMDAwcjB1a25qOG1sN3liIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNjU2MzE5Mzk4LCJleHAiOjE2NTg5MTEzOTh9.ezJ2cgAvDFY2IfPv7SmLOw3Pd6UOc42DLlrVbQfqqrM',
+    description:
+      'Will you be the recruiter that will take a chance on me and be rewarded for it ?',
   },
 ];

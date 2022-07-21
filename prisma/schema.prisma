@@ -19,6 +19,7 @@ model User {
     pseudo  String?
     phone_number  String
     avatar  String? @default("https://res.cloudinary.com/oparadis/image/upload/v1655907032/avatars/fpc9avx8ypafd2yxuo2b.png")
+    description  String?
     isAdmin Boolean @default(false)
     verified Boolean? @default(false)
     refresh_token String?

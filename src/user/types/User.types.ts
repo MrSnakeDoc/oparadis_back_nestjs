@@ -13,6 +13,8 @@ export class UserType {
 
   avatar?: string;
 
+  description?: string;
+
   isAdmin?: boolean;
 
   refresh_token?: string;

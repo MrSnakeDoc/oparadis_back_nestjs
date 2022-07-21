@@ -30,6 +30,10 @@ export class UserDto {
   @IsOptional()
   avatar?: string;
 
+  @IsOptional()
+  @IsString()
+  description?: string;
+
   @IsBoolean()
   @IsOptional()
   isAdmin?: boolean;

@@ -28,4 +28,8 @@ export class AuthDto {
   @IsOptional()
   @IsString()
   avatar?: string;
+
+  @IsOptional()
+  @IsString()
+  description?: string;
 }

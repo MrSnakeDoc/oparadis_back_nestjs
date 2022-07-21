@@ -30,6 +30,10 @@ export class UpdateUserDto {
   @IsString()
   avatar?: string;
 
+  @IsOptional()
+  @IsString()
+  description?: string;
+
   @Exclude()
   @IsOptional()
   @IsBoolean()
