@@ -1,5 +1,5 @@
 import { UserType } from './../src/user/types/User.types';
-import { PrismaClient } from '@prisma/client';
+import { Country, PrismaClient } from '@prisma/client';
 import * as argon from 'argon2';
 import {
   Countries,
@@ -57,23 +57,26 @@ async function main() {
       });
     }
 
-    const countriesId = await (
-      await prisma.country.findMany()
-    ).map((country) => country.id);
+    const country = await await prisma.country.findUnique({
+      where: { country: 'France' },
+    });
+
+    if (!country) {
+      throw new Error('Country not found');
+    }
+
     const typesId = await (await prisma.type.findMany()).map((type) => type.id);
     const usersId = await (await prisma.user.findMany()).map((user) => user.id);
 
     for (const [index, house] of Houses.entries()) {
       const user_id: string = usersId[index];
-      const country_id: string =
-        countriesId[Math.floor(Math.random() * countriesId.length)];
       const type_id: string =
         typesId[Math.floor(Math.random() * typesId.length)];
       await prisma.house.create({
         data: {
           ...house,
           user_id,
-          country_id,
+          country_id: country.id,
           type_id,
         },
       });
