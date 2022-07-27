@@ -1,3 +1,4 @@
+import { UserType } from './../src/user/types/User.types';
 import { PrismaClient } from '@prisma/client';
 import * as argon from 'argon2';
 import {
@@ -10,7 +11,6 @@ import {
   Plants,
   Absences,
 } from '.';
-import { SignInDto } from '../src/auth/dto/';
 import { CreateHouseDto } from '../src/house/dto/';
 import { CountryType } from '../src/country/types';
 import { Type } from '../src/type/types';
@@ -21,7 +21,7 @@ import { AbsenceDto } from '../src/absence/dto';
 
 const prisma = new PrismaClient();
 
-Users: [SignInDto];
+Users: [UserType];
 Houses: [CreateHouseDto];
 Countries: [CountryType];
 Types: [Type];
