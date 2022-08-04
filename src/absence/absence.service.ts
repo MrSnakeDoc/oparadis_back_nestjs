@@ -47,7 +47,9 @@ export class AbsenceService {
 
   async getAbsenceById(id, url) {
     try {
-      const cachedAbsence = await this.cache.get(`${this.prefix}${url}`);
+      const cachedAbsence: AbsenceType = await this.cache.get(
+        `${this.prefix}${url}`,
+      );
 
       if (cachedAbsence) return cachedAbsence;
 
@@ -125,13 +127,13 @@ export class AbsenceService {
     dto: UpdateAbsenceDto,
   ): Promise<AbsenceType> {
     try {
-      const storedAbsence: AbsenceType = await this.prisma.absence.findUnique({
+      const cachedAbsence: AbsenceType = await this.prisma.absence.findUnique({
         where: {
           id,
         },
       });
 
-      if (!storedAbsence || storedAbsence.user_id === user_id) {
+      if (!cachedAbsence || cachedAbsence.user_id === user_id) {
         throw new ForbiddenException('Access to ressources denied');
       }
 
@@ -156,13 +158,13 @@ export class AbsenceService {
   }
 
   async deleteAbsence(user_id, id) {
-    const storedAbsence: AbsenceType = await this.prisma.absence.findUnique({
+    const cachedAbsence: AbsenceType = await this.prisma.absence.findUnique({
       where: {
         id,
       },
     });
 
-    if (!storedAbsence || storedAbsence.user_id === user_id) {
+    if (!cachedAbsence || cachedAbsence.user_id === user_id) {
       throw new ForbiddenException('Access to ressources denied');
     }
 

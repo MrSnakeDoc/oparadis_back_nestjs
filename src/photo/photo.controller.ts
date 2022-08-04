@@ -15,7 +15,10 @@ import { GetUser } from 'src/auth/decorator';
 import { PhotoService } from './photo.service';
 import { UpdatePhotoDto } from './dto';
 import { Request } from 'express';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
+@ApiBearerAuth()
+@ApiTags('photos')
 @UseGuards(JwtGuard)
 @Controller('photos')
 export class PhotoController {

@@ -1,43 +1,54 @@
+import { ApiHideProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Exclude } from 'class-transformer';
 import { IsBoolean, IsEmail, IsOptional, IsString } from 'class-validator';
 
 export class UserDto {
-  @IsEmail()
+  @ApiPropertyOptional()
   @IsOptional()
+  @IsEmail()
   email?: string;
 
+  @ApiHideProperty()
   @Exclude()
   @IsOptional()
   password?: string;
 
-  @IsString()
+  @ApiPropertyOptional()
   @IsOptional()
+  @IsString()
   firstname?: string;
 
-  @IsString()
+  @ApiPropertyOptional()
   @IsOptional()
+  @IsString()
   lastname?: string;
 
-  @IsString()
+  @ApiPropertyOptional()
   @IsOptional()
+  @IsString()
   pseudo?: string;
 
-  @IsString()
+  @ApiPropertyOptional()
   @IsOptional()
+  @IsString()
   phone_number?: string;
 
-  @IsString()
+  @ApiPropertyOptional()
   @IsOptional()
+  @IsString()
   avatar?: string;
 
+  @ApiPropertyOptional()
   @IsOptional()
   @IsString()
   description?: string;
 
-  @IsBoolean()
+  @ApiPropertyOptional()
   @IsOptional()
+  @IsBoolean()
   isAdmin?: boolean;
 
+  @ApiHideProperty()
   @Exclude()
   @IsOptional()
   refresh_token?: string;

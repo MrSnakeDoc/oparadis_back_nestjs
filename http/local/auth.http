@@ -23,6 +23,16 @@ content-type: application/json
 GET {{host}}/auth/confirm?token={{token}} HTTP/1.1
 Content-Type: application/json
 
+
+### Connexion User
+POST {{host}}/auth/signin HTTP/1.1
+content-type: application/json
+
+{
+    "email": "adrien.d@gmail.com",
+    "password": "toto"
+}
+
 ### Connexion User
 POST {{host}}/auth/signin HTTP/1.1
 content-type: application/json

@@ -1,3 +1,7 @@
+import { AnimalType } from './../../animal/types/';
+import { HouseType } from 'src/house/types';
+import { PlantType } from 'src/plant/types';
+
 export class UserType {
   email?: string;
 
@@ -18,6 +22,12 @@ export class UserType {
   isAdmin?: boolean;
 
   refresh_token?: string;
+
+  house?: HouseType;
+
+  animals?: AnimalType[];
+
+  plants?: PlantType[];
 
   constructor(partial: Partial<UserType>) {
     Object.assign(this, partial);

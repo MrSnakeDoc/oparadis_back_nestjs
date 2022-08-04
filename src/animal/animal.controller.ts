@@ -17,7 +17,10 @@ import { JwtGuard } from 'src/auth/guard';
 import { GetUser } from 'src/auth/decorator';
 import { AnimalDto, UpdateAnimalDto } from './dto';
 import { Request } from 'express';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
+@ApiBearerAuth()
+@ApiTags('animals')
 @UseGuards(JwtGuard)
 @Controller('animals')
 export class AnimalController {

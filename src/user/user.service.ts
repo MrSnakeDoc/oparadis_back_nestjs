@@ -1,3 +1,5 @@
+import { AnimalType } from './../animal/types/Animal.types';
+import { HouseType } from './../house/types/';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import {
   ForbiddenException,
@@ -10,6 +12,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { RedisCacheService } from 'src/redis-cache/redis-cache.service';
 import { UserDto, UpdateUserDto, UpdateUserPasswordDto } from './dto';
 import { UserType } from './types';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class UserService {
@@ -23,6 +26,7 @@ export class UserService {
     private prisma: PrismaService,
     private cache: RedisCacheService,
     private cloudinary: CloudinaryService,
+    private config: ConfigService,
   ) {}
 
   async getUsers(url: string): Promise<UserDto[]> {
@@ -41,7 +45,11 @@ export class UserService {
         return user;
       });
 
-      await this.cache.set(this.prefix, usersDto);
+      await this.cache.set(
+        `${this.prefix}${url}`,
+        usersDto,
+        this.config.get('CACHE_TTL'),
+      );
 
       return usersDto;
     } catch (error) {
@@ -49,27 +57,77 @@ export class UserService {
     }
   }
   async getUserById(id, url): Promise<UserType> {
-    try {
-      const users: UserType = await this.cache.get(`${this.prefix}${url}`);
+    console.log(url);
 
-      if (users) {
-        return users;
+    try {
+      const user: UserType = await this.cache.get(`${this.prefix}${url}`);
+
+      if (user) {
+        return user;
       }
 
-      const storedUsers: UserType = await this.prisma.user.findUnique({
+      const storedUser: UserType = await this.prisma.user.findUnique({
         where: { id },
       });
 
-      const userDto: UserDto = Object.assign({}, storedUsers);
+      if (!storedUser)
+        throw new HttpException(
+          `No User with id ${id} found`,
+          HttpStatus.NOT_FOUND,
+        );
+
+      const userDto: UserDto = Object.assign({}, storedUser);
       delete userDto.password;
       delete userDto.refresh_token;
 
-      await this.cache.set(this.prefix, userDto);
+      await this.cache.set(
+        `${this.prefix}${url}`,
+        userDto,
+        this.config.get('CACHE_TTL'),
+      );
 
       return userDto;
     } catch (error) {
       throw error;
     }
+  }
+
+  async getMe(user, url): Promise<UserType> {
+    const cachedUser: UserType = await this.cache.get(
+      `${this.prefix}${url}${user.id}`,
+    );
+
+    if (cachedUser) return cachedUser;
+
+    const cacheUser: UserType = Object.assign({}, user);
+    delete cacheUser.password;
+    delete cacheUser.refresh_token;
+
+    cacheUser.house = await this.prisma.house.findUnique({
+      where: {
+        user_id: user.id,
+      },
+    });
+
+    cacheUser.animals = await this.prisma.animal.findMany({
+      where: {
+        user_id: user.id,
+      },
+    });
+
+    cacheUser.plants = await this.prisma.plant.findMany({
+      where: {
+        user_id: user.id,
+      },
+    });
+
+    await this.cache.set(
+      `${this.prefix}${url}${user.id}`,
+      cacheUser,
+      this.config.get('CACHE_TTL'),
+    );
+
+    return new UserType(cacheUser);
   }
 
   async updateUser(userId: string, dto: UpdateUserDto): Promise<UserDto> {
@@ -137,6 +195,7 @@ export class UserService {
       const user = await this.prisma.user.findFirst({
         where: { id: userId },
       });
+
       if (!user) {
         throw new HttpException('User not found', HttpStatus.NOT_FOUND);
       }

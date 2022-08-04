@@ -1,3 +1,4 @@
+import { HouseType } from './../house/types/house.types';
 import { UpdateUserDto, UpdateUserPasswordDto, UserDto } from './dto/';
 import { UserService } from './user.service';
 import { JwtGuard } from '../auth/guard/';
@@ -18,7 +19,10 @@ import { User } from '@prisma/client';
 import { Request } from 'express';
 import { RedisCacheService } from 'src/redis-cache/redis-cache.service';
 import { UserType } from './types';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
+@ApiBearerAuth()
+@ApiTags('users')
 @UseGuards(JwtGuard)
 @Controller('users')
 export class UserController {
@@ -34,27 +38,15 @@ export class UserController {
     return this.userService.getUsers(req.url);
   }
 
+  @UseInterceptors(ClassSerializerInterceptor)
+  @Get('me')
+  async getMe(@GetUser() user: User, @Req() req: Request) {
+    return this.userService.getMe(user, req.url);
+  }
+
   @Get(':id')
   getUserById(@Param('id') id: string, @Req() req: Request): Promise<UserDto> {
     return this.userService.getUserById(id, req.url);
-  }
-
-  @UseInterceptors(ClassSerializerInterceptor)
-  @Get('me')
-  async getMe(@GetUser() user: User, @Req() req: Request): Promise<UserType> {
-    const cachedUser: UserType = await this.cache.get(
-      `${this.prefix}${req.url}${user.id}`,
-    );
-
-    if (cachedUser) return cachedUser;
-
-    const cacheUser: UserType = Object.assign({}, user);
-    delete cacheUser.password;
-    delete cacheUser.refresh_token;
-
-    await this.cache.set(`${this.prefix}${req.url}${user.id}`, cacheUser);
-
-    return new UserDto(user);
   }
 
   @UseInterceptors(ClassSerializerInterceptor)

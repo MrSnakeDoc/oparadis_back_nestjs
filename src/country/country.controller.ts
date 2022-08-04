@@ -1,9 +1,12 @@
-import { CountryType } from './types/CountryType.types';
 import { CountryService } from './country.service';
 import { Controller, Get, Param, Req, UseGuards } from '@nestjs/common';
 import { JwtGuard } from 'src/auth/guard';
 import { Request } from 'express';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { CountryType } from './types';
 
+@ApiBearerAuth()
+@ApiTags('countries')
 @UseGuards(JwtGuard)
 @Controller('countries')
 export class CountryController {

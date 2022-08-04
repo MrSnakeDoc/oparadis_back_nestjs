@@ -16,7 +16,10 @@ import { JwtGuard } from 'src/auth/guard';
 import { GetUser } from 'src/auth/decorator';
 import { CreateHouseDto, UpdateHouseDto } from './dto';
 import { Request } from 'express';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
+@ApiBearerAuth()
+@ApiTags('houses')
 @UseGuards(JwtGuard)
 @Controller('houses')
 export class HouseController {

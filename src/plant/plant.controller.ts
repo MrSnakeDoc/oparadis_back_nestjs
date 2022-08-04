@@ -11,6 +11,7 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Request } from 'express';
 import { GetUser } from 'src/auth/decorator';
 import { JwtGuard } from 'src/auth/guard';
@@ -18,6 +19,8 @@ import { PlantDto, UpdatePlantDto } from './dto';
 import { PlantService } from './plant.service';
 import { PlantType } from './types';
 
+@ApiBearerAuth()
+@ApiTags('plants')
 @UseGuards(JwtGuard)
 @Controller('plants')
 export class PlantController {
