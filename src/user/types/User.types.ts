@@ -1,6 +1,6 @@
-import { AnimalType } from './../../animal/types/';
-import { HouseType } from 'src/house/types';
-import { PlantType } from 'src/plant/types';
+import { AnimalType } from '../../animal/types/';
+import { HouseType } from '../../house/types/';
+import { PlantType } from '../../plant/types';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { IsBoolean, IsOptional, IsString } from 'class-validator';
 

@@ -9,11 +9,11 @@ import {
   IsObject,
   IsDate,
 } from 'class-validator';
-import { AnimalType } from 'src/animal/types/';
-import { CountryType } from 'src/country/types';
-import { PlantType } from 'src/plant/types';
-import { Type } from 'src/type/types';
-import { PhotoDto } from '../../photo/dto/Photo.dto';
+import { AnimalType } from '../../animal/types/';
+import { CountryType } from '../../country/types/';
+import { PlantType } from '../../plant/types/';
+import { Type } from '../../type/types/';
+import { PhotoDto } from '../../photo/dto/';
 export class HouseType {
   @ApiProperty()
   @IsNotEmpty()

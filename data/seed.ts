@@ -1,5 +1,4 @@
-import { UserType } from './../src/user/types/User.types';
-import { Country, PrismaClient } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 import * as argon from 'argon2';
 import {
   Countries,
@@ -11,12 +10,13 @@ import {
   Plants,
   Absences,
 } from '.';
+import { UserType } from '../src/user/types/';
 import { CreateHouseDto } from '../src/house/dto/';
-import { CountryType } from '../src/country/types';
-import { Type } from '../src/type/types';
-import { PhotoDto } from '../src/photo/dto';
-import { AnimalDto } from '../src/animal/dto';
-import { PlantDto } from '../src/plant/dto';
+import { CountryType } from '../src/country/types/';
+import { Type } from '../src/type/types/';
+import { PhotoDto } from '../src/photo/dto/';
+import { AnimalDto } from '../src/animal/dto/';
+import { PlantDto } from '../src/plant/dto/';
 import { AbsenceDto } from '../src/absence/dto';
 
 const prisma = new PrismaClient();
