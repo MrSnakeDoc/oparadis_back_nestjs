@@ -11,7 +11,14 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
 import { Request } from 'express';
 import { GetUser } from 'src/auth/decorator';
 import { JwtGuard } from 'src/auth/guard';
@@ -26,11 +33,31 @@ import { MatchService } from './match.service';
 export class MatchController {
   constructor(private MatchService: MatchService) {}
 
+  @ApiOkResponse({
+    description: 'All matches have been successfully retreived',
+    type: MatchFullDto,
+  })
+  @ApiNotFoundResponse({ description: 'Ressources Not Found' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+  @ApiOperation({
+    summary: 'Get all matches of all users',
+    description: 'Get all matches of all users',
+  })
   @Get()
   getMatches(@Req() req: Request): Promise<MatchDto[]> {
     return this.MatchService.getMatches(req.url);
   }
 
+  @ApiOkResponse({
+    description: 'The match has been successfully retreived',
+    type: MatchFullDto,
+  })
+  @ApiNotFoundResponse({ description: 'Ressources Not Found' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+  @ApiOperation({
+    summary: 'Get a match by id',
+    description: 'Get a match by id',
+  })
   @Get(':id')
   getMatchById(
     @GetUser('id') userId: string,
@@ -40,6 +67,16 @@ export class MatchController {
     return this.MatchService.getMatchById(userId, id, req.url);
   }
 
+  @ApiOkResponse({
+    description: 'The match has been successfully retreived',
+    type: MatchFullDto,
+  })
+  @ApiNotFoundResponse({ description: 'Ressources Not Found' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+  @ApiOperation({
+    summary: 'Get a match by userid',
+    description: 'Get a match by userid',
+  })
   @Get(':userId')
   getMatchByUserId(
     @Param('userId') userId: string,
@@ -48,6 +85,16 @@ export class MatchController {
     return this.MatchService.getMatchByUserId(userId, req.url);
   }
 
+  @ApiOkResponse({
+    description: 'The matches have been successfully retreived',
+    type: MatchFullDto,
+  })
+  @ApiNotFoundResponse({ description: 'Ressources Not Found' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+  @ApiOperation({
+    summary: 'Get all matches belonging to a user',
+    description: 'Get all matches belonging to a user',
+  })
   @Get(':userId')
   getMatchByAbsenceId(
     @Param('userId') absenceId: string,
@@ -56,6 +103,16 @@ export class MatchController {
     return this.MatchService.getMatchByAbsenceId(absenceId, req.url);
   }
 
+  @ApiOkResponse({
+    description: 'The match has been fully created',
+    type: MatchFullDto,
+  })
+  @ApiNotFoundResponse({ description: 'Ressources Not Found' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+  @ApiOperation({
+    summary: 'Create a new match',
+    description: 'Create a new match',
+  })
   @UseInterceptors(ClassSerializerInterceptor)
   @Post()
   saveMatch(
@@ -65,6 +122,16 @@ export class MatchController {
     return this.MatchService.saveMatch(userId, dto);
   }
 
+  @ApiOkResponse({
+    description: `The match has been successfully updated`,
+    type: MatchFullDto,
+  })
+  @ApiNotFoundResponse({ description: 'Ressources Not Found' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+  @ApiOperation({
+    summary: 'Update a match',
+    description: 'Update a match',
+  })
   @UseInterceptors(ClassSerializerInterceptor)
   @Patch(':id')
   updateMatch(
@@ -75,6 +142,17 @@ export class MatchController {
     return this.MatchService.updateMatch(userId, id, dto);
   }
 
+  @ApiOkResponse({
+    description: 'The match has been validated',
+    type: MatchFullDto,
+  })
+  @ApiNotFoundResponse({ description: 'Ressources Not Found' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+  @ApiOperation({
+    summary: 'Validate a match',
+    description:
+      "Validate a match, only the absence's owner can validate a match",
+  })
   @UseInterceptors(ClassSerializerInterceptor)
   @Patch('validate/:id')
   validateMatch(
@@ -85,6 +163,15 @@ export class MatchController {
     return this.MatchService.validateMatch(userId, id, dto);
   }
 
+  @ApiOkResponse({
+    description: 'The match has been successfully deleted',
+  })
+  @ApiNotFoundResponse({ description: 'Ressources Not Found' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+  @ApiOperation({
+    summary: 'Delete a match',
+    description: 'Delete a match',
+  })
   @UseInterceptors(ClassSerializerInterceptor)
   @Delete(':id')
   deleteMatch(@GetUser('id') userId: string, @Param('id') id: string) {

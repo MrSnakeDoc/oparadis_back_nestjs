@@ -3,22 +3,22 @@
 @access_token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbDQzejFzbXgwMDAwdGV1a2VxbHIya3liIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNjU0NTk0ODQ3LCJleHAiOjE2NTQ2ODEyNDd9.V3e_BP-r0WpdDOtkQjuPzsfej7et1cfN73sX8ipcG2o
 
 ###
-GET {{host}}/plants/ HTTP/1.1
+GET {{host}}/api/plants/ HTTP/1.1
 content-type: application/json
 Authorization: {{access_token}}
 
 ###
-GET {{host}}/plants/3 HTTP/1.1
+GET {{host}}/api/plants/3 HTTP/1.1
 content-type: application/json
 Authorization: {{access_token}}
 
 ### GetPlantsByUserId
-GET {{host}}/plants/user/cl43z0emo18341hukjsn044ph HTTP/1.1
+GET {{host}}/api/plants/user/cl43z0emo18341hukjsn044ph HTTP/1.1
 content-type: application/json
 Authorization: {{access_token}}
 
 ###
-POST {{host}}/plants HTTP/1.1
+POST {{host}}/api/plants HTTP/1.1
 content-type: application/json
 Authorization: {{access_token}}
 
@@ -30,7 +30,7 @@ Authorization: {{access_token}}
     }
     
 ###
-PATCH {{host}}/plants/1 HTTP/1.1
+PATCH {{host}}/api/plants/1 HTTP/1.1
 content-type: application/json
 Authorization: {{access_token}}
 
@@ -43,7 +43,7 @@ Authorization: {{access_token}}
     }
     
 ###
-DELETE {{host}}/plants/1 HTTP/1.1
+DELETE {{host}}/api/plants/1 HTTP/1.1
 content-type: application/json
 Authorization: {{access_token}}
 

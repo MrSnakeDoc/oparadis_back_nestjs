@@ -1,9 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString } from 'class-validator';
 
-export class CountryType {
+export class LoginType {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
-  country: string;
+  accessToken: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  refreshToken: string;
 }

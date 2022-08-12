@@ -1,5 +1,3 @@
-import { AnimalType } from './../animal/types/Animal.types';
-import { HouseType } from './../house/types/';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import {
   ForbiddenException,
@@ -19,8 +17,6 @@ export class UserService {
   private readonly prefix: string = 'users:';
   private readonly folder: string = 'avatars';
   private readonly urlPrefix: string = 'avatars/';
-  private readonly defaultAvatar: string =
-    'https://res.cloudinary.com/oparadis/image/upload/v1655907032/avatars/fpc9avx8ypafd2yxuo2b.png';
 
   constructor(
     private prisma: PrismaService,
@@ -56,9 +52,8 @@ export class UserService {
       throw error;
     }
   }
-  async getUserById(id, url): Promise<UserType> {
-    console.log(url);
 
+  async getUserById(id, url): Promise<UserType> {
     try {
       const user: UserType = await this.cache.get(`${this.prefix}${url}`);
 
@@ -132,7 +127,7 @@ export class UserService {
 
   async updateUser(userId: string, dto: UpdateUserDto): Promise<UserDto> {
     try {
-      const storedUser = await this.prisma.user.findFirst({
+      const storedUser: UserType = await this.prisma.user.findFirst({
         where: { id: userId },
       });
 
@@ -140,37 +135,14 @@ export class UserService {
         throw new ForbiddenException('Access to ressources denied');
 
       const data: UpdateUserDto = { ...dto };
-      delete data.avatar_delete;
 
-      if (dto.avatar_delete && storedUser.avatar !== this.defaultAvatar) {
-        const cloudDelete = await this.cloudinary.delete(
+      if (dto.avatar || dto.avatar === null)
+        data.avatar = await this.cloudinary.processImg(
+          dto.avatar,
           storedUser.avatar,
           this.urlPrefix,
+          this.folder,
         );
-
-        if (cloudDelete.result !== 'ok')
-          throw new HttpException(
-            'error delete cloudinary img !',
-            HttpStatus.EXPECTATION_FAILED,
-          );
-        data.avatar = this.defaultAvatar;
-      }
-
-      if (dto.avatar) {
-        if (storedUser.avatar !== this.defaultAvatar) {
-          const cloudDelete = await this.cloudinary.delete(
-            storedUser.avatar,
-            this.urlPrefix,
-          );
-
-          if (cloudDelete.result !== 'ok')
-            throw new HttpException(
-              'error delete cloudinary img !',
-              HttpStatus.EXPECTATION_FAILED,
-            );
-        }
-        data.avatar = await this.cloudinary.upload(dto.avatar, this.folder);
-      }
 
       const user = await this.prisma.user.update({
         where: { id: userId },
@@ -235,18 +207,8 @@ export class UserService {
         throw new HttpException('User not found', HttpStatus.NOT_FOUND);
       }
 
-      if (storedUser.avatar !== this.defaultAvatar) {
-        const cloudDelete = await this.cloudinary.delete(
-          storedUser.avatar,
-          this.urlPrefix,
-        );
-
-        if (cloudDelete.result !== 'ok')
-          throw new HttpException(
-            'error delete cloudinary img !',
-            HttpStatus.EXPECTATION_FAILED,
-          );
-      }
+      if (storedUser.avatar)
+        await this.cloudinary.delete(storedUser.avatar, this.urlPrefix);
 
       await this.prisma.user.delete({
         where: { id: userId },

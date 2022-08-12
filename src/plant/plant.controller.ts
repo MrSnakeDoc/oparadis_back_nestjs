@@ -11,7 +11,14 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiNotFoundResponse,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
 import { Request } from 'express';
 import { GetUser } from 'src/auth/decorator';
 import { JwtGuard } from 'src/auth/guard';
@@ -26,11 +33,31 @@ import { PlantType } from './types';
 export class PlantController {
   constructor(private PlantService: PlantService) {}
 
+  @ApiOkResponse({
+    description: 'The plants have been successfully retreived',
+    type: PlantType,
+  })
+  @ApiNotFoundResponse({ description: 'Ressources Not Found' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+  @ApiOperation({
+    summary: 'Get all plants of all users',
+    description: 'Get all plants of all users',
+  })
   @Get()
   getPlants(@Req() req: Request): Promise<PlantType[]> {
     return this.PlantService.getPlants(req.url);
   }
 
+  @ApiOkResponse({
+    description: 'The plants has been successfully retreived',
+    type: PlantType,
+  })
+  @ApiNotFoundResponse({ description: 'Ressources Not Found' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+  @ApiOperation({
+    summary: 'Get a plants by id',
+    description: 'Get a plants by id',
+  })
   @Get(':id')
   getPlantById(
     @Param('id') PlantId: string,
@@ -39,6 +66,16 @@ export class PlantController {
     return this.PlantService.getPlantById(PlantId, req.url);
   }
 
+  @ApiOkResponse({
+    description: 'The plants have been successfully',
+    type: PlantType,
+  })
+  @ApiNotFoundResponse({ description: 'Ressources Not Found' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+  @ApiOperation({
+    summary: 'Get all plants belonging to a user',
+    description: 'Get all plants belonging to a user',
+  })
   @Get('/user/:user_id')
   getAnimalByUserId(
     @Param('user_id') user_id: string,
@@ -50,25 +87,25 @@ export class PlantController {
   @UseInterceptors(ClassSerializerInterceptor)
   @Post()
   createPlant(
-    @GetUser('id') userId: string,
+    @GetUser('id') user_id: string,
     @Body() dto: PlantDto,
   ): Promise<PlantType> {
-    return this.PlantService.createPlant(userId, dto);
+    return this.PlantService.createPlant(user_id, dto);
   }
 
   @UseInterceptors(ClassSerializerInterceptor)
   @Patch(':id')
   updatePlant(
-    @GetUser('id') userId: string,
+    @GetUser('id') user_id: string,
     @Param('id') PlantId: string,
     @Body() dto: UpdatePlantDto,
   ): Promise<PlantType> {
-    return this.PlantService.updatePlant(userId, PlantId, dto);
+    return this.PlantService.updatePlant(user_id, PlantId, dto);
   }
 
   @UseInterceptors(ClassSerializerInterceptor)
   @Delete(':id')
-  deletePlant(@GetUser('id') userId: string, @Param('id') PlantId: string) {
-    return this.PlantService.deletePlant(userId, PlantId);
+  deletePlant(@GetUser('id') user_id: string, @Param('id') PlantId: string) {
+    return this.PlantService.deletePlant(user_id, PlantId);
   }
 }

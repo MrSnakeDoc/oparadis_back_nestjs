@@ -16,6 +16,8 @@ import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { MailModule } from './mail/mail.module';
 import { HomeModule } from './home/home.module';
+import { HealthModule } from './health/health.module';
+import { CipherModule } from './cipher/cipher.module';
 
 @Module({
   imports: [
@@ -36,6 +38,8 @@ import { HomeModule } from './home/home.module';
     NotificationsModule,
     MailModule,
     HomeModule,
+    HealthModule,
+    CipherModule,
   ],
 })
 export class AppModule {}

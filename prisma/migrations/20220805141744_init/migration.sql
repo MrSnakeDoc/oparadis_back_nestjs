@@ -7,7 +7,7 @@ CREATE TABLE "users" (
     "lastname" TEXT NOT NULL,
     "pseudo" TEXT,
     "phone_number" TEXT NOT NULL,
-    "avatar" TEXT DEFAULT 'https://res.cloudinary.com/oparadis/image/upload/v1655907032/avatars/fpc9avx8ypafd2yxuo2b.png',
+    "avatar" TEXT DEFAULT 'https://res.cloudinary.com/oparadis/image/upload/v1659708883/avatars/wwfddypsyw4lmdeofpyh.jpg',
     "description" TEXT,
     "isAdmin" BOOLEAN NOT NULL DEFAULT false,
     "verified" BOOLEAN DEFAULT false,
@@ -153,10 +153,10 @@ CREATE UNIQUE INDEX "houses_user_id_key" ON "houses"("user_id");
 ALTER TABLE "houses" ADD CONSTRAINT "houses_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "houses" ADD CONSTRAINT "houses_type_id_fkey" FOREIGN KEY ("type_id") REFERENCES "Types"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "houses" ADD CONSTRAINT "houses_country_id_fkey" FOREIGN KEY ("country_id") REFERENCES "countries"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "houses" ADD CONSTRAINT "houses_country_id_fkey" FOREIGN KEY ("country_id") REFERENCES "countries"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "houses" ADD CONSTRAINT "houses_type_id_fkey" FOREIGN KEY ("type_id") REFERENCES "Types"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "animals" ADD CONSTRAINT "animals_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;

@@ -6,22 +6,22 @@
 
 
 ###
-GET {{host}}/photos HTTP/1.1
+GET {{host}}/api/photos HTTP/1.1
 content-type: application/json
 Authorization: {{access_token}}
 
 ### GetPhotoById
-GET {{host}}/photos/cl43w1kl80058ozuk4ykyoees HTTP/1.1
+GET {{host}}/api/photos/cl43w1kl80058ozuk4ykyoees HTTP/1.1
 content-type: application/json
 Authorization: {{access_token}}
 
 ### GetPhotoByHouseId
-GET {{host}}/photos/house/cl43z0ep818691hukjdasb297 HTTP/1.1
+GET {{host}}/api/photos/house/cl43z0ep818691hukjdasb297 HTTP/1.1
 content-type: application/json
 Authorization: {{access_token}}
 
 ###
-POST {{host}}/photos/ HTTP/1.1
+POST {{host}}/api/photos/ HTTP/1.1
 content-type: application/json
 Authorization: {{access_token}}
 
@@ -31,7 +31,7 @@ Authorization: {{access_token}}
 }
     
 ###
-PATCH {{host}}/photos/cl4pcrlj900044zuk2b70f2t2 HTTP/1.1
+PATCH {{host}}/api/photos/cl4pcrlj900044zuk2b70f2t2 HTTP/1.1
 content-type: application/json
 Authorization: {{access_token}}
 
@@ -40,6 +40,6 @@ Authorization: {{access_token}}
 }
     
 ###
-DELETE {{host}}/photos/cl4pgbryx0004jsukmnf6phac HTTP/1.1
+DELETE {{host}}/api/photos/cl4pgbryx0004jsukmnf6phac HTTP/1.1
 content-type: application/json
 Authorization: {{access_token}}

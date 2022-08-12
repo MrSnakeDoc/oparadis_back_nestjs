@@ -16,6 +16,7 @@ export class AnimalService {
   private readonly prefix: string = 'animals:';
   private readonly folder: string = 'animals';
   private readonly urlPrefix: string = 'animals/';
+
   constructor(
     private prisma: PrismaService,
     private cache: RedisCacheService,
@@ -114,15 +115,11 @@ export class AnimalService {
     try {
       const animal: AnimalType = {
         ...dto,
-        photo: await this.cloudinary.upload(dto.photo, this.folder),
         user_id: userId,
       };
 
-      if (!animal.photo)
-        throw new HttpException(
-          'Could not decode base64',
-          HttpStatus.EXPECTATION_FAILED,
-        );
+      if (dto.photo)
+        animal.photo = await this.cloudinary.upload(dto.photo, this.folder);
 
       const storedAnimal: AnimalType = await this.prisma.animal.create({
         data: {
@@ -151,26 +148,17 @@ export class AnimalService {
       if (!storedAnimal || storedAnimal.user_id !== userId)
         throw new ForbiddenException('Access to ressources denied');
 
-      const cloudDelete = await this.cloudinary.delete(
-        storedAnimal.photo,
-        this.urlPrefix,
-      );
-
-      if (cloudDelete.result !== 'ok')
-        throw new HttpException(
-          'error delete cloudinary img !',
-          HttpStatus.EXPECTATION_FAILED,
-        );
-
-      const photo: string = await this.cloudinary.upload(
-        dto.photo,
-        this.folder,
-      );
-
       const data: UpdateAnimalDto = {
         ...dto,
-        photo,
       };
+
+      if (dto.photo || dto.photo === null)
+        data.photo = await this.cloudinary.processImg(
+          dto.photo,
+          storedAnimal.photo,
+          this.urlPrefix,
+          this.folder,
+        );
 
       await this.cache.del(this.prefix);
 
@@ -192,16 +180,8 @@ export class AnimalService {
       if (!animal || animal.user_id !== userId)
         throw new ForbiddenException('Access to ressources denied');
 
-      const cloudDelete = await this.cloudinary.delete(
-        animal.photo,
-        this.urlPrefix,
-      );
-
-      if (cloudDelete.result !== 'ok')
-        throw new HttpException(
-          'error delete cloudinary img !',
-          HttpStatus.EXPECTATION_FAILED,
-        );
+      if (animal.photo)
+        await this.cloudinary.delete(animal.photo, this.urlPrefix);
 
       await this.cache.del(this.prefix);
 

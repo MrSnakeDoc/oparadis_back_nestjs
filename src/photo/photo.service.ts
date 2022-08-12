@@ -1,3 +1,4 @@
+import { UserType } from './../user/types/';
 import { ConfigService } from '@nestjs/config';
 import { PhotoDto } from './dto/Photo.dto';
 import {
@@ -5,11 +6,13 @@ import {
   HttpException,
   HttpStatus,
   Injectable,
+  RequestTimeoutException,
 } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UpdatePhotoDto } from './dto';
 import { RedisCacheService } from 'src/redis-cache/redis-cache.service';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
+import { HouseType } from 'src/house/types';
 
 @Injectable()
 export class PhotoService {
@@ -110,16 +113,29 @@ export class PhotoService {
 
   async createPhoto(user_id: string, dto: PhotoDto): Promise<PhotoDto> {
     try {
+      const user: UserType = await this.prisma.user.findUniqueOrThrow({
+        where: {
+          id: user_id,
+        },
+      });
+
+      if (!user) throw new ForbiddenException('Access to ressources denied');
+
+      const house: HouseType = await this.prisma.house.findUniqueOrThrow({
+        where: {
+          id: dto.house_id,
+        },
+      });
+
+      if (!house || house.user_id !== user_id)
+        throw new ForbiddenException('Access to ressources denied');
+
       const photo: PhotoDto = {
         ...dto,
-        photo: await this.cloudinary.upload(dto.photo, this.folder),
       };
 
-      if (!photo.photo)
-        throw new HttpException(
-          'Could not decode base64',
-          HttpStatus.EXPECTATION_FAILED,
-        );
+      if (dto.photo)
+        photo.photo = await this.cloudinary.upload(dto.photo, this.folder);
 
       const newPhoto = await this.prisma.photo.create({
         data: {
@@ -134,7 +150,7 @@ export class PhotoService {
 
       await this.cache.del(this.prefix);
 
-      return newPhoto;
+      return new PhotoDto(newPhoto);
     } catch (error) {
       throw error;
     }
@@ -153,30 +169,19 @@ export class PhotoService {
       if (!storedPhoto || storedPhoto.user_id !== userId)
         throw new ForbiddenException('Access to ressources denied');
 
-      const cloudDelete = await this.cloudinary.delete(
-        storedPhoto.photo,
-        this.urlPrefix,
-      );
-
-      if (cloudDelete.result !== 'ok')
-        throw new HttpException(
-          'error delete cloudinary img !',
-          HttpStatus.EXPECTATION_FAILED,
-        );
-
-      const photo: string = await this.cloudinary.upload(
-        dto.photo,
-        this.folder,
-      );
-
-      if (!photo) throw new Error('Could not decode base64');
-
       const data: UpdatePhotoDto = {
         ...dto,
-        photo,
       };
 
-      const updatedPhoto = await this.prisma.photo.update({
+      if (dto.photo || dto.photo === null)
+        data.photo = await this.cloudinary.processImg(
+          dto.photo,
+          storedPhoto.photo,
+          this.urlPrefix,
+          this.folder,
+        );
+
+      const updatedPhoto: PhotoDto = await this.prisma.photo.update({
         where: {
           id,
         },
@@ -205,16 +210,8 @@ export class PhotoService {
       if (!photo || photo.user_id !== userId)
         throw new ForbiddenException('Access to ressources denied');
 
-      const cloudDelete = await this.cloudinary.delete(
-        photo.photo,
-        this.urlPrefix,
-      );
-
-      if (cloudDelete.result !== 'ok')
-        throw new HttpException(
-          'error delete cloudinary img !',
-          HttpStatus.EXPECTATION_FAILED,
-        );
+      if (photo.photo)
+        await this.cloudinary.delete(photo.photo, this.urlPrefix);
 
       await this.prisma.photo.delete({
         where: {

@@ -107,24 +107,19 @@ export class PlantService {
     }
   }
 
-  async createPlant(userId: string, dto: PlantDto): Promise<PlantType> {
+  async createPlant(user_id: string, dto: PlantDto): Promise<PlantType> {
     try {
-      const plant: PlantType = {
+      const plant: PlantDto = {
         ...dto,
-        photo: await this.cloudinary.upload(dto.photo, this.folder),
-        user_id: userId,
       };
 
-      if (!plant.photo)
-        throw new HttpException(
-          'Could not decode base64',
-          HttpStatus.EXPECTATION_FAILED,
-        );
+      if (dto.photo)
+        plant.photo = await this.cloudinary.upload(dto.photo, this.folder);
 
       const storedPlant: PlantType = await this.prisma.plant.create({
         data: {
-          ...dto,
-          user_id: userId,
+          ...plant,
+          user_id,
         },
       });
 
@@ -149,26 +144,17 @@ export class PlantService {
       if (!storedPlant || storedPlant.user_id !== userId)
         throw new ForbiddenException('Access to ressources denied');
 
-      const cloudDelete = await this.cloudinary.delete(
-        storedPlant.photo,
-        this.urlPrefix,
-      );
-
-      if (cloudDelete.result !== 'ok')
-        throw new HttpException(
-          'error delete cloudinary img !',
-          HttpStatus.EXPECTATION_FAILED,
-        );
-
-      const photo: string = await this.cloudinary.upload(
-        dto.photo,
-        this.folder,
-      );
-
       const data: UpdatePlantDto = {
         ...dto,
-        photo,
       };
+
+      if (dto.photo || dto.photo === null)
+        data.photo = await this.cloudinary.processImg(
+          dto.photo,
+          storedPlant.photo,
+          this.urlPrefix,
+          this.folder,
+        );
 
       await this.cache.del(this.prefix);
 
@@ -190,16 +176,8 @@ export class PlantService {
       if (!plant || plant.user_id !== userId)
         throw new ForbiddenException('Access to ressources denied');
 
-      const cloudDelete = await this.cloudinary.delete(
-        plant.photo,
-        this.urlPrefix,
-      );
-
-      if (cloudDelete.result !== 'ok')
-        throw new HttpException(
-          'error delete cloudinary img !',
-          HttpStatus.EXPECTATION_FAILED,
-        );
+      if (plant.photo)
+        await this.cloudinary.delete(plant.photo, this.urlPrefix);
 
       await this.prisma.plant.delete({
         where: { id },

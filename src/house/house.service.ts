@@ -30,6 +30,8 @@ export class HouseService {
       const houses: HouseType[] = await this.prisma.house.findMany({
         include: {
           photo: true,
+          type: true,
+          country: true,
         },
       });
 
@@ -69,6 +71,8 @@ export class HouseService {
         where: { id },
         include: {
           photo: true,
+          type: true,
+          country: true,
         },
       });
 

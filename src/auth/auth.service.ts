@@ -28,26 +28,24 @@ export class AuthService {
 
   async signup(dto: AuthDto) {
     try {
+      const data = { ...dto };
       //generate the password hash
-      const hash = await argon.hash(dto.password);
-      delete dto.password;
+      data.password = await argon.hash(dto.password);
 
       !dto.pseudo ? (dto.pseudo = dto.firstname) : null;
 
-      //save the user to the database
-
       const user = await this.prisma.user.create({
-        data: { ...dto, password: hash },
+        data: { ...data },
       });
 
-      const validationToken = await this.signToken(
-        'JWT_SECRET',
+      const emailToken = await this.signToken(
+        'JWT_MAIL',
         this.config.get('JWT_EXPIRATION'),
         user.id,
         user.email,
       );
 
-      this.redisEmail(user, validationToken);
+      this.redisEmail(user, emailToken);
 
       return HttpStatus.CREATED;
     } catch (error) {
@@ -157,11 +155,11 @@ export class AuthService {
         user.email,
       );
 
-      const cryptedRefreshToken: string = await argon.hash(refresh_token);
+      const hashedRefreshToken: string = await argon.hash(refresh_token);
 
       await this.prisma.user.update({
         where: { id: user.id },
-        data: { refresh_token: cryptedRefreshToken },
+        data: { refresh_token: hashedRefreshToken },
       });
 
       //send back the user

@@ -1,13 +1,13 @@
 @host = http://localhost:5000
 
-@access_token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbDR3azFzenkxODYyOWx1a3Z3bzVkemw1IiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNjU2MzIzMjkwLCJleHAiOjE2NTY0MDk2OTB9.poty39wCen3edq4UmNZqtZMF28QhckFSr6lSqDfXsPk
+@access_token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbDZtNWg3OGcxODkwdWF1a29zc3p4MDRhIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNjYwMjIxODkxLCJleHAiOjE2NjAzMDgyOTF9.djTw5TaUGayZ6YQRJE3izfET89rwu62HAuFoJVHfkaE
 
-@refresh_token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbDVjYTNuM2wxODYybWZ1a3lkZDR5M3VzIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNjU3Mjc5NjM1LCJleHAiOjE2NTk4NzE2MzV9.0dIRiTxCrLkLko0MUBr8vVaqwbqfz1728gNKMVVX2CA
+@refresh_token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbDZtNWg3OGcxODkwdWF1a29zc3p4MDRhIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNjYwMjIxODkxLCJleHAiOjE2NjI4MTM4OTF9.okQ-QDifGmOyzxUmehA2ei0-GpPfxgQaAsS9fw00TI8
 
 @token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbDVjZ3ppaDQwMDAxNnJ1a2RzcXU4dWVnIiwiZW1haWwiOiJ3YXphbXk3NzdAZ21haWwuY29tIiwiaWF0IjoxNjU3Mjg1NDgyLCJleHAiOjE2NTczNzE4ODJ9.wh7Bur1R_EJSVLMutn4U-3oXEPo-o9liHvqAcl-ONrg
 
 ###
-POST {{host}}/auth/signup HTTP/1.1
+POST {{host}}/api/auth/signup HTTP/1.1
 content-type: application/json
 
 {
@@ -20,12 +20,12 @@ content-type: application/json
 }
 
 ### Confirm Email
-GET {{host}}/auth/confirm?token={{token}} HTTP/1.1
+GET {{host}}/api/auth/confirm?token={{token}} HTTP/1.1
 Content-Type: application/json
 
 
 ### Connexion User
-POST {{host}}/auth/signin HTTP/1.1
+POST {{host}}/api/auth/signin HTTP/1.1
 content-type: application/json
 
 {
@@ -34,7 +34,7 @@ content-type: application/json
 }
 
 ### Connexion User
-POST {{host}}/auth/signin HTTP/1.1
+POST {{host}}/api/auth/login HTTP/1.1
 content-type: application/json
 
 {
@@ -43,7 +43,7 @@ content-type: application/json
 }
 
 ###
-POST {{host}}/signin HTTP/1.1
+POST {{host}}/api/login HTTP/1.1
 content-type: application/json
 
 {
@@ -52,11 +52,11 @@ content-type: application/json
 }
 
 ###
-POST {{host}}/auth/refreshToken HTTP/1.1
+POST {{host}}/api/auth/refreshToken HTTP/1.1
 content-type: application/json
 Authorization: {{refresh_token}}
 
 ###
-GET {{host}}/auth/logout HTTP/1.1
+GET {{host}}/api/auth/logout HTTP/1.1
 content-type: application/json
 Authorization: {{refresh_token}}
