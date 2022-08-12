@@ -1,4 +1,4 @@
-<h1 style="text-align:center; color:#00A9FF">O'Paradis's API (still working on it)<h1>
+<h1 style="text-align:center; color:#00A9FF">O'Paradis's API (in progress)<h1>
 
 [![license](https://img.shields.io/github/license/nhn/tui.editor.svg)](https://github.com/MrSnakeDoc/oparadis/blob/dev/licence)
 [![NPM version](https://img.shields.io/badge/NodeJS-16.16.0-blue)](https://nodejs.org/en/)
