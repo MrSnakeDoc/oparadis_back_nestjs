@@ -84,6 +84,16 @@ export class PlantController {
     return this.PlantService.getPlantByUserId(user_id, req.url);
   }
 
+  @ApiOkResponse({
+    description: 'The plant has been successfully created',
+    type: PlantType,
+  })
+  @ApiNotFoundResponse({ description: 'Ressources Not Found' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+  @ApiOperation({
+    summary: 'Create a new plant',
+    description: 'Create a new plant',
+  })
   @UseInterceptors(ClassSerializerInterceptor)
   @Post()
   createPlant(
@@ -93,6 +103,16 @@ export class PlantController {
     return this.PlantService.createPlant(user_id, dto);
   }
 
+  @ApiOkResponse({
+    description: 'The plant has been successfully updated',
+    type: PlantType,
+  })
+  @ApiNotFoundResponse({ description: 'Ressources Not Found' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+  @ApiOperation({
+    summary: 'Update a plant',
+    description: 'Update a plant',
+  })
   @UseInterceptors(ClassSerializerInterceptor)
   @Patch(':id')
   updatePlant(
@@ -103,6 +123,15 @@ export class PlantController {
     return this.PlantService.updatePlant(user_id, PlantId, dto);
   }
 
+  @ApiOkResponse({
+    description: 'The photo has been successfully deleted',
+  })
+  @ApiNotFoundResponse({ description: 'Ressources Not Found' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+  @ApiOperation({
+    summary: 'Delete a photo',
+    description: 'Delete a photo',
+  })
   @UseInterceptors(ClassSerializerInterceptor)
   @Delete(':id')
   deletePlant(@GetUser('id') user_id: string, @Param('id') PlantId: string) {

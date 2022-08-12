@@ -1,3 +1,9 @@
+import { ApiProperty } from '@nestjs/swagger';
+import { IsOptional, IsString } from 'class-validator';
+
 export class Type {
-  type: string;
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  type?: string;
 }
