@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { RedisCacheModule } from 'src/redis-cache/redis-cache.module';
+import { RedisCacheModule } from '../redis-cache/redis-cache.module';
 import { HomeController } from './home.controller';
 import { HomeService } from './home.service';
 import { ConfigModule } from '@nestjs/config';

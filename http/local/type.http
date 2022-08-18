@@ -1,13 +1,13 @@
-@host = http://localhost:5000
+@host = http://localhost:5000/api
 
 @access_token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbDN5ODlkbWswMDAwMjB1a3VianA5dnBnIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNjU0MjQ3NTI1LCJleHAiOjE2NTQzMzM5MjV9.DRC8Nt7bJMFGgfaeRnXKM0zEoVhe2FN07UviFN9HZ8Q
 
 ###
-GET {{host}}/api/types/ HTTP/1.1
+GET {{host}}/types/ HTTP/1.1
 content-type: application/json
 Authorization: {{access_token}}
 
 ###
-GET {{host}}/api/types/cl3y87f5g1799bdukjxt2ntmi HTTP/1.1
+GET {{host}}/types/cl3y87f5g1799bdukjxt2ntmi HTTP/1.1
 content-type: application/json
 Authorization: {{access_token}}

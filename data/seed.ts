@@ -48,6 +48,9 @@ async function main() {
       });
     }
 
+    // if (
+    //   process.env.DATABASE_URL !== 'postgresql://test:test@localhost:55433/test'
+    // ) {
     for (const user of Users) {
       user.password = await argon.hash(user.password);
       await prisma.user.create({
@@ -127,6 +130,7 @@ async function main() {
         },
       });
     }
+    // }
   } catch (err) {
     console.error(err);
   }

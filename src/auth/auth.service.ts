@@ -6,13 +6,13 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 import * as argon from 'argon2';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import { AuthDto, SignInDto } from './dto';
 import { JwtService } from '@nestjs/jwt';
-import { RedisCacheService } from 'src/redis-cache/redis-cache.service';
-import { MailService } from 'src/mail/mail.service';
+import { RedisCacheService } from '../redis-cache/redis-cache.service';
+import { MailService } from '../mail/mail.service';
 import { User } from '@prisma/client';
 
 @Injectable()
@@ -31,8 +31,6 @@ export class AuthService {
       const data = { ...dto };
       //generate the password hash
       data.password = await argon.hash(dto.password);
-
-      !dto.pseudo ? (dto.pseudo = dto.firstname) : null;
 
       const user = await this.prisma.user.create({
         data: { ...data },

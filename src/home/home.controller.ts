@@ -1,20 +1,22 @@
-import { Controller, Get, Req } from '@nestjs/common';
+import { Controller, Get, HttpCode, Req, HttpStatus } from '@nestjs/common';
 import {
-  ApiInternalServerErrorResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
   ApiTags,
-  ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { Request } from 'express';
-import { HouseType } from 'src/house/types';
+import { PrismaService } from '../prisma/prisma.service';
+import { HouseType } from '../house/types';
 import { HomeService } from './home.service';
 
 @ApiTags('home')
 @Controller()
 export class HomeController {
-  constructor(private homeService: HomeService) {}
+  constructor(
+    private homeService: HomeService,
+    private prisma: PrismaService,
+  ) {}
 
   @ApiOkResponse({
     description: 'The last houses have been successfully retreived.',
@@ -42,6 +44,14 @@ export class HomeController {
   })
   @Get('/houses')
   getHouses(@Req() req: Request): Promise<HouseType[]> {
+    console.log('test e2e - ok');
+
     return this.homeService.getHouses(req.url);
+  }
+
+  @Get('/reset')
+  async reset() {
+    await this.prisma.resetUsers();
+    return HttpCode(HttpStatus.OK);
   }
 }

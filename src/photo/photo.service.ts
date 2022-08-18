@@ -8,11 +8,11 @@ import {
   Injectable,
   RequestTimeoutException,
 } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 import { UpdatePhotoDto } from './dto';
-import { RedisCacheService } from 'src/redis-cache/redis-cache.service';
-import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
-import { HouseType } from 'src/house/types';
+import { RedisCacheService } from '../redis-cache/redis-cache.service';
+import { CloudinaryService } from '../cloudinary/cloudinary.service';
+import { HouseType } from '../house/types';
 
 @Injectable()
 export class PhotoService {
@@ -173,7 +173,7 @@ export class PhotoService {
         ...dto,
       };
 
-      if (dto.photo || dto.photo === null)
+      if (dto.photo)
         data.photo = await this.cloudinary.processImg(
           dto.photo,
           storedPhoto.photo,

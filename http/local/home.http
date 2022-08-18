@@ -1,11 +1,16 @@
-@host = http://localhost:5000
+@host = http://localhost:5000/api
 
 
 
 ###
-GET {{host}}/api   HTTP/1.1
+GET {{host}}   HTTP/1.1
 Content-Type: application/json
 
 ###
-GET {{host}}/api/houses HTTP/1.1
+GET {{host}}/houses HTTP/1.1
+content-type: application/json
+
+
+###
+GET {{host}}/health HTTP/1.1
 content-type: application/json

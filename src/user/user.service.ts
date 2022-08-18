@@ -1,4 +1,4 @@
-import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
+import { CloudinaryService } from '../cloudinary/cloudinary.service';
 import {
   ForbiddenException,
   HttpException,
@@ -6,8 +6,8 @@ import {
   Injectable,
 } from '@nestjs/common';
 import * as argon from 'argon2';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { RedisCacheService } from 'src/redis-cache/redis-cache.service';
+import { PrismaService } from '../prisma/prisma.service';
+import { RedisCacheService } from '../redis-cache/redis-cache.service';
 import { UserDto, UpdateUserDto, UpdateUserPasswordDto } from './dto';
 import { UserType } from './types';
 import { ConfigService } from '@nestjs/config';

@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserController } from './user.controller';
-import { RedisCacheModule } from 'src/redis-cache/redis-cache.module';
-import { CloudinaryModule } from 'src/cloudinary/cloudinary.module';
+import { RedisCacheModule } from '../redis-cache/redis-cache.module';
+import { CloudinaryModule } from '../cloudinary/cloudinary.module';
 
 @Module({
   imports: [RedisCacheModule, CloudinaryModule],

@@ -6,11 +6,11 @@ import {
   HttpStatus,
   Injectable,
 } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 import { CreateHouseDto, UpdateHouseDto } from './dto';
-import { AnimalType } from 'src/animal/types/';
-import { PlantType } from 'src/plant/types';
-import { RedisCacheService } from 'src/redis-cache/redis-cache.service';
+import { AnimalType } from '../animal/types/';
+import { PlantType } from '../plant/types';
+import { RedisCacheService } from '../redis-cache/redis-cache.service';
 
 @Injectable()
 export class HouseService {

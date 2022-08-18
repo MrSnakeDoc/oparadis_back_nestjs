@@ -6,15 +6,10 @@ import { MailService } from './mail.service';
   imports: [
     MailerModule.forRoot({
       transport: {
-        service: 'gmail',
+        service: 'Outlook365',
         auth: {
-          type: 'OAuth2',
-          user: process.env.MAILER_FROM,
-          // pass: process.env.MAILER_PASSWORD,
-          clientId: process.env.MAILER_CLIENT_ID,
-          clientSecret: process.env.MAILER_CLIENT_SECRET,
-          refreshToken: process.env.MAILER_REFRESH_TOKEN,
-          accessToken: process.env.MAILER_ACCESS_TOKEN,
+          user: process.env.MAILER_USER,
+          pass: process.env.MAILER_PASSWORD,
         },
       },
     }),

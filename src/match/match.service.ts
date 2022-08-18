@@ -6,8 +6,8 @@ import {
   HttpStatus,
   ForbiddenException,
 } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { RedisCacheService } from 'src/redis-cache/redis-cache.service';
+import { PrismaService } from '../prisma/prisma.service';
+import { RedisCacheService } from '../redis-cache/redis-cache.service';
 import { MatchFullDto } from './dto';
 import { MatchDto } from './dto/Match.dto';
 

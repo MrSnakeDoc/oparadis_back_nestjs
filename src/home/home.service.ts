@@ -2,11 +2,11 @@ import * as dayjs from 'dayjs';
 dayjs().format();
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { AnimalType } from 'src/animal/types';
-import { HouseType } from 'src/house/types';
-import { PlantType } from 'src/plant/types';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { RedisCacheService } from 'src/redis-cache/redis-cache.service';
+import { AnimalType } from '../animal/types';
+import { HouseType } from '../house/types';
+import { PlantType } from '../plant/types';
+import { PrismaService } from '../prisma/prisma.service';
+import { RedisCacheService } from '../redis-cache/redis-cache.service';
 
 @Injectable()
 export class HomeService {
@@ -70,6 +70,8 @@ export class HomeService {
   }
 
   async getHouses(url: string): Promise<HouseType[]> {
+    console.log('test e2e - service ok');
+
     try {
       const cachedHouses = await this.cache.get(`${this.prefix}${url}`);
 

@@ -1,26 +1,26 @@
-@host = http://localhost:5000
+@host = http://localhost:5000/api
 
 @access_token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbDRvY3NoemwwMDAzaXh1a2tlMmY4dzllIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNjU1ODI3MjUxLCJleHAiOjE2NTU5MTM2NTF9.2e6w28OSSR1Gz2NNhdeb4VtRBLC1hSzEldzhFgPI2no
 
 
 
 ###
-GET {{host}}/api/houses/full HTTP/1.1
+GET {{host}}/houses/full HTTP/1.1
 content-type: application/json
 Authorization: {{access_token}}
 
 ###
-GET {{host}}/api/houses/full/cl4gve8s50004woukkeaxhjor HTTP/1.1
+GET {{host}}/houses/full/cl4gve8s50004woukkeaxhjor HTTP/1.1
 content-type: application/json
 Authorization: {{access_token}}
 
 ###
-GET {{host}}/api/houses/cl4gve8s50004woukkeaxhjor HTTP/1.1
+GET {{host}}/houses/cl4gve8s50004woukkeaxhjor HTTP/1.1
 content-type: application/json
 Authorization: {{access_token}}
 
 ###
-POST {{host}}/api/houses HTTP/1.1
+POST {{host}}/houses HTTP/1.1
 content-type: application/json
 Authorization: {{access_token}}
 
@@ -38,7 +38,7 @@ Authorization: {{access_token}}
 }
 
 ###
-PATCH {{host}}/api/houses/cl4gve8s50004woukkeaxhjor HTTP/1.1
+PATCH {{host}}/houses/cl4gve8s50004woukkeaxhjor HTTP/1.1
 content-type: application/json
 Authorization: {{access_token}}
 
@@ -58,6 +58,6 @@ Authorization: {{access_token}}
     }
 
 ###
-DELETE {{host}}/api/houses/cl4guy49j0035cjuk8z4wyqnb HTTP/1.1
+DELETE {{host}}/houses/cl4guy49j0035cjuk8z4wyqnb HTTP/1.1
 content-type: application/json
 Authorization: {{access_token}}

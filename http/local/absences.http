@@ -1,19 +1,19 @@
-@host = http://localhost:5000
+@host = http://localhost:5000/api
 
 @access_token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbDR3azFzenkxODYyOWx1a3Z3bzVkemw1IiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNjU2MzIzMjkwLCJleHAiOjE2NTY0MDk2OTB9.poty39wCen3edq4UmNZqtZMF28QhckFSr6lSqDfXsPk
 
 ###
-GET {{host}}/api/absences HTTP/1.1
+GET {{host}}/absences HTTP/1.1
 content-type: application/json
 Authorization: {{access_token}}
 
 ###
-GET {{host}}/api/absences/1 HTTP/1.1
+GET {{host}}/absences/1 HTTP/1.1
 content-type: application/json
 Authorization: {{access_token}}
 
 ###
-POST {{host}}/api/absences HTTP/1.1
+POST {{host}}/absences HTTP/1.1
 content-type: application/json
 Authorization: {{access_token}}
 
@@ -24,7 +24,7 @@ Authorization: {{access_token}}
     }
 
 ###
-PATCH {{host}}/api/absences/1 HTTP/1.1
+PATCH {{host}}/absences/1 HTTP/1.1
 content-type: application/json
 Authorization: {{access_token}}
 
@@ -36,7 +36,7 @@ Authorization: {{access_token}}
     }
     
 ###
-DELETE {{host}}/api/absences/1 HTTP/1.1
+DELETE {{host}}/absences/1 HTTP/1.1
 content-type: application/json
 Authorization: {{access_token}}
 

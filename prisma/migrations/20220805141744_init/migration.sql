@@ -175,3 +175,18 @@ ALTER TABLE "absences" ADD CONSTRAINT "absences_user_id_fkey" FOREIGN KEY ("user
 
 -- AddForeignKey
 ALTER TABLE "matches" ADD CONSTRAINT "matches_absence_id_fkey" FOREIGN KEY ("absence_id") REFERENCES "absences"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- The function fills the pseudo field with firstname 
+CREATE OR REPLACE FUNCTION trigger_set_pseudo() RETURNS trigger AS $$
+    BEGIN
+        NEW.pseudo := NEW.firstname;
+        RETURN NEW;
+    END;
+$$ LANGUAGE plpgsql;
+
+-- TRIGGER with condition (If pseudo is null or empty then execute function trigger_set_pseudo)
+CREATE TRIGGER set_pseudo
+    BEFORE INSERT OR UPDATE ON USERS
+    FOR EACH ROW
+    WHEN (NEW.pseudo IS NULL OR NEW.pseudo = '')
+    EXECUTE PROCEDURE trigger_set_pseudo();

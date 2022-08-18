@@ -1,6 +1,6 @@
 import { CountryService } from './country.service';
 import { Controller, Get, Param, Req, UseGuards } from '@nestjs/common';
-import { JwtGuard } from 'src/auth/guard';
+import { JwtGuard } from '../auth/guard';
 import { Request } from 'express';
 import {
   ApiBearerAuth,

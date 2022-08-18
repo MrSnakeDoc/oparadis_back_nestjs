@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, HttpCode, HttpStatus } from '@nestjs/common';
 import { RedisOptions, Transport } from '@nestjs/microservices';
 import { ApiExcludeController } from '@nestjs/swagger';
 import {
@@ -19,6 +19,7 @@ export class HealthController {
 
   @Get()
   @HealthCheck()
+  @HttpCode(HttpStatus.OK)
   checkHealth() {
     return this.healthCheckService.check([
       () => this.http.pingCheck('Basic Check', 'http://localhost:5000/api'),

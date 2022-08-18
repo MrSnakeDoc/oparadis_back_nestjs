@@ -1,4 +1,4 @@
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 import {
   ForbiddenException,
   Injectable,
@@ -7,8 +7,8 @@ import {
 } from '@nestjs/common';
 import { AnimalDto, UpdateAnimalDto } from './dto';
 import { AnimalType } from './types/';
-import { RedisCacheService } from 'src/redis-cache/redis-cache.service';
-import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
+import { RedisCacheService } from '../redis-cache/redis-cache.service';
+import { CloudinaryService } from '../cloudinary/cloudinary.service';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()

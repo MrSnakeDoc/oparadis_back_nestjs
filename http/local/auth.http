@@ -1,4 +1,4 @@
-@host = http://localhost:5000
+@host = http://localhost:5000/api
 
 @access_token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbDZtNWg3OGcxODkwdWF1a29zc3p4MDRhIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNjYwMjIxODkxLCJleHAiOjE2NjAzMDgyOTF9.djTw5TaUGayZ6YQRJE3izfET89rwu62HAuFoJVHfkaE
 
@@ -7,7 +7,7 @@
 @token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbDVjZ3ppaDQwMDAxNnJ1a2RzcXU4dWVnIiwiZW1haWwiOiJ3YXphbXk3NzdAZ21haWwuY29tIiwiaWF0IjoxNjU3Mjg1NDgyLCJleHAiOjE2NTczNzE4ODJ9.wh7Bur1R_EJSVLMutn4U-3oXEPo-o9liHvqAcl-ONrg
 
 ###
-POST {{host}}/api/auth/signup HTTP/1.1
+POST {{host}}/auth/signup HTTP/1.1
 content-type: application/json
 
 {
@@ -19,13 +19,18 @@ content-type: application/json
     "phone_number": "0184546443"
 }
 
+###
+GET {{host}}/reset HTTP/1.1
+content-type: application/json
+
+
 ### Confirm Email
-GET {{host}}/api/auth/confirm?token={{token}} HTTP/1.1
+GET {{host}}/auth/confirm?token={{token}} HTTP/1.1
 Content-Type: application/json
 
 
 ### Connexion User
-POST {{host}}/api/auth/signin HTTP/1.1
+POST {{host}}/auth/signin HTTP/1.1
 content-type: application/json
 
 {
@@ -34,7 +39,7 @@ content-type: application/json
 }
 
 ### Connexion User
-POST {{host}}/api/auth/login HTTP/1.1
+POST {{host}}/auth/login HTTP/1.1
 content-type: application/json
 
 {
@@ -43,7 +48,7 @@ content-type: application/json
 }
 
 ###
-POST {{host}}/api/login HTTP/1.1
+POST {{host}}/auth/login HTTP/1.1
 content-type: application/json
 
 {
@@ -52,11 +57,11 @@ content-type: application/json
 }
 
 ###
-POST {{host}}/api/auth/refreshToken HTTP/1.1
+POST {{host}}/auth/refreshToken HTTP/1.1
 content-type: application/json
 Authorization: {{refresh_token}}
 
 ###
-GET {{host}}/api/auth/logout HTTP/1.1
+GET {{host}}/auth/logout HTTP/1.1
 content-type: application/json
 Authorization: {{refresh_token}}

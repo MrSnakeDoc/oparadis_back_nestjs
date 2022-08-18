@@ -1,23 +1,23 @@
-@host = http://localhost:5000
+@host = http://localhost:5000/api
 @access_token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbDRndXNvNHMwMDAwY2p1azRpeHoyenoxIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNjU1MzczNzY0LCJleHAiOjE2NTU0NjAxNjR9.jwu-8G8fnfyed58DJ9W3wM-Bye0qRPiHNcz46Pb29kM
 
 ###
-GET {{host}}/api/animals/ HTTP/1.1
+GET {{host}}/animals/ HTTP/1.1
 content-type: application/json
 Authorization: {{access_token}}
 
 ###
-GET {{host}}/api/animals/1 HTTP/1.1
+GET {{host}}/animals/1 HTTP/1.1
 content-type: application/json
 Authorization: {{access_token}}
 
 ### GetAnimalsByUserId
-GET {{host}}/api/animals/user/cl4guso4s0000cjuk4ixz2zz1 HTTP/1.1
+GET {{host}}/animals/user/cl4guso4s0000cjuk4ixz2zz1 HTTP/1.1
 content-type: application/json
 Authorization: {{access_token}}
 
 ###
-POST {{host}}/api/animals HTTP/1.1
+POST {{host}}/animals HTTP/1.1
 content-type: application/json
 Authorization: {{access_token}}
 
@@ -31,7 +31,7 @@ Authorization: {{access_token}}
     }
     
 ###
-PATCH {{host}}/api/animals/cl4h3rutt0015mzuk9sfa1888 HTTP/1.1
+PATCH {{host}}/animals/cl4h3rutt0015mzuk9sfa1888 HTTP/1.1
 content-type: application/json
 Authorization: {{access_token}}
 
@@ -46,7 +46,7 @@ Authorization: {{access_token}}
     }
     
 ###
-DELETE {{host}}/api/animals/ HTTP/1.1
+DELETE {{host}}/animals/ HTTP/1.1
 content-type: application/json
 Authorization: {{access_token}}
 

@@ -20,8 +20,8 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { Request } from 'express';
-import { GetUser } from 'src/auth/decorator';
-import { JwtGuard } from 'src/auth/guard';
+import { GetUser } from '../auth/decorator';
+import { JwtGuard } from '../auth/guard';
 import { MatchDto, MatchFullDto } from './dto/';
 import { ValidateMatchDto } from './dto/validateMatch.dto';
 import { MatchService } from './match.service';
