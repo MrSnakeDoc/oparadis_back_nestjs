@@ -27,6 +27,12 @@ export class PrismaService extends PrismaClient {
   }
 
   resetUsers() {
-    return this.$transaction([this.user.deleteMany()]);
+    return this.$transaction([
+      this.user.delete({
+        where: {
+          email: 'titogomez4455@gmail.com',
+        },
+      }),
+    ]);
   }
 }

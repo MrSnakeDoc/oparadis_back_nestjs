@@ -89,7 +89,7 @@ export class UserService {
 
   async getMe(user, url): Promise<UserType> {
     const cachedUser: UserType = await this.cache.get(
-      `${this.prefix}${url}${user.id}`,
+      `${this.prefix}${url}/${user.id}`,
     );
 
     if (cachedUser) return cachedUser;
@@ -117,7 +117,7 @@ export class UserService {
     });
 
     await this.cache.set(
-      `${this.prefix}${url}${user.id}`,
+      `${this.prefix}${url}/${user.id}`,
       cacheUser,
       this.config.get('CACHE_TTL'),
     );

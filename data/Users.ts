@@ -125,4 +125,12 @@ export const Users = [
     description:
       'Will you be the recruiter that will take a chance on me and be rewarded for it ?',
   },
+  {
+    email: 'o@o.com',
+    password: 'tata',
+    firstname: 'Jade',
+    lastname: 'Lemaire',
+    pseudo: 'Jadou',
+    phone_number: '0645454545',
+  },
 ];

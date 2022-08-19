@@ -62,6 +62,11 @@ describe('AppController (e2e)', () => {
       email: 'a@a.com',
       password: 'Paradis13$',
     };
+
+    const noAccount: SignInDto = {
+      email: 'o@o.com',
+      password: 'tata',
+    };
     describe('Signup', () => {
       it('Should throw an exception if email empty', async () => {
         return pactum
@@ -170,10 +175,113 @@ describe('AppController (e2e)', () => {
           .stores('refresh', 'refreshToken');
       });
     });
+
+    describe('newMail', () => {
+      it('Should throw an error if mail empty', async () => {
+        return pactum.spec().get('/auth/newmail').expectStatus(400);
+      });
+
+      it('Should throw an error if mail not found', async () => {
+        return pactum
+          .spec()
+          .get('/auth/newmail')
+          .withQueryParams('email', 'c@c.com')
+          .expectStatus(404);
+      });
+
+      //   it('should give a 200', async () => {
+      //     return pactum
+      //       .spec()
+      //       .get('/auth/newmail')
+      //       .withQueryParams('email', noAccount.email)
+      //       .expectStatus(200);
+      //   });
+    });
+
+    describe('Refresh the token', () => {
+      it('Should throw an error if token empty', async () => {
+        return pactum
+          .spec()
+          .post('/auth/refreshtoken')
+          .withHeaders({ Authorization: '' })
+          .expectStatus(403);
+      });
+
+      it('Should throw an error if token wrong', async () => {
+        return pactum
+          .spec()
+          .post('/auth/refreshtoken')
+          .withHeaders({ Authorization: 'Bearer $S{userAt}' })
+          .expectStatus(401);
+      });
+
+      it('Should return a 200 and an AccessToken', async () => {
+        return pactum
+          .spec()
+          .post('/auth/refreshtoken')
+          .withHeaders({
+            Authorization: 'Bearer $S{refresh}',
+          })
+          .expectStatus(200)
+          .stores('accessToken', 'accessToken');
+      });
+    });
+
+    describe('logout', () => {
+      it('Should throw an error if token empty', async () => {
+        return pactum
+          .spec()
+          .post('/auth/logout')
+          .withHeaders({ Authorization: '' })
+          .expectStatus(403);
+      });
+
+      it('Should throw an error if token wrong', async () => {
+        return pactum
+          .spec()
+          .post('/auth/logout')
+          .withHeaders({ Authorization: 'Bearer $S{userAt}' })
+          .expectStatus(401);
+      });
+
+      it('should return a 200 and logout', async () => {
+        return pactum
+          .spec()
+          .post('/auth/logout')
+          .withHeaders({
+            Authorization: 'Bearer $S{refresh}',
+          })
+          .expectStatus(200);
+      });
+    });
   });
 
   describe('User', () => {
     describe('Get Me', () => {
+      it('Should throw an error if token empty', async () => {
+        return pactum
+          .spec()
+          .get('/users/me')
+          .withHeaders({ Authorization: '' })
+          .expectStatus(401);
+      });
+
+      it('Should throw an error if token is wrong', async () => {
+        return pactum
+          .spec()
+          .get('/users/me')
+          .withHeaders({ Authorization: 'Bearer $S{refresh}' })
+          .expectStatus(401);
+      });
+
+      it('Should throw an error if token missing Bearer', async () => {
+        return pactum
+          .spec()
+          .get('/users/me')
+          .withHeaders({ Authorization: '$S{userAt}' })
+          .expectStatus(401);
+      });
+
       it('Should get curret user', async () => {
         return pactum
           .spec()

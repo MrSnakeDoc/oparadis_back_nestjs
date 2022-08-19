@@ -60,7 +60,6 @@
     "class-validator": "^0.13.2",
     "cloudinary": "^1.30.0",
     "dayjs": "^1.11.3",
-    "googleapis": "^105.0.0",
     "ioredis": "^5.2.2",
     "nodemailer": "^6.7.7",
     "passport": "^0.6.0",

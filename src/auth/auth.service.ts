@@ -89,13 +89,22 @@ export class AuthService {
     }
   }
 
-  async newMail(token: string) {
+  async newMail(email: string) {
     try {
-      const user: User = await this.checkEmail(token);
+      if (email === undefined || !email)
+        throw new HttpException(
+          'email in query missing',
+          HttpStatus.BAD_REQUEST,
+        );
 
-      if (!user) {
+      const user: User = await this.prisma.user.findUnique({
+        where: {
+          email,
+        },
+      });
+
+      if (!user)
         throw new HttpException('User not found', HttpStatus.NOT_FOUND);
-      }
 
       if (user.verified)
         throw new HttpException(
@@ -112,7 +121,7 @@ export class AuthService {
 
       this.redisEmail(user, validationToken);
 
-      return HttpStatus.CREATED;
+      return HttpStatus.OK;
     } catch (error) {
       throw error;
     }

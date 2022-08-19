@@ -73,10 +73,10 @@ export class AuthController {
     description:
       'Send a new verification mail to a user to confirm his mail address',
   })
-  @HttpCode(HttpStatus.CREATED)
+  @HttpCode(HttpStatus.OK)
   @Get('newmail')
-  async newMail(@Query('token') token: string) {
-    return this.authService.newMail(token);
+  async newMail(@Query('email') email: string) {
+    return this.authService.newMail(email);
   }
 
   @ApiOkResponse({
@@ -89,10 +89,10 @@ export class AuthController {
     description: 'refresh the accessToken using the refreshToken',
   })
   @HttpCode(HttpStatus.OK)
-  @Post('refreshToken')
-  refreshToken(@Headers('authorization') authorization: string) {
+  @Post('refreshtoken')
+  refreshToken(@Headers('authorization') token: string) {
     return this.authService.createAccessTokenFromRefreshToken(
-      authorization.split('Bearer ')[1],
+      token.split('Bearer ')[1],
     );
   }
 
@@ -105,8 +105,8 @@ export class AuthController {
     description: 'logout the user',
   })
   @HttpCode(HttpStatus.OK)
-  @Get('logout')
-  logout(@Headers('authorization') authorization: string) {
-    return this.authService.logout(authorization.split('Bearer ')[1]);
+  @Post('logout')
+  logout(@Headers('authorization') token: string) {
+    return this.authService.logout(token.split('Bearer ')[1]);
   }
 }

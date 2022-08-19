@@ -38,6 +38,12 @@ content-type: application/json
     "password": "toto"
 }
 
+### New mail
+GET {{host}}/auth/newmail HTTP/1.1
+content-type: application/json
+
+
+
 ### Connexion User
 POST {{host}}/auth/login HTTP/1.1
 content-type: application/json
