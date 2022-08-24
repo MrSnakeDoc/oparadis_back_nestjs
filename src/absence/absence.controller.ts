@@ -11,11 +11,11 @@ import {
   Req,
   UseGuards,
   UseInterceptors,
+  HttpStatus,
 } from '@nestjs/common';
 import { JwtGuard } from '../auth/guard';
-import { AbsenceDto, UpdateAbsenceDto } from './dto';
+import { AbsenceDto, UpdateAbsenceDto, CreateAbsenceDto } from './dto';
 import { GetUser } from '../auth/decorator';
-import { AbsenceType } from './types';
 import { Request } from 'express';
 import {
   ApiBearerAuth,
@@ -36,7 +36,7 @@ export class AbsenceController {
 
   @ApiOkResponse({
     description: 'The Absences have been successfully retreived.',
-    type: AbsenceType,
+    type: AbsenceDto,
   })
   @ApiNotFoundResponse({ description: 'Ressources Not Found' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
@@ -45,13 +45,13 @@ export class AbsenceController {
     description: 'Get all the absences from all the users',
   })
   @Get()
-  getAbsences(@Req() req: Request): Promise<AbsenceType[]> {
+  getAbsences(@Req() req: Request): Promise<AbsenceDto[]> {
     return this.AbsenceService.getAbsences(req.url);
   }
 
   @ApiOkResponse({
     description: 'The Absence has been successfully retreived.',
-    type: AbsenceType,
+    type: AbsenceDto,
   })
   @ApiNotFoundResponse({ description: 'Ressources Not Found' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
@@ -63,14 +63,14 @@ export class AbsenceController {
   getAbsenceById(
     @Param('id') id: string,
     @Req() req: Request,
-  ): Promise<AbsenceType> {
+  ): Promise<AbsenceDto> {
     return this.AbsenceService.getAbsenceById(id, req.url);
   }
 
   @ApiOkResponse({
     description:
       'The Absence has been successfully retreived according to a user id.',
-    type: AbsenceType,
+    type: AbsenceDto,
   })
   @ApiNotFoundResponse({ description: 'Ressources Not Found' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
@@ -82,13 +82,13 @@ export class AbsenceController {
   getAbsencesByUserId(
     @Param('user_id') user_id: string,
     @Req() req: Request,
-  ): Promise<AbsenceType[]> {
+  ): Promise<AbsenceDto[]> {
     return this.AbsenceService.getAbsencesByUserId(user_id, req.url);
   }
 
   @ApiCreatedResponse({
     description: 'The Absence has been successfully created',
-    type: AbsenceType,
+    type: AbsenceDto,
   })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   @ApiOperation({
@@ -99,14 +99,14 @@ export class AbsenceController {
   @Post()
   createAbsence(
     @GetUser('id') userId: string,
-    @Body() dto: AbsenceDto,
-  ): Promise<AbsenceType> {
+    @Body() dto: CreateAbsenceDto,
+  ): Promise<AbsenceDto> {
     return this.AbsenceService.createAbsence(userId, dto);
   }
 
   @ApiOkResponse({
     description: 'The Absence has been successfully updated',
-    type: AbsenceType,
+    type: AbsenceDto,
   })
   @ApiNotFoundResponse({ description: 'Ressources Not Found' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
@@ -120,7 +120,7 @@ export class AbsenceController {
     @GetUser('id') userId: string,
     @Param('id') absenceId: string,
     @Body() dto: UpdateAbsenceDto,
-  ): Promise<AbsenceType> {
+  ): Promise<AbsenceDto> {
     return this.AbsenceService.updateAbsence(userId, absenceId, dto);
   }
 
@@ -134,7 +134,10 @@ export class AbsenceController {
     description: 'Delete an absence, a user can only delete his own absences.',
   })
   @Delete()
-  deleteAbsence(@GetUser('id') userId: string, @Param('id') id: string) {
+  deleteAbsence(
+    @GetUser('id') userId: string,
+    @Param('id') id: string,
+  ): Promise<HttpStatus> {
     return this.AbsenceService.deleteAbsence(userId, id);
   }
 }

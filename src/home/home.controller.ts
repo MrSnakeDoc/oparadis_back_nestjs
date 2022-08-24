@@ -44,8 +44,6 @@ export class HomeController {
   })
   @Get('/houses')
   getHouses(@Req() req: Request): Promise<HouseType[]> {
-    console.log('test e2e - ok');
-
     return this.homeService.getHouses(req.url);
   }
 
