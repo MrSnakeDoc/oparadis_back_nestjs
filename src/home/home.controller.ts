@@ -1,9 +1,17 @@
-import { Controller, Get, HttpCode, Req, HttpStatus } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  HttpCode,
+  Req,
+  HttpStatus,
+  Param,
+} from '@nestjs/common';
 import {
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
   ApiTags,
+  ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { Request } from 'express';
 import { PrismaService } from '../prisma/prisma.service';
@@ -51,5 +59,20 @@ export class HomeController {
   async reset() {
     await this.prisma.resetUsers();
     return HttpCode(HttpStatus.OK);
+  }
+
+  @ApiOkResponse({
+    description: 'The house has been successfully retreived.',
+    type: HouseType,
+  })
+  @ApiNotFoundResponse({ description: 'Ressources Not Found' })
+  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
+  @ApiOperation({
+    summary: 'Get a house by id with associated photos, type and country',
+    description: 'Get a house by id with associated photos, type and country',
+  })
+  @Get('/home/full/:id')
+  getHouseFullById(@Param('id') id: string, @Req() req: Request) {
+    return this.homeService.getHouseFullById(id, req.url);
   }
 }

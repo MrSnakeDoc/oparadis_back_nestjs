@@ -70,8 +70,6 @@ export class HomeService {
   }
 
   async getHouses(url: string): Promise<HouseType[]> {
-    console.log('test e2e - service ok');
-
     try {
       const cachedHouses = await this.cache.get(`${this.prefix}${url}`);
 
@@ -101,6 +99,49 @@ export class HomeService {
       );
 
       return houses;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getHouseFullById(id: string, url: string): Promise<HouseType> {
+    try {
+      const cachedHouse = await this.cache.get(`${this.prefix}${url}`);
+
+      if (cachedHouse) return cachedHouse;
+
+      const house: HouseType = await this.prisma.house.findFirst({
+        where: { id },
+        include: {
+          photo: true,
+          type: true,
+          country: true,
+        },
+      });
+
+      if (!house) {
+        throw new HttpException('No houses found', HttpStatus.NOT_FOUND);
+      }
+      const animals: AnimalType[] = await this.prisma.animal.findMany({
+        where: { user_id: house.user_id },
+      });
+      const plants: PlantType[] = await this.prisma.plant.findMany({
+        where: { user_id: house.user_id },
+      });
+
+      const fullHouse = {
+        ...house,
+        animals: animals,
+        plants: plants,
+      };
+
+      await this.cache.set(
+        `${this.prefix}${url}`,
+        fullHouse,
+        this.config.get('CACHE_TTL'),
+      );
+
+      return fullHouse;
     } catch (error) {
       throw error;
     }

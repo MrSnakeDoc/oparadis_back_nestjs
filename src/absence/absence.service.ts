@@ -1,3 +1,4 @@
+import { AbsenceDto } from './dto/Absence.dto';
 import {
   ForbiddenException,
   HttpException,
@@ -6,7 +7,8 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { RedisCacheService } from '../redis-cache/redis-cache.service';
-import { CreateAbsenceDto, UpdateAbsenceDto, AbsenceDto } from './dto';
+import { AbsenceType } from './types';
+import { UpdateAbsenceDto } from './dto';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
@@ -17,15 +19,15 @@ export class AbsenceService {
     private readonly cache: RedisCacheService,
     private readonly configService: ConfigService,
   ) {}
-  async getAbsences(url): Promise<AbsenceDto[]> {
+  async getAbsences(url): Promise<AbsenceType[]> {
     try {
-      const cachedAbsences: AbsenceDto[] = await this.cache.get(
+      const cachedAbsences: AbsenceType[] = await this.cache.get(
         `${this.prefix}${url}`,
       );
 
       if (cachedAbsences) return cachedAbsences;
 
-      const absences: AbsenceDto[] = await this.prisma.absence.findMany();
+      const absences: AbsenceType[] = await this.prisma.absence.findMany();
 
       if (!absences) {
         throw new HttpException('No absences found', HttpStatus.NOT_FOUND);
@@ -45,7 +47,7 @@ export class AbsenceService {
 
   async getAbsenceById(id, url) {
     try {
-      const cachedAbsence: AbsenceDto = await this.cache.get(
+      const cachedAbsence: AbsenceType = await this.cache.get(
         `${this.prefix}${url}`,
       );
 
@@ -68,15 +70,15 @@ export class AbsenceService {
     }
   }
 
-  async getAbsencesByUserId(user_id, url): Promise<AbsenceDto[]> {
+  async getAbsencesByUserId(user_id, url): Promise<AbsenceType[]> {
     try {
-      const cachedAbsences: AbsenceDto[] = await this.cache.get(
+      const cachedAbsences: AbsenceType[] = await this.cache.get(
         `${this.prefix}${url}`,
       );
 
       if (cachedAbsences) return cachedAbsences;
 
-      const absences: AbsenceDto[] = await this.prisma.absence.findMany({
+      const absences: AbsenceType[] = await this.prisma.absence.findMany({
         where: {
           user_id,
         },
@@ -98,12 +100,9 @@ export class AbsenceService {
     }
   }
 
-  async createAbsence(
-    user_id: string,
-    dto: CreateAbsenceDto,
-  ): Promise<AbsenceDto> {
+  async createAbsence(user_id: string, dto: AbsenceDto): Promise<AbsenceType> {
     try {
-      const absence: AbsenceDto = await this.prisma.absence.create({
+      const absence: AbsenceType = await this.prisma.absence.create({
         data: {
           ...dto,
           user_id,
@@ -126,9 +125,9 @@ export class AbsenceService {
     user_id: string,
     id: string,
     dto: UpdateAbsenceDto,
-  ): Promise<AbsenceDto> {
+  ): Promise<AbsenceType> {
     try {
-      const cachedAbsence: AbsenceDto = await this.prisma.absence.findUnique({
+      const cachedAbsence: AbsenceType = await this.prisma.absence.findUnique({
         where: {
           id,
         },
@@ -138,7 +137,7 @@ export class AbsenceService {
         throw new ForbiddenException('Access to ressources denied');
       }
 
-      const absence: AbsenceDto = await this.prisma.absence.update({
+      const absence: AbsenceType = await this.prisma.absence.update({
         where: { id },
         data: {
           ...dto,
@@ -159,7 +158,7 @@ export class AbsenceService {
   }
 
   async deleteAbsence(user_id, id) {
-    const cachedAbsence: AbsenceDto = await this.prisma.absence.findUnique({
+    const cachedAbsence: AbsenceType = await this.prisma.absence.findUnique({
       where: {
         id,
       },

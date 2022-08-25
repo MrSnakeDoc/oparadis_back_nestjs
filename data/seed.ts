@@ -48,9 +48,6 @@ async function main() {
       });
     }
 
-    // if (
-    //   process.env.DATABASE_URL !== 'postgresql://test:test@localhost:55433/test'
-    // ) {
     for (const user of Users) {
       user.password = await argon.hash(user.password);
       await prisma.user.create({
@@ -60,7 +57,7 @@ async function main() {
       });
     }
 
-    const country = await await prisma.country.findUnique({
+    const country = await prisma.country.findUnique({
       where: { country: 'France' },
     });
 
@@ -68,8 +65,8 @@ async function main() {
       throw new Error('Country not found');
     }
 
-    const typesId = await (await prisma.type.findMany()).map((type) => type.id);
-    const usersId = await (await prisma.user.findMany()).map((user) => user.id);
+    const typesId = (await prisma.type.findMany()).map((type) => type.id);
+    const usersId = (await prisma.user.findMany()).map((user) => user.id);
 
     for (const [index, house] of Houses.entries()) {
       const user_id: string = usersId[index];
@@ -85,9 +82,7 @@ async function main() {
       });
     }
 
-    const housesId = await (
-      await prisma.house.findMany()
-    ).map((house) => house.id);
+    const housesId = (await prisma.house.findMany()).map((house) => house.id);
     const house_id = housesId[housesId.length - 1];
 
     for (const photo of Photos) {

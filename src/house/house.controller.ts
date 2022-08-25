@@ -59,21 +59,6 @@ export class HouseController {
   @ApiNotFoundResponse({ description: 'Ressources Not Found' })
   @ApiUnauthorizedResponse({ description: 'Unauthorized' })
   @ApiOperation({
-    summary: 'Get a house by id with associated photos, type and country',
-    description: 'Get a house by id with associated photos, type and country',
-  })
-  @Get('/full/:id')
-  getHouseFullById(@Param('id') id: string, @Req() req: Request) {
-    return this.HouseService.getHouseFullById(id, req.url);
-  }
-
-  @ApiOkResponse({
-    description: 'The house has been successfully retreived.',
-    type: HouseType,
-  })
-  @ApiNotFoundResponse({ description: 'Ressources Not Found' })
-  @ApiUnauthorizedResponse({ description: 'Unauthorized' })
-  @ApiOperation({
     summary: 'Get a house by id',
     description: 'Get a house by id',
   })

@@ -1,4 +1,5 @@
 import { ValidateMatchDto } from './dto/validateMatch.dto';
+import { AbsenceType } from './../absence/types/';
 import {
   Injectable,
   HttpException,
@@ -9,7 +10,6 @@ import { PrismaService } from '../prisma/prisma.service';
 import { RedisCacheService } from '../redis-cache/redis-cache.service';
 import { MatchFullDto } from './dto';
 import { MatchDto } from './dto/Match.dto';
-import { AbsenceDto } from '../absence/dto';
 
 @Injectable()
 export class MatchService {
@@ -232,7 +232,7 @@ export class MatchService {
         throw new HttpException('Match not found', HttpStatus.NOT_FOUND);
       }
 
-      const absence: AbsenceDto = await this.prisma.absence.findUnique({
+      const absence: AbsenceType = await this.prisma.absence.findUnique({
         where: {
           id: match.absence_id,
         },

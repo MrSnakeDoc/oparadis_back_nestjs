@@ -1,18 +1,18 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsOptional, IsString } from 'class-validator';
-import { CreateAbsenceDto } from './';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
-export class AbsenceDto extends CreateAbsenceDto {
+export class AbsenceDto {
   @ApiProperty()
-  @IsOptional()
+  @IsNotEmpty()
   @IsString()
-  user_id?: string;
+  start_date: Date;
 
-  constructor(
-    partial: Partial<AbsenceDto>,
-    CreateAbsenceDto: CreateAbsenceDto,
-  ) {
-    super(CreateAbsenceDto);
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  end_date: Date;
+
+  constructor(partial: Partial<AbsenceDto>) {
     Object.assign(this, partial);
   }
 }
