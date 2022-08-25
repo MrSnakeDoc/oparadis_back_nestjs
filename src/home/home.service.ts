@@ -129,10 +129,23 @@ export class HomeService {
         where: { user_id: house.user_id },
       });
 
+      const user = await this.prisma.user.findUnique({
+        where: {
+          id: house.user_id,
+        },
+      });
+
+      const strippedUser = {
+        avatar: user.avatar,
+        pseudo: user.pseudo,
+        description: user.description,
+      };
+
       const fullHouse = {
         ...house,
         animals: animals,
         plants: plants,
+        user: strippedUser,
       };
 
       await this.cache.set(

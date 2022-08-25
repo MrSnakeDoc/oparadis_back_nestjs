@@ -97,7 +97,7 @@ async function main() {
     }
 
     for (const animal of Animals) {
-      const user_id = usersId[0];
+      const user_id = usersId[usersId.length - 3];
       await prisma.animal.create({
         data: {
           user_id,
@@ -107,7 +107,7 @@ async function main() {
     }
 
     for (const plant of Plants) {
-      const user_id = usersId[0];
+      const user_id = usersId[usersId.length - 3];
       await prisma.plant.create({
         data: {
           user_id,
