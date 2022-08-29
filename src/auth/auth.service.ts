@@ -60,9 +60,8 @@ export class AuthService {
     try {
       const user: User = await this.checkEmail(token);
 
-      if (!user) {
+      if (!user)
         throw new HttpException('User not found', HttpStatus.NOT_FOUND);
-      }
 
       if (user.verified)
         throw new HttpException(
@@ -72,9 +71,8 @@ export class AuthService {
 
       const validateToken = await this.cache.get(`${this.prefix}${user.id}`);
 
-      if (validateToken !== token) {
+      if (validateToken !== token)
         throw new ForbiddenException('Invalid token');
-      }
 
       await this.cache.del(`${this.prefix}${user.id}`);
 
@@ -144,16 +142,14 @@ export class AuthService {
       const user = await this.prisma.user.findUnique({
         where: { email: dto.email },
       });
+
       //if the user is not found throw exception
-      if (!user) {
-        throw new ForbiddenException('Invalid credentials');
-      }
+      if (!user) throw new ForbiddenException('Invalid credentials');
+
       //compare password hash with the one in the database
       const pwMatches = await argon.verify(user.password, dto.password);
       //if the password is not correct throw exception
-      if (!pwMatches) {
-        throw new ForbiddenException('Invalid credentials');
-      }
+      if (!pwMatches) throw new ForbiddenException('Invalid credentials');
 
       const refresh_token = await this.signToken(
         'REFRESH_JWT_SECRET',
@@ -203,7 +199,6 @@ export class AuthService {
     try {
       const user = await this.checkToken(refreshToken);
 
-      //send back the user
       return {
         accessToken: await this.signToken(
           'JWT_SECRET',
@@ -221,9 +216,8 @@ export class AuthService {
     try {
       const user = await this.checkToken(token);
 
-      if (!user) {
+      if (!user)
         throw new HttpException('User not found', HttpStatus.NOT_FOUND);
-      }
 
       await this.prisma.user.update({
         where: { id: user.id },
@@ -240,33 +234,33 @@ export class AuthService {
     try {
       const decoded = this.jwt.decode(token);
 
-      if (!decoded) {
-        throw new ForbiddenException('Invalid refresh token');
-      }
+      if (!decoded)
+        throw new HttpException('Invalid refresh token', HttpStatus.FORBIDDEN);
 
       const user = await this.prisma.user.findFirst({
         where: { id: decoded.sub },
       });
 
-      if (!user) {
+      if (!user)
         throw new HttpException(
           'User with this id does not exist',
           HttpStatus.NOT_FOUND,
         );
-      }
 
-      if (!user.refresh_token) {
-        throw new ForbiddenException('User already logged out');
-      }
+      if (!user.refresh_token)
+        throw new HttpException(
+          'User already logged out',
+          HttpStatus.BAD_REQUEST,
+        );
 
       const isRefreshTokenMatching = await argon.verify(
         user.refresh_token,
         token,
       );
 
-      if (!isRefreshTokenMatching) {
-        throw new UnauthorizedException('Invalid token');
-      }
+      if (!isRefreshTokenMatching)
+        throw new HttpException('Invalid token', HttpStatus.UNAUTHORIZED);
+
       return user;
     } catch (error) {
       throw error;
@@ -277,24 +271,20 @@ export class AuthService {
     try {
       const decoded = this.jwt.decode(token);
 
-      if (!decoded) {
-        throw new ForbiddenException('Invalid refresh token');
-      }
+      if (!decoded) throw new ForbiddenException('Invalid refresh token');
 
       const user = await this.prisma.user.findFirst({
         where: { id: decoded.sub },
       });
 
-      if (!user) {
+      if (!user)
         throw new HttpException(
           'User with this id does not exist',
           HttpStatus.NOT_FOUND,
         );
-      }
 
-      if (user.id !== decoded.sub) {
+      if (user.id !== decoded.sub)
         throw new ForbiddenException('Invalid token');
-      }
 
       return user;
     } catch (error) {
