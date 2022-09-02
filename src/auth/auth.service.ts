@@ -33,7 +33,7 @@ export class AuthService {
       data.password = await argon.hash(dto.password);
 
       const user = await this.prisma.user.create({
-        data: { ...data },
+        data: { ...data, verified: true },
       });
 
       const emailToken = await this.signToken(
@@ -43,7 +43,7 @@ export class AuthService {
         user.email,
       );
 
-      this.redisEmail(user, emailToken);
+      // this.redisEmail(user, emailToken);
 
       return HttpStatus.CREATED;
     } catch (error) {
