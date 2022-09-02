@@ -104,18 +104,6 @@ export class UserService {
       },
     });
 
-    cacheUser.animals = await this.prisma.animal.findMany({
-      where: {
-        user_id: user.id,
-      },
-    });
-
-    cacheUser.plants = await this.prisma.plant.findMany({
-      where: {
-        user_id: user.id,
-      },
-    });
-
     await this.cache.set(
       `${this.prefix}${url}/${user.id}`,
       cacheUser,
