@@ -26,24 +26,28 @@ export class CloudinaryService {
   }
 
   private scale(url, folder) {
-    if (folder === 'avatars') {
-      return url
-        .split(`https://res.cloudinary.com/${this.cloud_name}/image/upload/`)
-        .splice(1, 1)
-        .map(
-          (k) =>
-            `https://res.cloudinary.com/${this.cloud_name}/image/upload/w_200,h_200,c_fill,g_face,r_max/${k}`,
-        )
-        .join();
-    } else {
-      return url
-        .split(`https://res.cloudinary.com/${this.cloud_name}/image/upload/`)
-        .splice(1, 1)
-        .map(
-          (k) =>
-            `https://res.cloudinary.com/${this.cloud_name}/image/upload/c_scale,w_800/${k}`,
-        )
-        .join();
+    try {
+      if (folder === 'avatars') {
+        return url
+          .split(`https://res.cloudinary.com/${this.cloud_name}/image/upload/`)
+          .splice(1, 1)
+          .map(
+            (k) =>
+              `https://res.cloudinary.com/${this.cloud_name}/image/upload/w_200,h_200,c_fill,g_face,r_max/${k}`,
+          )
+          .join();
+      } else {
+        return url
+          .split(`https://res.cloudinary.com/${this.cloud_name}/image/upload/`)
+          .splice(1, 1)
+          .map(
+            (k) =>
+              `https://res.cloudinary.com/${this.cloud_name}/image/upload/c_scale,w_800/${k}`,
+          )
+          .join();
+      }
+    } catch (error) {
+      throw error;
     }
   }
 
