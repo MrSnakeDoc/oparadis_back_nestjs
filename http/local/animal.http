@@ -1,5 +1,5 @@
 @host = http://localhost:5000/api
-@access_token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbDRndXNvNHMwMDAwY2p1azRpeHoyenoxIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNjU1MzczNzY0LCJleHAiOjE2NTU0NjAxNjR9.jwu-8G8fnfyed58DJ9W3wM-Bye0qRPiHNcz46Pb29kM
+@access_token = Bearer 
 
 ###
 GET {{host}}/animals/ HTTP/1.1

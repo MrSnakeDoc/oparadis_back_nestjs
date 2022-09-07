@@ -1,6 +1,6 @@
 @host = http://localhost:5000/api
 
-@access_token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbDR3azFzenkxODYyOWx1a3Z3bzVkemw1IiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNjU2MzIzMjkwLCJleHAiOjE2NTY0MDk2OTB9.poty39wCen3edq4UmNZqtZMF28QhckFSr6lSqDfXsPk
+@access_token = Bearer 
 
 ###
 GET {{host}}/absences HTTP/1.1

@@ -139,6 +139,10 @@ export class UserService {
         },
       });
 
+      delete user.id;
+      delete user.isAdmin;
+      delete user.verified;
+
       await this.cache.del(this.prefix);
 
       return new UserDto(user);
@@ -147,10 +151,7 @@ export class UserService {
     }
   }
 
-  async updateUserPassword(
-    userId: string,
-    dto: UpdateUserPasswordDto,
-  ): Promise<UserDto> {
+  async updateUserPassword(userId: string, dto: UpdateUserPasswordDto) {
     try {
       const user = await this.prisma.user.findFirst({
         where: { id: userId },
@@ -174,12 +175,12 @@ export class UserService {
 
       const hash = await argon.hash(dto.password);
 
-      const updatedUser = await this.prisma.user.update({
+      await this.prisma.user.update({
         where: { id: userId },
         data: { password: hash },
       });
 
-      return new UserDto(updatedUser);
+      return HttpStatus.OK;
     } catch (error) {
       throw error;
     }

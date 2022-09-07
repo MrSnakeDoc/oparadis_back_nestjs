@@ -1,5 +1,5 @@
 @host = http://localhost:5000/api
-@access_token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbDRndXNvNHMwMDAwY2p1azRpeHoyenoxIiwiZW1haWwiOiJhQGEuY29tIiwiaWF0IjoxNjU1NDUwMTE3LCJleHAiOjE2NTU1MzY1MTd9.T7if0r4CUsP6o1oq1dsq7SEPRRlq3OeO4psrYTUZbCM
+@access_token = Bearer 
 
 ###
 GET {{host}}/countries HTTP/1.1

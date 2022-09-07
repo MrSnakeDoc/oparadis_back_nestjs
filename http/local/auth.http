@@ -4,7 +4,7 @@
 
 @refresh_token = Bearer 
 
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbDVjZ3ppaDQwMDAxNnJ1a2RzcXU4dWVnIiwiZW1haWwiOiJ3YXphbXk3NzdAZ21haWwuY29tIiwiaWF0IjoxNjU3Mjg1NDgyLCJleHAiOjE2NTczNzE4ODJ9.wh7Bur1R_EJSVLMutn4U-3oXEPo-o9liHvqAcl-ONrg
+@token = 
 
 ###
 POST {{host}}/auth/signup HTTP/1.1
@@ -68,6 +68,6 @@ content-type: application/json
 Authorization: {{refresh_token}}
 
 ###
-GET {{host}}/auth/logout HTTP/1.1
+POST {{host}}/auth/logout HTTP/1.1
 content-type: application/json
 Authorization: {{refresh_token}}
